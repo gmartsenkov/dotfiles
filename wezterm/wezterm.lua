@@ -7,7 +7,7 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.color_scheme = 'Catppuccin Mocha'
+config.color_scheme = "Catppuccin Mocha"
 config.font_size = 15.0
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "DemiBold" })
 config.line_height = 1.0
@@ -55,7 +55,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cf, hover, max_width)
 	if tab.is_active then
 		background = "rgb(22, 24, 26 / 90%)"
 		foreground = "white"
-  end
+	end
 
 	return {
 		{ Background = { Color = "black" } },
@@ -67,7 +67,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, cf, hover, max_width)
 		{ Background = { Color = "black" } },
 		{ Foreground = { Color = "black" } },
 		{ Text = "" },
-}
+	}
 end)
 
 return config
