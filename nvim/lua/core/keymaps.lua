@@ -3,7 +3,6 @@ local map = vim.keymap.set
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
-map("i", "jk", "<ESC>")
 
 -- map("n", "<leader><leader>", function ()
 --   local cwd = require("root").find() or vim.fn.expand "%:p:h"
@@ -45,8 +44,11 @@ map("n", "<leader>bb", function()
 end)
 map("n", "<leader>bd", "<cmd> Bdelete <CR>")
 map("n", "<leader>bn", "<cmd> enew <CR>")
-map("n", "<leader>pp", "<cmd> Telescope project <CR>")
-map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h <CR>")
+-- map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h <CR>")
+map("n", "<leader>ff", function()
+	local cwd = vim.fn.expand("%:p:h") .. "/"
+	require("peek").builtins.file_explorer({ prompt = cwd })
+end)
 map("n", "<leader>/", "<cmd> Telescope live_grep <CR>")
 
 -- Testing
