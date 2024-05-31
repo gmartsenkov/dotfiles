@@ -16,6 +16,7 @@ return {
 				"mason",
 				"nvdash",
 				"nvcheatsheet",
+				"dashboard",
 				"",
 			},
 			buftype_exclude = { "terminal" },
