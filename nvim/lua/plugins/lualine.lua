@@ -5,7 +5,7 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		options = {
-			disabled_filetypes = { "dashboard" },
+			disabled_filetypes = { "dashboard", "toggleterm", "peek" },
 			section_separators = { left = "", right = "" },
 			component_separators = { left = "", right = "" },
 		},
