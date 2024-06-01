@@ -9,8 +9,9 @@ return {
 			header = require("ascii").art.text.neovim.def_leppard,
 			directories = {
 				"~/Development/uplisting-api",
-				"~/Development/fusion-api",
 				"~/Development/peek",
+				"~/Development/fusion-api",
+				"~/dotfiles",
 			},
 		})
 	end,
