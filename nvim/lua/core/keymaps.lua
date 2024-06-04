@@ -1,4 +1,7 @@
 local map = vim.keymap.set
+local refresh_lualine = function()
+	require("lualine").refresh()
+end
 
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 
@@ -25,7 +28,7 @@ map("n", "<leader><leader>", function()
 	-- local cwd = require("root").find() or vim.fn.expand "%:p:h"
 	-- vim.cmd("Telescope frecency hidden=true workspace=CWD cwd=" .. cwd)
 	-- vim.cmd("Telescope frecency hidden=true previewer=false workspace=CWD")
-	require("peek").builtins.find_file()
+	require("peek").builtins.find_file({ on_refresh = refresh_lualine })
 end)
 
 map("n", "<leader>mf", function()
@@ -37,9 +40,9 @@ map("n", "<C-n>", "<cmd> NvimTreeToggle <CR>", { desc = "Switch Window left" })
 map("n", "<leader>bb", function()
 	local cwd = require("root").find()
 	if cwd then
-		require("peek").builtins.find_buffer({ cwd = (cwd .. "/") })
+		require("peek").builtins.find_buffer({ on_refresh = refresh_lualine, cwd = (cwd .. "/") })
 	else
-		require("peek").builtins.find_buffer({})
+		require("peek").builtins.find_buffer({ on_refresh = refresh_lualine })
 	end
 end)
 map("n", "<leader>bd", "<cmd> Bdelete <CR>")
@@ -47,7 +50,7 @@ map("n", "<leader>bn", "<cmd> enew <CR>")
 -- map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h <CR>")
 map("n", "<leader>ff", function()
 	local cwd = vim.fn.expand("%:p:h") .. "/"
-	require("peek").builtins.file_explorer({ prompt = cwd })
+	require("peek").builtins.file_explorer({ on_refresh = refresh_lualine, prompt = cwd })
 end)
 map("n", "<leader>/", "<cmd> Telescope live_grep <CR>")
 
