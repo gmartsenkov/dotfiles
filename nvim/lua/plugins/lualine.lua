@@ -23,7 +23,12 @@ return {
 			component_separators = { left = "", right = "" },
 		},
 		sections = {
-			lualine_b = { "branch" },
+			lualine_b = { {
+				"branch",
+				fmt = function(branch)
+					return branch:sub(1, 30)
+				end,
+			} },
 			lualine_c = {
 				{
 					"filename",
