@@ -12,6 +12,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
-	root = "/Users/gogo/.config2/lazy",
+	root = "~/.config2/lazy",
 	defaults = { lazy = true },
 })
