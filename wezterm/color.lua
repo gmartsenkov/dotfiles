@@ -17,6 +17,6 @@ return {
 	indexed = { [16] = "#ffbd5e", [17] = "#ff6e5e" },
 
 	tab_bar = {
-		background = "rgb(22, 24, 26 / 20%)",
+		background = "rgb(22, 24, 26 / 100%)",
 	},
 }

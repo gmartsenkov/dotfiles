@@ -7,6 +7,7 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
+config.enable_wayland = false
 config.color_scheme = "Catppuccin Mocha"
 config.font_size = 15.0
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "DemiBold" })
