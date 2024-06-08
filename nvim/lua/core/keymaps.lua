@@ -71,7 +71,9 @@ map("n", "<Esc>", function()
 	vim.cmd("noh")
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
-		require("toggleterm.ui").close(term)
+		if vim.api.nvim_win_is_valid(term.window) then
+			vim.api.nvim_win_close(term.window, true)
+		end
 	end
 end)
 map("n", "<leader>mp", function()
