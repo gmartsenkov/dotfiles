@@ -23,6 +23,7 @@ return {
 			"markdown",
 			"ruby",
 			"rust",
+			"yaml",
 			"surface",
 			"vim",
 		},
