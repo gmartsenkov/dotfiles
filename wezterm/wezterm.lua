@@ -9,8 +9,15 @@ end
 
 config.enable_wayland = false
 config.color_scheme = "Catppuccin Mocha"
-config.font_size = 15.0
+config.font_size = 16
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "DemiBold" })
+-- config.font = wezterm.font("Victor Mono", { weight = "DemiBold" })
+-- config.font = wezterm.font("Sarasa Fixed CL Nerd Font", { weight = "Medium" })
+-- config.font = wezterm.font("Iosevka NFM", { weight = "Medium" })
+-- config.font = wezterm.font("UbuntuMono Nerd Font Mono", { weight = "Medium" })
+
+-- let(:teammate) { Teammate.new account: teammate_account }
+-- config.cell_width = 0.9
 config.line_height = 1.0
 
 config.window_decorations = "RESIZE"
@@ -29,8 +36,8 @@ config.window_padding = {
 	bottom = 0,
 }
 
-config.window_background_opacity = 0.9
-config.macos_window_background_blur = 40
+-- config.window_background_opacity = 0.9
+-- config.macos_window_background_blur = 40
 
 local function tab_title(tab_info)
 	local title = tab_info.tab_title

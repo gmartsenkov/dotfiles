@@ -19,6 +19,7 @@ return {
 			"heex",
 			"html",
 			"javascript",
+			"typescript",
 			"lua",
 			"markdown",
 			"ruby",

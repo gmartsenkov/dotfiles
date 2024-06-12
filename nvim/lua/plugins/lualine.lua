@@ -23,6 +23,12 @@ return {
 			component_separators = { left = "", right = "" },
 		},
 		sections = {
+			lualine_a = { {
+				"mode",
+				fmt = function(mode)
+					return mode:sub(1, 1)
+				end,
+			} },
 			lualine_b = { {
 				"branch",
 				fmt = function(branch)
@@ -32,7 +38,7 @@ return {
 			lualine_c = {
 				{
 					"filename",
-					path = 4,
+					path = 1,
 				},
 				"diff",
 				"diagnostics",
