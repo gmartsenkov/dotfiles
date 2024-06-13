@@ -34,7 +34,7 @@ config.tab_max_width = 50
 
 config.keys = keys
 config.window_padding = {
-	left = 0,
+	left = 10,
 	right = 0,
 	top = 10,
 	bottom = 0,
