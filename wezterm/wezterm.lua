@@ -7,15 +7,17 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.use_fancy_tab_bar = false
+config.front_end = "WebGpu"
+config.webgpu_power_preference = "HighPerformance"
 config.enable_wayland = false
 config.color_scheme = "Catppuccin Mocha"
 config.font_size = 16.5
-config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "DemiBold" })
+config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 -- config.font = wezterm.font("Victor Mono", { weight = "DemiBold" })
 -- config.font = wezterm.font("Sarasa Fixed CL Nerd Font", { weight = "Medium" })
 -- config.font = wezterm.font("Iosevka NFM", { weight = "Medium" })
 -- config.font = wezterm.font("UbuntuMono Nerd Font Mono", { weight = "Medium" })
+-- config.font = wezterm.font("BlexMono Nerd Font", { weight = "Medium" })
 
 -- let(:teammate) { Teammate.new account: teammate_account }
 config.cell_width = 0.95
@@ -34,7 +36,7 @@ config.keys = keys
 config.window_padding = {
 	left = 0,
 	right = 0,
-	top = 25,
+	top = 10,
 	bottom = 0,
 }
 
