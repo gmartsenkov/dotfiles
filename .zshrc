@@ -81,3 +81,5 @@ alias c='clear'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
