@@ -82,4 +82,6 @@ alias c='clear'
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
+# ASDF
+export ASDF_CONFIG_FILE=~/.asdfrc
 . "$HOME/.asdf/asdf.sh"
