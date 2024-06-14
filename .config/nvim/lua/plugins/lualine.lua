@@ -4,9 +4,25 @@ local function peek_status()
 	return title .. ": " .. fn.position() .. " / " .. fn.result_count()
 end
 
+local current_signature = function()
+	if not pcall(require, "lsp_signature") then
+		return
+	end
+	local sig = require("lsp_signature").status_line(100)
+	return sig.label
+end
+
+local filetype = function()
+	return "[" .. vim.bo.filetype .. "]"
+end
+
+local lsp_progress = function()
+	-- invoke `progress` here.
+	return require("lsp-progress").progress()
+end
+
 local peek_extension = {
-	options = { refresh = { statusline = 100 } },
-	sections = { lualine_a = { peek_status } },
+	sections = { lualine_b = { peek_status } },
 	filetypes = { "peek" },
 }
 
@@ -18,17 +34,16 @@ return {
 	opts = {
 		extensions = { "toggleterm", "lazy", "nvim-tree", "mason", peek_extension },
 		options = {
+			always_divide_middle = false,
 			disabled_filetypes = { "dashboard" },
-			section_separators = { left = "", right = "" },
+			section_separators = { left = "", right = "" },
 			component_separators = { left = "", right = "" },
+			refresh = {
+				statusline = 300,
+			},
 		},
 		sections = {
-			lualine_a = { {
-				"mode",
-				fmt = function(mode)
-					return mode:sub(1, 1)
-				end,
-			} },
+			lualine_a = {},
 			lualine_b = { {
 				"branch",
 				fmt = function(branch)
@@ -42,8 +57,11 @@ return {
 				},
 				"diff",
 				"diagnostics",
+				current_signature,
 			},
-			lualine_x = { { "filetype" } },
+			lualine_x = { lsp_progress, filetype },
+			lualine_y = {},
+			lualine_z = {},
 		},
 	},
 }

@@ -124,7 +124,24 @@ local config = function()
 end
 
 return {
-	"neovim/nvim-lspconfig",
-	lazy = false,
-	config = config,
+	{
+		"neovim/nvim-lspconfig",
+		lazy = false,
+		config = config,
+	},
+	{
+		"linrongbin16/lsp-progress.nvim",
+		config = true,
+		opts = { max_size = 50 },
+	},
+	{
+		"ray-x/lsp_signature.nvim",
+		lazy = false,
+		opts = {
+			bind = false,
+			floating_window = false,
+			hint_enable = false,
+		},
+		config = true,
+	},
 }
