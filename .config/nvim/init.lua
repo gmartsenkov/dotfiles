@@ -21,5 +21,6 @@ o.smartcase = true
 o.mouse = "a"
 vim.cmd("set nomodeline")
 vim.cmd("set nosmd")
+vim.cmd("set noshowcmd")
 local is_windows = vim.fn.has("win32") ~= 0
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH
