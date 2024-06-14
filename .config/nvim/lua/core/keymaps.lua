@@ -45,7 +45,9 @@ map("n", "<leader>bb", function()
 		require("peek").builtins.find_buffer({ on_refresh = refresh_lualine })
 	end
 end)
-map("n", "<leader>bd", "<cmd> Bdelete <CR>")
+map("n", "<leader>bd", function()
+	vim.api.nvim_buf_delete(0, { force = true })
+end)
 map("n", "<leader>bn", "<cmd> enew <CR>")
 -- map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h <CR>")
 map("n", "<leader>ff", function()
@@ -79,7 +81,9 @@ end)
 map("n", "<leader>mp", function()
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
-		vim.cmd(term.bufnr .. "bdelete!")
+		if vim.api.nvim_win_is_valid(term.window) then
+			vim.api.nvim_win_close(term.window, true)
+		end
 	end
 	vim.cmd("TermExec cmd='bundle exec rubocop'")
 end)
