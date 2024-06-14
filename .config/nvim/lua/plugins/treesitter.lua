@@ -27,6 +27,7 @@ return {
 			"yaml",
 			"surface",
 			"vim",
+			"vimdoc",
 		},
 		endwise = {
 			enable = true,
