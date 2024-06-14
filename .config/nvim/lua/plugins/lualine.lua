@@ -13,7 +13,10 @@ local current_signature = function()
 end
 
 local filetype = function()
-	return "[" .. vim.bo.filetype .. "]"
+	local type = vim.bo.filetype
+	if type ~= "" then
+		return "[" .. vim.bo.filetype .. "]"
+	end
 end
 
 local lsp_progress = function()
@@ -44,19 +47,22 @@ return {
 		},
 		sections = {
 			lualine_a = {},
-			lualine_b = { {
-				"branch",
-				fmt = function(branch)
-					return branch:sub(1, 30)
-				end,
-			} },
+			lualine_b = {},
 			lualine_c = {
 				{
 					"filename",
 					path = 1,
+					fmt = function(value)
+						local extension = vim.bo.filetype
+						local icon, hl =
+							require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
+
+						return "%#" .. hl .. "#" .. icon .. "%* " .. value
+					end,
 				},
 				"diff",
 				"diagnostics",
+				"%=",
 				current_signature,
 			},
 			lualine_x = { lsp_progress, filetype },
