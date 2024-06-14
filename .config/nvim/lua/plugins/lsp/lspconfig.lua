@@ -19,6 +19,10 @@ local config = function()
 		})
 	end
 
+	lspconfig["elixirls"].setup({
+		cmd = { "elixir-ls" },
+	})
+
 	lspconfig["tailwindcss"].setup({
 		init_options = {
 			userLanguages = {
