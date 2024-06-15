@@ -1,3 +1,4 @@
+vim.cmd("set termguicolors")
 require("core")
 require("lazy_init")
 
