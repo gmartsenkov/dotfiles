@@ -49,6 +49,7 @@ return {
 			lualine_a = {},
 			lualine_b = {},
 			lualine_c = {
+				"branch",
 				{
 					"filename",
 					path = 1,
@@ -57,13 +58,13 @@ return {
 						local icon, hl =
 							require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
 
-						return "%#" .. hl .. "#" .. icon .. "%* " .. value
+						return "[ %#" .. hl .. "#" .. icon .. "%* " .. value .. " ]"
 					end,
 				},
 				"diff",
 				"diagnostics",
 				"%=",
-				current_signature,
+				{ current_signature, color = { fg = "#767a92", gui = "italic" } },
 			},
 			lualine_x = { lsp_progress, filetype },
 			lualine_y = {},
