@@ -52,7 +52,7 @@ return {
 				"branch",
 				{
 					"filename",
-					path = 1,
+					path = 4,
 					fmt = function(value)
 						local extension = vim.bo.filetype
 						local icon, hl =
