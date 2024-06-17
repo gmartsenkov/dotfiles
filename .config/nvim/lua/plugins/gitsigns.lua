@@ -1,5 +1,6 @@
 return {
 	"lewis6991/gitsigns.nvim",
+	commit = "d9d94e055a19415767bb073e8dd86028105c4319",
 	ft = { "gitcommit", "diff" },
 	init = function()
 		-- load gitsigns only when a git file is opened
