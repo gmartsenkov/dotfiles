@@ -18,12 +18,30 @@ sketchybar --bar position=top height=40 blur_radius=30 color=0x40000000
 # We now change some default values, which are applied to all further items.
 # For a full list of all available item properties see:
 # https://felixkratz.github.io/SketchyBar/config/items
+bar=(
+  height=40
+  blur_radius=30
+  color=0xE725273A
+  shadow=off
+  position=top
+  sticky=on
+  padding_right=10
+  padding_left=10
+  corner_radius=9
+  y_offset=5
+  margin=10
+  notch_width=0
+  border_width=1
+  border_color=0x44CAD3F5
+)
+
+sketchybar --bar "${bar[@]}"
 
 default=(
   padding_left=5
   padding_right=5
-  icon.font="Hack Nerd Font:Bold:17.0"
-  label.font="Hack Nerd Font:Bold:14.0"
+  icon.font="JetBrainsMono Nerd Font Mono:Bold:17.0"
+  label.font="JetBrainsMono Nerd Font Mono:Bold:14.0"
   icon.color=0xffffffff
   label.color=0xffffffff
   icon.padding_left=4
@@ -61,6 +79,23 @@ sketchybar --default "${default[@]}"
 # We add some regular items to the left side of the bar, where
 # only the properties deviating from the current defaults need to be set
 
+sketchybar --add event aerospace_workspace_change
+
+ICONS=('empty' '' '' '󰒱' '󰗃' '' '󰊗')
+for sid in $(aerospace list-workspaces --all); do
+    sketchybar --add item space.$sid left \
+        --subscribe space.$sid aerospace_workspace_change \
+        --set space.$sid \
+        background.color=0x44ffffff \
+        icon.font="JetBrainsMono Nerd Font Mono:Bold:20.0" \
+        background.corner_radius=5 \
+        background.height=20 \
+        background.drawing=off \
+        icon=${ICONS[sid]}\
+        click_script="aerospace workspace $sid" \
+        script="$PLUGIN_DIR/aerospace.sh $sid"
+done
+
 sketchybar --add item front_app left \
            --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
@@ -77,11 +112,16 @@ sketchybar --add item front_app left \
 # https://felixkratz.github.io/SketchyBar/config/events
 
 sketchybar --add item clock right \
-           --set clock update_freq=10 icon=  script="$PLUGIN_DIR/clock.sh" \
-           --add item volume right \
+           --set clock update_freq=10 \
+           icon= \
+           background.color=0x003C3E4F \
+           script="$PLUGIN_DIR/clock.sh"
+
+sketchybar --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
-           --subscribe volume volume_change \
-           --add item battery right \
+           --subscribe volume volume_change
+
+sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
