@@ -54,7 +54,7 @@ inner.horizontal = 10
 inner.vertical =   10
 outer.left =       10
 outer.bottom =     10
-outer.top =        [{monitor."Gigabyte M32U" = 50}, 20]
+outer.top =        [{monitor."Gigabyte M32U" = 60}, 25]
 outer.right =      10
 
 # See https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
