@@ -30,6 +30,7 @@ local config = function()
 				eruby = "erb",
 				heex = "phoenix-heex",
 				svelte = "html",
+				clojure = "clojure",
 			},
 		},
 		settings = {
@@ -43,6 +44,7 @@ local config = function()
 				elm = "html",
 				erb = "html",
 				svelte = "html",
+				clojre = "html",
 			},
 			tailwindCSS = {
 				lint = {
@@ -59,6 +61,7 @@ local config = function()
 						[[class= "([^"]*)]],
 						[[class: "([^"]*)]],
 						'~H""".*class="([^"]*)".*"""',
+						':class "([^"]*)"',
 					},
 				},
 				validate = true,
