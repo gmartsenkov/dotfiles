@@ -97,7 +97,7 @@ for sid in $(aerospace list-workspaces --all); do
 done
 
 sketchybar --add item front_app left \
-           --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
+           --set front_app icon.drawing=off label.color=0xFFF4DBD6 script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
 ##### Adding Right Items #####
@@ -125,5 +125,13 @@ sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
+sketchybar --add item calendar right \
+           --set calendar update_freq=60 \
+           icon= \
+           background.color=0x003C3E4F \
+           label.padding_right=15 \
+           label.color=0xFF8AADF4 \
+           click_script="open /System/Applications/Calendar.app" \
+           script="$PLUGIN_DIR/upcoming-events.clj"
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
