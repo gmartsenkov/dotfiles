@@ -125,11 +125,17 @@ sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
+sketchybar --add item prs right \
+           --set prs update_freq=60 \
+           icon= \
+           background.color=0x003C3E4F \
+           label.color=0xFF8AADF4 \
+           script="$PLUGIN_DIR/prs.clj"
+
 sketchybar --add item calendar right \
            --set calendar update_freq=60 \
            icon= \
            background.color=0x003C3E4F \
-           label.padding_right=15 \
            label.color=0xFF8AADF4 \
            click_script="open /System/Applications/Calendar.app" \
            script="$PLUGIN_DIR/upcoming-events.clj"
