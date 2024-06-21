@@ -130,6 +130,7 @@ sketchybar --add item prs right \
            icon= \
            background.color=0x003C3E4F \
            label.color=0xFF8AADF4 \
+           click_script="open https://github.com/pulls/review-requested" \
            script="$PLUGIN_DIR/prs.clj"
 
 sketchybar --add item calendar right \
