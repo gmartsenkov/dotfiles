@@ -15,5 +15,5 @@
                  (->> (map str/trim))
                  (->> (partition 2)))]
   (if (empty? events)
-    (sketchybar-set "No events for today")
+    (sketchybar-set "No events")
     (sketchybar-set (str "[" (count events) "]" " Next Event: " (-> events (first) (last))))))
