@@ -125,6 +125,13 @@ sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
+sketchybar --add item brew-packages right \
+           --set brew-packages update_freq=3600 \
+           icon= \
+           background.color=0x003C3E4F \
+           label.color=0xFF8AADF4 \
+           script="$PLUGIN_DIR/brew-packages.sh"
+
 sketchybar --add item prs right \
            --set prs update_freq=60 \
            icon= \
