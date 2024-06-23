@@ -13,6 +13,7 @@ return {
 			ruby = { "rubocop" },
 			rust = { "rustfmt" },
 			clojure = { "cljstyle" },
+			elixir = { "mix" },
 			javascript = { { "prettierd", "prettier" } },
 		},
 	},
