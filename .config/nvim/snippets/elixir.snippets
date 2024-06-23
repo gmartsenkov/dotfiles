@@ -13,8 +13,27 @@ snippet it
 		${0}
 	end
 
-snippet let
-  let :${1:name}, do: ${0}
+snippet def
+	def ${1:method} do
+	  ${0}
+	end
 
-snippet exp
-  expect(${1:name}) |> to(${0})
+snippet defp
+	defp ${1:method} do
+	  ${0}
+	end
+
+snippet defm
+	defmodule ${1:Module} do
+	  ${0}
+	end
+
+snippet if
+	if ${1:condition} do
+	  ${0}
+	end
+
+snippet case
+	case ${1:condition} do
+	  ${0}
+	end
