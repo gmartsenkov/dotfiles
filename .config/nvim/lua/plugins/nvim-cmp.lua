@@ -35,6 +35,7 @@ local config = function()
 	return {
 		completion = {
 			completeopt = "menu,menuone,noinsert",
+			keyword_length = 3,
 		},
 		formatting = {
 			format = lspkind.cmp_format({
@@ -99,7 +100,7 @@ local config = function()
 			}),
 		},
 		sources = {
-			{ name = "luasnip" },
+			{ name = "luasnip", keyword_length = 2 },
 			{ name = "nvim_lsp" },
 			{ name = "crates" },
 			{ name = "nvim_lua" },
