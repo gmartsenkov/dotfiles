@@ -17,6 +17,7 @@
                  (->> (remove #(let [event-name (-> % (nth 0) (str/lower-case))]
                                  (or
                                    (str/includes? "out of office " event-name)
+                                   (str/includes? "garden waste" event-name)
                                    (str/includes? "recycling" event-name))))))]
   (if (empty? events)
     (sketchybar-set "No events")
