@@ -1,3 +1,21 @@
+function _G.set_clojure_keymaps()
+	local opts = { buffer = 0 }
+	local map = vim.keymap.set
+	map("n", "<leader>tv", function()
+		vim.cmd("ConjureEvalBuf")
+		vim.cmd("ConjureCljRunCurrentNsTests")
+	end, opts)
+	map("n", "<leader>tc", function()
+		vim.cmd("ConjureEvalBuf")
+		vim.cmd("ConjureCljRunCurrentTest")
+	end, opts)
+	map("n", "<leader>ta", function()
+		vim.cmd("ConjureCljRefreshAll")
+		vim.cmd("ConjureCljRunAllTests")
+	end, opts)
+end
+
+vim.cmd("autocmd! Filetype clojure lua set_clojure_keymaps()")
 return {
 	{
 		"tpope/vim-sexp-mappings-for-regular-people",
