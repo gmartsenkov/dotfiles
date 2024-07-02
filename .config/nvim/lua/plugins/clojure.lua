@@ -13,5 +13,12 @@ return {
 			},
 		},
 	},
-	{ "Olical/conjure", ft = { "clojure" } },
+	{
+		"Olical/conjure",
+		ft = { "clojure" },
+		config = function()
+			vim.g["conjure#log#wrap"] = true
+			vim.g["conjure#log#hud#enabled"] = false
+		end,
+	},
 }

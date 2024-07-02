@@ -2,7 +2,7 @@ local config = function()
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 	local lspconfig = require("lspconfig")
-	local servers = { "gopls", "solargraph", "tsserver", "clojure_lsp", "clangd", "gleam" }
+	local servers = { "gopls", "solargraph", "tsserver", "clangd", "gleam" }
 
 	-- local configs = require 'lspconfig.configs'
 	-- configs.nextls = {

@@ -101,6 +101,7 @@ local config = function()
 		},
 		sources = {
 			{ name = "luasnip", keyword_length = 2 },
+			{ name = "conjure", keyword_length = 2 },
 			{ name = "nvim_lsp" },
 			{ name = "crates" },
 			{ name = "nvim_lua" },
@@ -129,6 +130,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
+		"PaterJason/cmp-conjure",
 	},
 	opts = config,
 	config = function(_, opts)

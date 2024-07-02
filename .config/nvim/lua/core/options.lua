@@ -9,6 +9,7 @@ local autocmd = vim.api.nvim_create_autocmd
 --   false
 -- )
 
+vim.g.maplocalleader = ","
 vim.g.snipmate_snippets_path = "/Users/gogo/.config2/nvim/lua_snippets"
 vim.o.clipboard = "unnamedplus"
 vim.o.inccommand = "nosplit"
