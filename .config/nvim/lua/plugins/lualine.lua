@@ -58,7 +58,7 @@ return {
 						local icon, hl =
 							require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
 
-						return "[ %#" .. hl .. "#" .. icon .. "%* " .. value .. " ]"
+						return "[ " .. icon .. " " .. value .. " ]"
 					end,
 				},
 				"diff",
