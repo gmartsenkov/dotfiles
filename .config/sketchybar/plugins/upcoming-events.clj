@@ -22,4 +22,4 @@
                                    (str/includes? "recycling" event-name))))))]
   (if (empty? events)
     (sketchybar-set "No events")
-    (sketchybar-set (str "[" (count events) "]" " Next Event: " (-> events (first) (last))))))
+    (sketchybar-set (str "[" (count events) "]" " " (-> events (first) (last))))))
