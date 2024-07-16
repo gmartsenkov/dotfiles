@@ -16,6 +16,7 @@ function _G.set_clojure_keymaps()
 		-- vim.cmd("ConjureCljRefreshAll")
 		vim.cmd("ConjureCljRunAllTests")
 	end, opts)
+	map("n", "gd", "<cmd> ConjureDefWord <CR>", opts)
 end
 
 vim.cmd("autocmd! Filetype clojure lua set_clojure_keymaps()")
@@ -40,6 +41,8 @@ return {
 		config = function()
 			vim.g["conjure#log#wrap"] = true
 			vim.g["conjure#log#hud#enabled"] = false
+			vim.g["conjure#highlight#enabled"] = true
+			vim.g["conjure#highlight#group"] = "Search"
 		end,
 	},
 }

@@ -69,6 +69,12 @@ map("n", "<leader>tl", "<cmd> TestLast <CR>")
 map("n", "<leader>tg", "<cmd> TestVisit <CR>")
 --
 
+-- Conjure
+map("n", "<leader>eb", "<cmd> ConjureEvalBuf <CR>")
+map("n", "<leader>er", "<cmd> ConjureEvalRootForm <CR>")
+map("n", "<leader>ee", "<cmd> ConjureEvalCurrentFor <CR>")
+map("n", "<C-m>", "<cmd> ConjureLogToggle <CR>")
+
 map("n", "<Esc>", function()
 	vim.cmd("noh")
 	local terminals = require("toggleterm.terminal").get_all()
