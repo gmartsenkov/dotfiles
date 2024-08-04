@@ -18,8 +18,13 @@ function _G.set_clojure_keymaps()
 	end, opts)
 	map("n", "gd", "<cmd> ConjureDefWord <CR>", opts)
 end
+function _G.setup_conjure_log()
+	vim.wo.number = false
+end
 
+-- vim.cmd("autocmd! Filetype clojure lua set_clojure_keymaps()")
 vim.cmd("autocmd! Filetype clojure lua set_clojure_keymaps()")
+vim.cmd("autocmd! BufEnter *conjure-log* lua setup_conjure_log()")
 return {
 	{
 		"tpope/vim-sexp-mappings-for-regular-people",

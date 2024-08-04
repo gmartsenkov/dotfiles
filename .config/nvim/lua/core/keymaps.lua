@@ -28,7 +28,8 @@ map("n", "<leader><leader>", function()
 	-- local cwd = require("root").find() or vim.fn.expand "%:p:h"
 	-- vim.cmd("Telescope frecency hidden=true workspace=CWD cwd=" .. cwd)
 	-- vim.cmd("Telescope frecency hidden=true previewer=false workspace=CWD")
-	require("peek").builtins.find_file({ on_refresh = refresh_lualine })
+	-- require("peek").builtins.find_file({ on_refresh = refresh_lualine })
+	require("fzf-lua").files()
 end)
 
 map("n", "<leader>mf", function()
@@ -38,12 +39,13 @@ end)
 map("n", "<C-n>", "<cmd> NvimTreeToggle <CR>", { desc = "Switch Window left" })
 -- map("n", "<leader>bb", "<cmd> Telescope buffers <CR>")
 map("n", "<leader>bb", function()
-	local cwd = require("root").find()
-	if cwd then
-		require("peek").builtins.find_buffer({ on_refresh = refresh_lualine, cwd = (cwd .. "/") })
-	else
-		require("peek").builtins.find_buffer({ on_refresh = refresh_lualine })
-	end
+	require("fzf-lua").buffers()
+	-- local cwd = require("root").find()
+	-- if cwd then
+	-- 	require("peek").builtins.find_buffer({ on_refresh = refresh_lualine, cwd = (cwd .. "/") })
+	-- else
+	-- 	require("peek").builtins.find_buffer({ on_refresh = refresh_lualine })
+	-- end
 end)
 map("n", "<leader>bd", function()
 	vim.api.nvim_buf_delete(0, { force = true })
@@ -54,7 +56,9 @@ map("n", "<leader>ff", function()
 	local cwd = vim.fn.expand("%:p:h") .. "/"
 	require("peek").builtins.file_explorer({ on_refresh = refresh_lualine, prompt = cwd })
 end)
-map("n", "<leader>/", "<cmd> Telescope live_grep <CR>")
+map("n", "<leader>/", function()
+	require("fzf-lua").grep_project()
+end)
 
 -- Testing
 map("n", "<leader>tt", function()
@@ -95,13 +99,12 @@ map("n", "<leader>mp", function()
 end)
 
 -- LSP
-map("n", "gd", "<cmd> Telescope lsp_definitions <CR>", { silent = true })
-map("n", "gr", "<cmd> Telescope lsp_references <CR>", { silent = true })
-map("n", "<leader>cd", "<cmd> Telescope lsp_definitions <CR>")
-map("n", "<leader>cD", "<cmd> Telescope diagnostics <CR>")
-map("n", "<leader>cr", "<cmd> Telescope lsp_references <CR>")
-map("n", "<leader>cs", "<cmd> Telescope lsp_document_symbols <CR>")
-map("n", "<leader>cw", "<cmd> Telescope lsp_workspace_symbols <CR>")
+map("n", "gd", function()
+	require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
+end, { silent = true })
+map("n", "gr", function()
+	require("fzf-lua").lsp_references({ ignore_current_line = true })
+end, { silent = true })
 map("n", "<leader>cc", "<cmd> LspRestart <CR>")
 map("n", "<leader>ca", function()
 	vim.lsp.buf.code_action()
@@ -116,8 +119,6 @@ map("n", "<C-d>", "<cmd> TroubleToggle <CR>")
 
 -- Git
 map("n", "<leader>gg", "<cmd> Neogit <CR>")
-map("n", "<leader>gb", "<cmd> Telescope git_branches <CR>")
-map("n", "<leader>gc", "<cmd> Telescope git_commits <CR>")
 map("n", "<leader>gp", "<cmd> Git pull <CR>")
 map("n", "<leader>gP", "<cmd> Git push <CR>")
 
