@@ -119,7 +119,6 @@ return {
 		{
 			-- snippet plugin
 			"L3MON4D3/LuaSnip",
-			dependencies = "rafamadriz/friendly-snippets",
 			opts = { history = true, updateevents = "TextChanged,TextChangedI" },
 			config = function()
 				require("luasnip.loaders.from_snipmate").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })

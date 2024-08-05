@@ -29,6 +29,31 @@ local peek_extension = {
 	filetypes = { "peek" },
 }
 
+local sections = {
+	lualine_a = {},
+	lualine_b = {},
+	lualine_c = {
+		"branch",
+		{
+			"filename",
+			path = 4,
+			fmt = function(value)
+				local extension = vim.bo.filetype
+				local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
+
+				return "[ " .. icon .. " " .. value .. " ]"
+			end,
+		},
+		"diff",
+		"diagnostics",
+		"%=",
+		{ current_signature, color = { fg = "#767a92", gui = "italic" } },
+	},
+	lualine_x = { lsp_progress, filetype },
+	lualine_y = {},
+	lualine_z = {},
+}
+
 return {
 	"nvim-lualine/lualine.nvim",
 	lazy = false,
@@ -45,30 +70,7 @@ return {
 				statusline = 300,
 			},
 		},
-		sections = {
-			lualine_a = {},
-			lualine_b = {},
-			lualine_c = {
-				"branch",
-				{
-					"filename",
-					path = 4,
-					fmt = function(value)
-						local extension = vim.bo.filetype
-						local icon, hl =
-							require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
-
-						return "[ " .. icon .. " " .. value .. " ]"
-					end,
-				},
-				"diff",
-				"diagnostics",
-				"%=",
-				{ current_signature, color = { fg = "#767a92", gui = "italic" } },
-			},
-			lualine_x = { lsp_progress, filetype },
-			lualine_y = {},
-			lualine_z = {},
-		},
+		sections = sections,
+		inactive_sections = sections,
 	},
 }
