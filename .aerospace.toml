@@ -166,5 +166,9 @@ if.app-id = 'com.macpaw.site.theunarchiver'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'org.m0k.transmission'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'layout floating'
