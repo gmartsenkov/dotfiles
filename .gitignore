@@ -1,2 +1,6 @@
 .lsp
 .clj-kondo
+.local/share/nvim
+.local/share/zinit
+.local/share/wezterm
+.local/state
