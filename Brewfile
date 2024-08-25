@@ -1,4 +1,5 @@
 tap "FelixKratz/formulae"
+tap "borkdude/brew"
 
 cask "nikitabobko/tap/aerospace"
 cask "wezterm"
@@ -13,5 +14,7 @@ brew "zoxide"
 brew "fzf"
 brew "postgresql"
 brew "fd"
+brew "babashka"
+brew "gh"
+brew "ical-buddy"
 brew "font-jetbrains-mono-nerd-font"
-
