@@ -84,7 +84,7 @@ eval "$(zoxide init --cmd cd zsh)"
 
 # ASDF
 export ASDF_CONFIG_FILE=~/.asdfrc
-. "$HOME/.asdf/asdf.sh"
+. "$(brew --prefix asdf)/libexec/asdf.sh"
 
 PATH=$PATH:~/.local/bin
 
