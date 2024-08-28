@@ -1,6 +1,9 @@
 .lsp
 .clj-kondo
+.config/pgcli
 .local/share/nvim
 .local/share/zinit
 .local/share/wezterm
+.local/share/heroku
+.local/share/pry
 .local/state
