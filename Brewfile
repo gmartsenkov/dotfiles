@@ -3,6 +3,8 @@ tap "borkdude/brew"
 
 cask "nikitabobko/tap/aerospace"
 cask "wezterm"
+cask "th-ch/youtube-music/youtube-music"
+cask "font-jetbrains-mono-nerd-font"
 
 brew "borders"
 brew "sketchybar"
@@ -19,4 +21,3 @@ brew "gh"
 brew "ical-buddy"
 brew "rust"
 brew "rust-analyzer"
-brew "font-jetbrains-mono-nerd-font"
