@@ -2,7 +2,7 @@ local config = function()
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 	local lspconfig = require("lspconfig")
-	local servers = { "gopls", "solargraph", "tsserver", "clangd", "gleam" }
+	local servers = { "gopls", "solargraph", "ts_ls", "clangd", "gleam" }
 
 	-- local configs = require 'lspconfig.configs'
 	-- configs.nextls = {
@@ -140,15 +140,5 @@ return {
 		"linrongbin16/lsp-progress.nvim",
 		config = true,
 		opts = { max_size = 50 },
-	},
-	{
-		"ray-x/lsp_signature.nvim",
-		lazy = false,
-		opts = {
-			bind = false,
-			floating_window = false,
-			hint_enable = false,
-		},
-		config = true,
 	},
 }

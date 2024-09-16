@@ -4,14 +4,6 @@ local function peek_status()
 	return title .. ": " .. fn.position() .. " / " .. fn.result_count()
 end
 
-local current_signature = function()
-	if not pcall(require, "lsp_signature") then
-		return
-	end
-	local sig = require("lsp_signature").status_line(100)
-	return sig.label
-end
-
 local filetype = function()
 	local type = vim.bo.filetype
 	if type ~= "" then
@@ -33,7 +25,6 @@ local sections = {
 	lualine_a = {},
 	lualine_b = {},
 	lualine_c = {
-		"branch",
 		{
 			"filename",
 			path = 4,
@@ -41,15 +32,18 @@ local sections = {
 				local extension = vim.bo.filetype
 				local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
 
-				return "[ " .. icon .. " " .. value .. " ]"
+				return icon .. " " .. value
 			end,
 		},
 		"diff",
 		"diagnostics",
-		"%=",
-		{ current_signature, color = { fg = "#767a92", gui = "italic" } },
+		"%="
 	},
-	lualine_x = { lsp_progress, filetype },
+	lualine_x = {
+    lsp_progress,
+    filetype,
+    -- { "branch", fmt = function(str) return str:sub(1,10) end },
+  },
 	lualine_y = {},
 	lualine_z = {},
 }
