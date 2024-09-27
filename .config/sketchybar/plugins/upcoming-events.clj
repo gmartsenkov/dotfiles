@@ -19,6 +19,7 @@
                                    (str/includes? "out of office " event-name)
                                    (str/includes? "garden waste" event-name)
                                    (str/includes? "normal waste" event-name)
+                                   (str/includes? "gogo ooo" event-name)
                                    (str/includes? "recycling" event-name))))))]
   (if (empty? events)
     (sketchybar-set "No events")
