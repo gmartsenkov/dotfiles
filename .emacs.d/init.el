@@ -263,6 +263,7 @@
   (evil-define-key '(normal visual) 'global (kbd "<leader>gl") 'git-link)
   (evil-define-key 'normal 'global (kbd "<leader>gb") 'magit-blame)
   (evil-define-key 'normal magit-status-mode-map (kbd "q") 'mu-magit-kill-buffers)
+  (evil-define-key 'normal magit-status-mode-map (kbd "<escape>") 'mu-magit-kill-buffers)
   (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
   (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tv") 'rspec-verify)
   (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tl") 'rspec-rerun)
