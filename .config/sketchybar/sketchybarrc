@@ -81,8 +81,8 @@ sketchybar --default "${default[@]}"
 
 sketchybar --add event aerospace_workspace_change
 
-ICONS=('empty' '' '' '󰒱' '󰗃' '󰇮' '󰊗')
-for sid in $(aerospace list-workspaces --all); do
+ICONS=('empty' '' '' '󰒱' '󰠃' '󰇮')
+for sid in $(aerospace list-workspaces --monitor focused); do
     sketchybar --add item space.$sid left \
         --subscribe space.$sid aerospace_workspace_change \
         --set space.$sid \
@@ -148,10 +148,10 @@ sketchybar --add item calendar right \
            click_script="open /System/Applications/Calendar.app" \
            script="$PLUGIN_DIR/upcoming-events.clj"
 
-sketchybar --add item weather right \
-           --set weather update_freq=1800 \
-           background.color=0x003C3E4F \
-           label.color=0xFF8AADF4 \
-           script="$PLUGIN_DIR/weather.sh"
+# sketchybar --add item weather right \
+#            --set weather update_freq=1800 \
+#            background.color=0x003C3E4F \
+#            label.color=0xFF8AADF4 \
+#            script="$PLUGIN_DIR/weather.sh"
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
