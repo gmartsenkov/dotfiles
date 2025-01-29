@@ -2,6 +2,6 @@
 # name: rspec describe
 # key: rdesc
 # --
-RSpec.describe ${1:class} do
+RSpec.describe $1 do
   $0
 end
