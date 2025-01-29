@@ -77,6 +77,7 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Aliases
 alias ls='eza --icons=always'
 alias c='clear'
+alias emacs='emacs -nw'
 
 # Shell integrations
 eval "$(fzf --zsh)"
