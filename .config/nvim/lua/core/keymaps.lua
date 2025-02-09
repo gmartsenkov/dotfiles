@@ -6,12 +6,6 @@ end
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
-
--- map("n", "<leader><leader>", function ()
---   local cwd = require("root").find() or vim.fn.expand "%:p:h"
---   vim.cmd("Telescope find_files previewer=false hidden=true cwd=" .. cwd)
--- end)
-
 map("i", "<C-a>", "<Home>", { silent = false })
 map("i", "<C-e>", "<End>", { silent = false })
 
@@ -25,21 +19,7 @@ map("n", "<C-k>", "<C-w>k", { desc = "Switch Window up" })
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
 map("n", "<leader><leader>", function()
-	-- local cwd = require("root").find() or vim.fn.expand "%:p:h"
-	-- vim.cmd("Telescope frecency hidden=true workspace=CWD cwd=" .. cwd)
-	-- vim.cmd("Telescope frecency hidden=true previewer=false workspace=CWD")
-	-- require("peek").builtins.find_file({ on_refresh = refresh_lualine })
-
-	local width = 0.7
-	local height = 0.4
-	if vim.o.columns > 200 then
-		width = 0.3
-		height = 0.3
-	end
-	require("telescope.builtin").find_files({
-		previewer = false,
-		layout_config = { width = width, height = height },
-	})
+	require("fzf-lua").files()
 end)
 
 map("n", "<leader>mf", function()
@@ -47,36 +27,19 @@ map("n", "<leader>mf", function()
 end)
 
 map("n", "<C-n>", "<cmd> NvimTreeToggle <CR>", { desc = "Switch Window left" })
--- map("n", "<leader>bb", "<cmd> Telescope buffers <CR>")
 map("n", "<leader>bb", function()
-	local width = 0.7
-	local height = 0.4
-	if vim.o.columns > 200 then
-		width = 0.3
-		height = 0.3
-	end
-	require("telescope.builtin").buffers({
-		previewer = false,
-		layout_config = { width = width, height = height },
-	})
-	-- local cwd = require("root").find()
-	-- if cwd then
-	-- 	require("peek").builtins.find_buffer({ on_refresh = refresh_lualine, cwd = (cwd .. "/") })
-	-- else
-	-- 	require("peek").builtins.find_buffer({ on_refresh = refresh_lualine })
-	-- end
+	require("fzf-lua").buffers()
 end)
 map("n", "<leader>bd", function()
 	vim.api.nvim_buf_delete(0, { force = true })
 end)
 map("n", "<leader>bn", "<cmd> enew <CR>")
--- map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h <CR>")
 map("n", "<leader>ff", function()
 	local cwd = vim.fn.expand("%:p:h") .. "/"
 	require("peek").builtins.file_explorer({ on_refresh = refresh_lualine, prompt = cwd })
 end)
 map("n", "<leader>/", function()
-	require("telescope.builtin").live_grep()
+	require("fzf-lua").grep()
 end)
 
 -- Testing
@@ -119,10 +82,10 @@ end)
 
 -- LSP
 map("n", "gd", function()
-	require("telescope.builtin").lsp_definitions({ jump_to_single_result = true })
+	require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
 end, { silent = true })
 map("n", "gr", function()
-	require("telescope.builtin").lsp_references({ ignore_current_line = true })
+	require("fzf-lua").lsp_references({ ignore_current_line = true })
 end, { silent = true })
 map("n", "<leader>cc", "<cmd> LspRestart <CR>")
 map("n", "<leader>ca", function()

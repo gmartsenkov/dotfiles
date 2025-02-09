@@ -128,17 +128,6 @@
 ;; standard for Emacs users. You can also add more package archives later as needed.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
-;; Initialize the package system. In Emacs, a package is a collection of Elisp code
-;; that extends the functionality of the editor, similar to plugins in Neovim.
-;; By calling `package-initialize', we load the list of available packages from
-;; the configured archives (like MELPA) and make them ready for installation and use.
-;; This process is akin to using lazy.nvim or packer.nvim in Neovim, which manage
-;; plugin installations and configurations. While there are third-party package managers
-;; available for Emacs, such as straight.el and use-package, we are sticking with
-;; the default package manager for simplicity in this configuration.
-(package-initialize)
-
-
 ;; Define a global customizable variable `ek-use-nerd-fonts' to control the use of
 ;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
 ;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
@@ -298,10 +287,10 @@
   ;; Configure font settings based on the operating system.
   ;; Ok, this kickstart is meant to be used on the terminal, not on GUI.
   ;; But without this, I fear you could start Graphical Emacs and be sad :(
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 100)
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 130)
   (when (eq system-type 'darwin)       ;; Check if the system is macOS.
     (setq mac-command-modifier 'meta)  ;; Set the Command key to act as the Meta key.
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 130))
+    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 160))
 
   ;; Save manual customizations to a separate file instead of cluttering `init.el'.
   ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
@@ -362,7 +351,7 @@
 
 (use-package ws-butler
   :ensure t
-  :hook prog-mode slim-mode)
+  :hook ((prog-mode slim-mode) . ws-butler-mode))
 
 ;;; DIRED
 ;; In Emacs, the `dired' package provides a powerful and built-in file manager
@@ -405,19 +394,44 @@
   (global-eldoc-mode))
 
 
-;;; FLYMAKE
-;; Flymake is an on-the-fly syntax checking extension that provides real-time feedback
-;; about errors and warnings in your code as you write. This can greatly enhance your
-;; coding experience by catching issues early. The configuration below activates
-;; Flymake mode in programming buffers.
-(use-package flymake
-  :ensure nil          ;; This is built-in, no need to fetch it.
+;;; FLYCHECK
+(use-package flycheck-overlay
+  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :branch "main")
+  :ensure t
   :defer t
-  :hook (rust-ts-mode . flymake-mode)
+  :after flycheck
   :custom
-  (flymake-margin-indicators-string
-   '((error "!»" compilation-error) (warning "»" compilation-warning)
-	 (note "»" compilation-info))))
+  (flycheck-overlay-hide-checker-name t)
+  (flycheck-overlay-show-at-eol t)
+  (flycheck-overlay-show-virtual-line t)
+  (flycheck-overlay-icon-left-padding 1.2)
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
+
+(defun locate-gleam-working-directory (_)
+  "Find the working directory of a gleam project."
+  (locate-dominating-file buffer-file-name "gleam.toml"))
+
+(use-package flycheck
+  :ensure t
+  :hook ((ruby-mode-hook emacs-lisp-mode-hook) . flycheck-mode)
+  :custom
+  (flycheck-standard-error-navigation nil)
+  (flycheck-navigation-minimum-level nil)
+  (flycheck-relevant-error-other-file-minimum-level nil)
+  (flycheck-check-syntax-automatically '(mode-enabled save))
+  :init
+  (add-to-list 'flycheck-checkers 'gleam t)
+  (flycheck-define-checker gleam
+    "Gleam checker"
+    :command ("gleam" "check")
+    :error-patterns
+    ((error "error: " (message) "\n" "   ┌─ " (file-name) ":" line ":" column line-end)
+     (warning "warning: " (message) "\n" "   ┌─ " (file-name) ":" line ":" column line-end))
+    :working-directory locate-gleam-working-directory
+    :modes gleam-ts-mode)
+  (add-hook 'gleam-ts-mode-hook #'flycheck-mode)
+  (add-hook 'rust-mode-hook #'flycheck-mode))
 
 
 ;;; ORG-MODE
@@ -531,6 +545,7 @@
 (unless (package-installed-p 'consult-vc-modified-files)
   (package-vc-install "https://github.com/chmouel/consult-vc-modified-files"))
 (use-package consult-vc-modified-files :ensure t)
+(use-package consult-flycheck :ensure t :defer t :after consult)
 
 ;;; TREESITTER-AUTO
 ;; Treesit-auto simplifies the use of Tree-sitter grammars in Emacs,
@@ -544,12 +559,12 @@
   :custom
   (treesit-auto-install 'prompt)
   :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
+  ;; (treesit-auto-add-to-auto-mode-alist 'all)
+;; (global-treesit-auto-mode t)
   (add-to-list 'auto-mode-alist '("\\.cr$" . crystal-mode))
   (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.exs\\'" . elixir-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.gleam\\'" . gleam-ts-mode))
-  (global-treesit-auto-mode t))
+  (add-to-list 'auto-mode-alist '("\\.gleam\\'" . gleam-ts-mode)))
 
 
 ;;; SLIM-MODE
@@ -641,7 +656,6 @@
   (prog-mode . company-mode)
   (markdown-mode . company-mode))
 
-
 ;;; Eglot
 (use-package eglot
   :ensure nil
@@ -653,6 +667,7 @@
   (gleam-ts-mode . eglot-ensure)
   (rust-ts-mode . eglot-ensure)
   :init
+  (setq-default eglot-events-buffer-size 0) ;; Disable logging
   (setq-default eglot-stay-out-of '(company flymake))
   (setq-default eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq-default eglot-inlay-hints-mode nil)
@@ -667,6 +682,7 @@
   :vc (:url "https://github.com/blahgeek/emacs-lsp-booster"
             :branch "master")
   :after eglot
+  :ensure t
   :config (eglot-booster-mode))
 
 ;;; FORMATTING
@@ -815,12 +831,13 @@
   (evil-define-key 'insert eshell-mode-map (kbd "<escape>") (lambda () (interactive) (popper--bury-all)))
   (evil-define-key 'normal git-rebase-mode-map (kbd "C-j") 'git-rebase-move-line-down)
   (evil-define-key 'normal git-rebase-mode-map (kbd "C-k") 'git-rebase-move-line-up)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "J") 'compilation-next-error)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "K") 'compilation-previous-error)
+  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-j") 'compilation-next-error)
+  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") 'compilation-previous-error)
   (evil-define-key 'normal compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
   (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
-  (evil-define-key 'normal 'global (kbd "]d") 'flymake-goto-next-error)
-  (evil-define-key 'normal 'global (kbd "[d") 'flymake-goto--previous-error)
+  (evil-define-key 'normal 'global (kbd "<leader>x") 'consult-flycheck)
+  (evil-define-key 'normal 'global (kbd "]d") 'flycheck-next-error)
+  (evil-define-key 'normal 'global (kbd "[d") 'flycheck-previous-error)
   (evil-define-key 'normal 'global (kbd "]h") 'diff-hl-next-hunk)
   (evil-define-key 'normal 'global (kbd "[h") 'diff-hl-previous-hunk)
   (evil-define-key 'insert 'global (kbd "C-e") 'end-of-line)
@@ -859,14 +876,14 @@
   (evil-define-key 'normal 'global (kbd "<leader>gb") 'magit-blame)
   (evil-define-key 'normal magit-status-mode-map (kbd "q") 'mu-magit-kill-buffers)
   (evil-define-key 'normal magit-status-mode-map (kbd "<escape>") 'mu-magit-kill-buffers)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tv") 'rspec-verify)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tl") 'rspec-rerun)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tf") 'rspec-run-last-failed)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>tc") 'rspec-verify-single)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>ta") 'rspec-verify-all)
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "bundle exec rubocop")))
-  (evil-define-key 'normal ruby-ts-mode-map (kbd "<leader>mbi") (lambda () (interactive) (me/run-command "bundle install")))
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tv") 'rspec-verify)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tl") 'rspec-rerun)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tf") 'rspec-run-last-failed)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tc") 'rspec-verify-single)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>ta") 'rspec-verify-all)
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "bundle exec rubocop")))
+  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mbi") (lambda () (interactive) (me/run-command "bundle install")))
   (evil-define-key 'normal ruby-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
   (evil-define-key 'normal ruby-mode-map (kbd "<leader>tv") 'rspec-verify)
   (evil-define-key 'normal ruby-mode-map (kbd "<leader>tl") 'rspec-rerun)
@@ -935,6 +952,7 @@
 
 (use-package evil-surround
   :ensure t
+  :defer t
   :config
   (global-evil-surround-mode 1))
 
@@ -969,6 +987,7 @@
 ;;; Crystal
 (use-package crystal-mode
   :ensure t
+  :defer t
   :config
   (setenv "CRYSTAL_OPTS" "--link-flags=-Wl,-ld_classic"))
 
@@ -976,10 +995,12 @@
 (use-package gleam-ts-mode :mode (rx ".gleam" eos))
 
 ;;; RUST
-(use-package rust-mode :ensure t)
+(use-package rust-mode :ensure t :defer t)
 
 ;;; RUBY
-(use-package inf-ruby :ensure t
+(use-package inf-ruby
+  :ensure t
+  :defer t
   :config
   (inf-ruby-enable-auto-breakpoint))
 
@@ -1012,6 +1033,8 @@
   (setq pulsar-face 'evil-ex-lazy-highlight)
 
   (add-to-list 'pulsar-pulse-functions 'evil-scroll-down)
+  (add-to-list 'pulsar-pulse-functions 'flycheck-next-error)
+  (add-to-list 'pulsar-pulse-functions 'flycheck-previous-error)
   (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
   (add-to-list 'pulsar-pulse-functions 'flymake-goto-prev-error)
   (add-to-list 'pulsar-pulse-functions 'evil-yank)
@@ -1043,31 +1066,6 @@
     (setq doom-modeline-icon nil))                     ;; Disable icons if nerd fonts are not being used.
   :hook
   (after-init . doom-modeline-mode))
-
-
-;;; NEOTREE
-;; The `neotree' package provides a file tree explorer for Emacs, allowing easy navigation
-;; through directories and files. It presents a visual representation of the file system
-;; and integrates with version control to show file states.
-(use-package neotree
-  :ensure t
-  :custom
-  (neo-show-hidden-files t)                ;; By default shows hidden files (toggle with H)
-  (neo-theme 'nerd)                        ;; Set the default theme for Neotree to 'nerd' for a visually appealing look.
-  (neo-vc-integration '(face char))        ;; Enable VC integration to display file states with faces (color coding) and characters (icons).
-  :defer t                                 ;; Load the package only when needed to improve startup time.
-  :config
-  (if ek-use-nerd-fonts                    ;; Check if nerd fonts are being used.
-      (setq neo-theme 'nerd-icons)         ;; Set the theme to 'nerd-icons' if nerd fonts are available.
-	(setq neo-theme 'nerd))                ;; Otherwise, fall back to the 'nerd' theme.
-  :init
-  (add-hook 'neo-after-create-hook
-			#'(lambda (_)
-				(with-current-buffer (get-buffer neo-buffer-name)
-				  (setq truncate-lines t)
-				  (setq word-wrap nil)
-				  (make-local-variable 'auto-hscroll-mode)
-				  (setq auto-hscroll-mode nil)))))
 
 
 ;;; NERD ICONS
