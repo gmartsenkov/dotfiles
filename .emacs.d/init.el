@@ -418,7 +418,7 @@
   :custom
   (flycheck-standard-error-navigation nil)
   (flycheck-navigation-minimum-level nil)
-  (flycheck-relevant-error-other-file-minimum-level nil)
+  (flycheck-relevant-error-other-file-minimum-level "critical")
   (flycheck-check-syntax-automatically '(mode-enabled save))
   :init
   (add-to-list 'flycheck-checkers 'gleam t)
