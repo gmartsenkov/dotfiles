@@ -394,7 +394,13 @@
   (global-eldoc-mode))
 
 
-;;; FLYCHECK
+;; Ruby
+(use-package ruby-mode
+  :ensure nil
+  :hook (ruby-mode . (lambda ()
+                       (setq flycheck-eglot-exclusive nil))))
+
+;; FLYCHECK
 (use-package flycheck-overlay
   :vc (:url "https://github.com/konrad1977/flycheck-overlay" :branch "main")
   :ensure t
@@ -408,29 +414,18 @@
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
 
-(defun locate-gleam-working-directory (_)
-  "Find the working directory of a gleam project."
-  (locate-dominating-file buffer-file-name "gleam.toml"))
+
+(use-package flycheck-eglot
+  :ensure t
+  :defer t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
 
 (use-package flycheck
   :ensure t
   :hook ((ruby-mode-hook emacs-lisp-mode-hook) . flycheck-mode)
-  :custom
-  (flycheck-standard-error-navigation nil)
-  (flycheck-navigation-minimum-level nil)
-  (flycheck-relevant-error-other-file-minimum-level "critical")
-  (flycheck-check-syntax-automatically '(mode-enabled save))
   :init
-  (add-to-list 'flycheck-checkers 'gleam t)
-  (flycheck-define-checker gleam
-    "Gleam checker"
-    :command ("gleam" "check")
-    :error-patterns
-    ((error "error: " (message) "\n" "   ┌─ " (file-name) ":" line ":" column line-end)
-     (warning "warning: " (message) "\n" "   ┌─ " (file-name) ":" line ":" column line-end))
-    :working-directory locate-gleam-working-directory
-    :modes gleam-ts-mode)
-  (add-hook 'gleam-ts-mode-hook #'flycheck-mode)
   (add-hook 'rust-mode-hook #'flycheck-mode))
 
 
@@ -665,6 +660,7 @@
   (elixir-ts-mode . eglot-ensure)
   (typescript-ts-mode . eglot-ensure)
   (gleam-ts-mode . eglot-ensure)
+  (rust-mode . eglot-ensure)
   (rust-ts-mode . eglot-ensure)
   :init
   (setq-default eglot-events-buffer-size 0) ;; Disable logging
