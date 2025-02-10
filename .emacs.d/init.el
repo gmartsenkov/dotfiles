@@ -404,8 +404,6 @@
 (use-package flycheck-overlay
   :vc (:url "https://github.com/konrad1977/flycheck-overlay" :branch "main")
   :ensure t
-  :defer t
-  :after flycheck
   :custom
   (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-show-at-eol t)
@@ -417,16 +415,18 @@
 
 (use-package flycheck-eglot
   :ensure t
-  :defer t
   :after (flycheck eglot)
   :config
   (global-flycheck-eglot-mode 1))
 
 (use-package flycheck
   :ensure t
+  :custom
+  (flycheck-highlighting-mode nil)
   :hook ((ruby-mode-hook emacs-lisp-mode-hook) . flycheck-mode)
   :init
-  (add-hook 'rust-mode-hook #'flycheck-mode))
+  (add-hook 'rust-mode-hook #'flycheck-mode)
+  (add-hook 'gleam-ts-mode-hook #'flycheck-mode) )
 
 
 ;;; ORG-MODE
