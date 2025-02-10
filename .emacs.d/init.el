@@ -765,7 +765,9 @@
   :custom
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   :config
-  (add-hook 'git-commit-mode-hook 'evil-insert-state))
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
+  :init
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 
 ;;; XCLIP
