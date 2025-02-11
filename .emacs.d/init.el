@@ -773,19 +773,6 @@
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 
-;;; XCLIP
-;; `xclip' is an Emacs package that integrates the X Window System clipboard
-;; with Emacs. It allows seamless copying and pasting between Emacs and other
-;; applications using the clipboard. When `xclip' is enabled, any text copied
-;; in Emacs can be pasted in other applications, and vice versa, providing a
-;; smooth workflow when working across multiple environments.
-(use-package xclip
-  :ensure t
-  :defer t
-  :hook
-  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
-
-
 ;;; INDENT-GUIDE
 ;; The `indent-guide' package provides visual indicators for indentation levels
 ;; in programming modes, making it easier to see code structure at a glance.
@@ -986,11 +973,11 @@
 
 
 ;;; Crystal
-(use-package crystal-mode
-  :ensure t
-  :defer t
-  :config
-  (setenv "CRYSTAL_OPTS" "--link-flags=-Wl,-ld_classic"))
+;; (use-package crystal-mode
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (setenv "CRYSTAL_OPTS" "--link-flags=-Wl,-ld_classic"))
 
 ;;; GLEAM
 (use-package gleam-ts-mode :mode (rx ".gleam" eos))
