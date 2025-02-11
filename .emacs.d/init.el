@@ -290,7 +290,7 @@
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 130)
   (when (eq system-type 'darwin)       ;; Check if the system is macOS.
     (setq mac-command-modifier 'meta)  ;; Set the Command key to act as the Meta key.
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 160))
+    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 165 :weight "Medium"))
 
   ;; Save manual customizations to a separate file instead of cluttering `init.el'.
   ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
@@ -423,6 +423,7 @@
   :ensure t
   :custom
   (flycheck-highlighting-mode nil)
+  (flycheck-indication-mode nil)
   :hook ((ruby-mode-hook emacs-lisp-mode-hook) . flycheck-mode)
   :init
   (add-hook 'rust-mode-hook #'flycheck-mode)
@@ -516,7 +517,7 @@
 (use-package projectile
   :ensure t
   :custom
-  (projectile-project-search-path '("~/Development" "~/dotfiles" "~/.emacs.d"))
+  (projectile-project-search-path '("~/Development" "~/dotfiles"))
   (projectile-create-missing-test-files t))
 
 ;;; CONSULT
@@ -762,8 +763,10 @@
 (use-package magit
   :ensure t
   :defer t
+  :after (nerd-icons)
   :custom
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
+  (magit-format-file-function #'magit-format-file-nerd-icons)
   :config
   (add-hook 'git-commit-mode-hook 'evil-insert-state)
   :init
@@ -842,7 +845,7 @@
   (evil-define-key 'insert 'global (kbd "C-a") 'beginning-of-line)
   (evil-define-key 'normal 'global (kbd "<escape>") (lambda () (interactive) (popper--bury-all)))
   (evil-define-key 'normal 'global (kbd "gt") 'evil-avy-goto-char-2)
-  (evil-define-key 'normal 'global (kbd "<leader>/") 'counsel-ag)
+  (evil-define-key 'normal 'global (kbd "<leader>/") 'consult-ripgrep)
   (evil-define-key 'normal 'global (kbd "<leader>hv") 'describe-variable)
   (evil-define-key 'normal 'global (kbd "<leader>hf") 'describe-function)
   (evil-define-key 'normal 'global (kbd "<leader>hk") 'describe-key)
@@ -855,9 +858,9 @@
   (evil-define-key 'normal 'global (kbd "<leader>wr") 'winner-redo)
   (evil-define-key 'normal 'global (kbd "<leader>sr") 'anzu-query-replace-regexp)
   (evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-project-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>pp") 'project-switch-project)
-  (evil-define-key 'normal 'global (kbd "<leader>pf") 'project-find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'project-find-file)
+  (evil-define-key 'normal 'global (kbd "<leader>pp") 'projectile-switch-project)
+  (evil-define-key 'normal 'global (kbd "<leader>pf") 'projectile-find-file)
+  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'projectile-find-file)
   (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
   (evil-define-key 'normal 'global (kbd "<leader>fd") 'projectile-find-dir)
   (evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
@@ -1058,6 +1061,7 @@
   (doom-modeline-buffer-name t)                        ;; Show the buffer name in the mode line.
   (doom-modeline-vcs-max-length 25)                    ;; Limit the version control system (VCS) branch name length to 25 characters.
   (doom-modeline-buffer-file-name 'relative-from-project)
+  (doom-modeline-buffer-encoding nil)
   :config
   (if ek-use-nerd-fonts                                ;; Check if nerd fonts are being used.
       (setq doom-modeline-icon t)                      ;; Enable icons in the mode line if nerd fonts are used.
@@ -1154,3 +1158,19 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((eval set (make-local-variable 'rspec-primary-source-dirs)
+           (setq rspec-primary-source-dirs '("app" "apps" "lib"))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(diff-hl-change ((t (:background unspecified :foreground "#89b4fa"))))
+ '(diff-hl-delete ((t (:background unspecified :foreground "#f38ba8"))))
+ '(diff-hl-insert ((t (:background unspecified :foreground "#a6e3a1")))))
