@@ -406,7 +406,7 @@
   :ensure t
   :custom
   (flycheck-overlay-hide-checker-name t)
-  (flycheck-overlay-show-at-eol t)
+  (flycheck-overlay-show-at-eol nil)
   (flycheck-overlay-show-virtual-line t)
   (flycheck-overlay-icon-left-padding 1.2)
   :init
@@ -1047,7 +1047,6 @@
   (doom-modeline-project-detection 'project)           ;; Enable project detection for displaying the project name.
   (doom-modeline-buffer-name t)                        ;; Show the buffer name in the mode line.
   (doom-modeline-vcs-max-length 25)                    ;; Limit the version control system (VCS) branch name length to 25 characters.
-  (doom-modeline-buffer-file-name 'relative-from-project)
   (doom-modeline-buffer-encoding nil)
   :config
   (if ek-use-nerd-fonts                                ;; Check if nerd fonts are being used.
