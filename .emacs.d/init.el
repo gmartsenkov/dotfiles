@@ -231,7 +231,7 @@
   (create-lockfiles nil)                          ;; Prevent the creation of lock files when editing.
   (delete-by-moving-to-trash t)                   ;; Move deleted files to the trash instead of permanently deleting them.
   (delete-selection-mode 1)                       ;; Enable replacing selected text with typed text.
-  (display-line-numbers-type 'relative)           ;; Use relative line numbering in programming modes.
+  (display-line-numbers-type t)           ;; Use relative line numbering in programming modes.
   (global-auto-revert-non-file-buffers t)         ;; Automatically refresh non-file buffers.
   (history-length 25)                             ;; Set the length of the command history.
   (inhibit-startup-message t)                     ;; Disable the startup message when Emacs launches.
@@ -271,8 +271,8 @@
   (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
 
   :hook                                           ;; Add hooks to enable specific features in certain modes.
-  (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
-  (markdown-mode . display-line-numbers-mode)
+  ((prog-mode markdown-mode org-mode) . display-line-numbers-mode)  ;; Enable line numbers in programming modes.
+
 
   :config
   ;; By default emacs gives you access to a lot of *special* buffers, while navigating with [b and ]b,
@@ -402,7 +402,7 @@
 
 ;; FLYCHECK
 (use-package flycheck-overlay
-  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :branch "main")
+  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")
   :ensure t
   :custom
   (flycheck-overlay-hide-checker-name t)
@@ -792,175 +792,116 @@
 ;; users to edit text in a modal way, similar to how Vim
 ;; operates. This setup configures `evil-mode' to enhance the editing
 ;; experience.
-(use-package evil
+(use-package expand-region :ensure t)
+
+(define-key ruby-mode-map (kbd "C-x M-t t") 'projectile-toggle-between-implementation-and-test)
+(define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
+(define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
+(define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
+
+(defun meow-setup ()
+  (setq meow-expand-hint-counts 0)
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev)
+   '("<escape>" . ignore))
+  (meow-leader-define-key
+   ;; SPC j/k will run the original command in MOTION state.
+   '("j" . "H-j")
+   '("t" . "C-x M-t")
+   '("SPC" . project-find-file)
+   '("b" . project-switch-to-buffer)
+   '("pp" . project-switch-project)
+   '("f" . find-file)
+   '("k" . "H-k")
+   '("xv" . "C-x v")
+   ;; Use SPC (0-9) for digit arguments.
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("/" . meow-keypad-describe-key)
+   '("?" . meow-cheatsheet))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("9" . meow-expand-9)
+   '("8" . meow-expand-8)
+   '("7" . meow-expand-7)
+   '("6" . meow-expand-6)
+   '("5" . meow-expand-5)
+   '("4" . meow-expand-4)
+   '("3" . meow-expand-3)
+   '("2" . meow-expand-2)
+   '("1" . meow-expand-1)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("[" . meow-beginning-of-thing)
+   '("]" . meow-end-of-thing)
+   '("a" . meow-append)
+   '("A" . meow-open-below)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("d" . meow-delete)
+   '("D" . meow-backward-delete)
+   '("e" . meow-next-word)
+   '("E" . meow-next-symbol)
+   '("f" . meow-find)
+   '("g" . meow-cancel-selection)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("i" . meow-insert)
+   '("I" . meow-open-above)
+   '("j" . meow-next)
+   '("J" . meow-next-expand)
+   '("k" . meow-prev)
+   '("K" . meow-prev-expand)
+   '("l" . meow-right)
+   '("L" . meow-right-expand)
+   '("m" . meow-join)
+   '("n" . meow-search)
+   '("o" . meow-block)
+   '("O" . meow-to-block)
+   '("p" . meow-yank)
+   '("q" . meow-quit)
+   '("Q" . meow-indent)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-kill)
+   '("t" . meow-till)
+   '("u" . meow-undo)
+   '("U" . meow-undo-in-selection)
+   '("v" . meow-visit)
+   '("w" . meow-mark-word)
+   '("W" . meow-mark-symbol)
+   '("x" . meow-line)
+   '("X" . meow-goto-line)
+   '("y" . meow-save)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("'" . repeat)
+   '("=" . er/expand-region)
+   '("<escape>" . ignore)))
+
+(use-package ace-window :ensure t :defer t)
+(global-set-key (kbd "M-o") 'ace-window)
+
+(use-package meow
   :ensure t
-  :defer t
-  :hook
-  (after-init . evil-mode)
-  :init
-  (setq evil-want-integration t)      ;; Integrate `evil' with other Emacs features (optional as it's true by default).
-  (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
   :config
-  (setq-default evil-symbol-word-search t)
-  (defalias #'forward-evil-word #'forward-evil-symbol)
-  ;; Set the leader key to space for easier access to custom commands. (setq evil-want-leader t)
-  (setq evil-leader/in-all-states t)  ;; Make the leader key available in all states.
-  (setq evil-want-fine-undo t)        ;; Evil uses finer grain undoing steps
-
-  ;; Define the leader key as Space
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
-
-  (global-set-key (kbd "C-h") 'evil-window-left)
-  (global-set-key (kbd "C-l") 'evil-window-right)
-  (global-set-key (kbd "C-j") 'evil-window-down)
-  (global-set-key (kbd "C-k") 'evil-window-up)
-  (evil-define-key 'normal 'global (kbd "`") 'project-eshell)
-  (evil-define-key 'insert eshell-mode-map (kbd "<escape>") (lambda () (interactive) (popper--bury-all)))
-  (evil-define-key 'normal git-rebase-mode-map (kbd "C-j") 'git-rebase-move-line-down)
-  (evil-define-key 'normal git-rebase-mode-map (kbd "C-k") 'git-rebase-move-line-up)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-j") 'compilation-next-error)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") 'compilation-previous-error)
-  (evil-define-key 'normal compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
-  (evil-define-key 'normal 'global (kbd "<leader>x") 'consult-flycheck)
-  (evil-define-key 'normal 'global (kbd "]d") 'flycheck-next-error)
-  (evil-define-key 'normal 'global (kbd "[d") 'flycheck-previous-error)
-  (evil-define-key 'normal 'global (kbd "]h") 'diff-hl-next-hunk)
-  (evil-define-key 'normal 'global (kbd "[h") 'diff-hl-previous-hunk)
-  (evil-define-key 'insert 'global (kbd "C-e") 'end-of-line)
-  (evil-define-key 'insert 'global (kbd "C-a") 'beginning-of-line)
-  (evil-define-key 'normal 'global (kbd "<escape>") (lambda () (interactive) (popper--bury-all)))
-  (evil-define-key 'normal 'global (kbd "gt") 'evil-avy-goto-char-2)
-  (evil-define-key 'normal 'global (kbd "<leader>/") 'consult-ripgrep)
-  (evil-define-key 'normal 'global (kbd "<leader>hv") 'describe-variable)
-  (evil-define-key 'normal 'global (kbd "<leader>hf") 'describe-function)
-  (evil-define-key 'normal 'global (kbd "<leader>hk") 'describe-key)
-  (evil-define-key 'normal 'global (kbd "<leader>bd") (lambda () (interactive) (kill-buffer (current-buffer))))
-  (evil-define-key 'normal 'global (kbd "<leader>wu") 'winner-undo)
-  (evil-define-key 'normal 'global (kbd "<leader>wv") 'split-window-right)
-  (evil-define-key 'normal 'global (kbd "<leader>wh") 'split-window-below)
-  (evil-define-key 'normal 'global (kbd "<leader>wd") 'delete-window)
-  (evil-define-key 'normal 'global (kbd "<leader>wq") 'delete-window)
-  (evil-define-key 'normal 'global (kbd "<leader>wr") 'winner-redo)
-  (evil-define-key 'normal 'global (kbd "<leader>sr") 'anzu-query-replace-regexp)
-  (evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-project-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>pp") 'projectile-switch-project)
-  (evil-define-key 'normal 'global (kbd "<leader>pf") 'projectile-find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'projectile-find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>fd") 'projectile-find-dir)
-  (evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
-  (evil-define-key 'normal 'global (kbd "<leader>cf") 'lsp-format-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>cc") 'lsp-workspace-restart)
-  (evil-define-key 'normal 'global (kbd "<leader>cd") 'lsp-find-definition)
-  (evil-define-key 'normal 'global (kbd "<leader>cD") 'xref-find-definitions-other-window)
-  (evil-define-key 'normal 'global (kbd "<leader>cr") 'lsp-find-references)
-  (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-  (evil-define-key 'normal 'global (kbd "<leader>gm") 'consult-vc-modified-files)
-  (evil-define-key 'normal 'global (kbd "<leader>gc") 'magit-branch-or-checkout)
-  (evil-define-key 'normal 'global (kbd "<leader>gF") 'magit-pull)
-  (evil-define-key '(normal visual) 'global (kbd "<leader>gl") 'git-link)
-  (evil-define-key 'normal 'global (kbd "<leader>gb") 'magit-blame)
-  (evil-define-key 'normal magit-status-mode-map (kbd "q") 'mu-magit-kill-buffers)
-  (evil-define-key 'normal magit-status-mode-map (kbd "<escape>") 'mu-magit-kill-buffers)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tv") 'rspec-verify)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tl") 'rspec-rerun)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tf") 'rspec-run-last-failed)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tc") 'rspec-verify-single)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>ta") 'rspec-verify-all)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "bundle exec rubocop")))
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mbi") (lambda () (interactive) (me/run-command "bundle install")))
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tv") 'rspec-verify)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tl") 'rspec-rerun)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tf") 'rspec-run-last-failed)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tc") 'rspec-verify-single)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>ta") 'rspec-verify-all)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "bundle exec rubocop")))
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mbi") (lambda () (interactive) (me/run-command "bundle install")))
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>ta") 'rust-test)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mr") 'rust-run)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mb") 'rust-compile)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mf") 'rust-format-buffer)
-  (evil-define-key 'normal typescript-ts-mode-map (kbd "<leader>mb") (lambda () (interactive) (me/run-command "npx tsc")))
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>md") 'cider-clojuredocs)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>mc") 'cider)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>tt") 'projectile-toggle-between-implementation-and-test)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>ta") 'cider-test-run-project-tests)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>tv") 'cider-test-run-ns-tests)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>tc") 'cider-test-run-test)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>tn") 'cider-test-run-ns-tests)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>eb") 'cider-eval-buffer)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>er") 'cider-eval-defun-at-point)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>ee") 'cider-eval-last-sexp)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>rr") 'cider-ns-refresh)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>rn") 'cider-repl-set-ns)
-  (evil-define-key 'normal clojure-mode-map (kbd "<leader>rb") 'cider-switch-to-repl-buffer)
-  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader>eb") 'eval-buffer)
-  (evil-define-key 'normal emacs-lisp-mode-map (kbd "<leader>ee") 'eval-last-sexp)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>fm") 'eglot-format)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>ta") '(lambda () (interactive) (me/run-command "mix test")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tv") 'elixir-run-test)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tc") 'mix-test-current-test)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tt") 'gotospec)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "mix credo")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>mf") (lambda () (interactive) (me/run-command "mix format")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>md") (lambda () (interactive) (me/run-command "mix deps.get")))
-  (evil-define-key 'normal go-mode-map (kbd "<leader>tt") 'projectile-toggle-between-implementation-and-test)
-  (evil-define-key 'normal go-mode-map (kbd "<leader>tv") 'go-test-current-file)
-  (evil-define-key 'normal go-mode-map (kbd "<leader>tc") 'go-test-current-test)
-  (evil-define-key 'normal go-mode-map (kbd "<leader>ta") 'go-test-current-project)
-  (evil-define-key 'normal gleam-ts-mode-map (kbd "<leader>ta") (lambda () (interactive) (me/run-command "gleam test")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>tt") 'projectile-toggle-between-implementation-and-test)
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "./bin/ameba")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>mf") (lambda () (interactive) (me/run-command "crystal tool format")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>mbi") (lambda () (interactive) (me/run-command "shards install")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>mbb") (lambda () (interactive) (me/run-command "shards build")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>mp") (lambda () (interactive) (me/run-command "./bin/ameba")))
-  (evil-define-key 'normal crystal-mode-map (kbd "<leader>ta") (lambda () (interactive) (me/run-command "crystal spec")))
-
-  ;; Commenting functionality for single and multiple lines
-  (evil-define-key 'normal 'global (kbd "gcc")
-    (lambda ()
-      (interactive)
-      (if (not (use-region-p))
-          (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
-
-  (evil-define-key 'visual 'global (kbd "gc")
-    (lambda ()
-      (interactive)
-      (if (use-region-p)
-          (comment-or-uncomment-region (region-beginning) (region-end)))))
-
-
-  ;; Enable evil mode
-  (evil-mode 1))
-
-(use-package evil-surround
-  :ensure t
-  :defer t
-  :config
-  (global-evil-surround-mode 1))
-
-
-;; EVIL COLLECTION
-;; The `evil-collection' package enhances the integration of
-;; `evil-mode' with various built-in and third-party packages. It
-;; provides a better modal experience by remapping keybindings and
-;; commands to fit the `evil' style.
-(use-package evil-collection
-  :after evil
-  :defer t
-  :ensure t
-  ;; Hook to initialize `evil-collection' when `evil-mode' is activated.
-  :hook
-  (evil-mode . evil-collection-init)
-  :config
-  (evil-collection-init))
-
-
+  (modify-syntax-entry ?_ "w" (standard-syntax-table))
+  (meow-setup)
+  (meow-global-mode 1))
 ;;; RAINBOW DELIMITERS
 ;; The `rainbow-delimiters' package provides colorful parentheses, brackets, and braces
 ;; to enhance readability in programming modes. Each level of nested delimiter is assigned
@@ -1018,9 +959,9 @@
   (setq pulsar-pulse t)
   (setq pulsar-delay 0.025)
   (setq pulsar-iterations 10)
-  (setq pulsar-face 'evil-ex-lazy-highlight)
+  (setq pulsar-face 'lazy-highlight)
 
-  (add-to-list 'pulsar-pulse-functions 'evil-scroll-down)
+  (add-to-list 'pulsar-pulse-functions 'meow-search)
   (add-to-list 'pulsar-pulse-functions 'flycheck-next-error)
   (add-to-list 'pulsar-pulse-functions 'flycheck-previous-error)
   (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
@@ -1149,6 +1090,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil)
+ '(package-vc-selected-packages
+   '((flycheck-overlay :url
+                       "https://github.com/konrad1977/flycheck-overlay")))
  '(safe-local-variable-values
    '((eval set (make-local-variable 'rspec-primary-source-dirs)
            (setq rspec-primary-source-dirs '("app" "apps" "lib"))))))
