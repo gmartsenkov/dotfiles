@@ -156,6 +156,40 @@
 ;; you'll see smaller `use-package' declarations for specific packages, which
 ;; will help us enable the desired features and improve our workflow.
 
+(use-package window
+  :ensure nil
+  :bind (("C-x C-f" . toggle-frame-fullscreen))
+  :custom
+  (display-buffer-alist
+   '(("\\*rspec-compilation\\*"
+      (display-buffer-in-side-window)
+      (window-width . 0.35)
+      (side . right)
+      (slot . 0))
+     ("magit:"
+      (display-buffer-in-side-window)
+      (body-function . select-window)
+      (window-width . 0.35)
+      (side . right)
+      (slot . 0))
+     ("\\*Help\\*"
+      (display-buffer-in-side-window)
+      (window-width . 0.35)
+      (side . right)
+      (slot . 0)))))
+
+
+;;; XCLIP
+;; `xclip' is an Emacs package that integrates the X Window System clipboard
+;; with Emacs. It allows seamless copying and pasting between Emacs and other
+;; applications using the clipboard. When `xclip' is enabled, any text copied
+;; in Emacs can be pasted in other applications, and vice versa, providing a
+;; smooth workflow when working across multiple environments.
+;;(use-package xclip
+;;  :ensure t
+;;  :defer t
+;;  :hook  
+;;  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
 
 ;;; Functions
 (defun me/run-command (cmd)
@@ -167,8 +201,6 @@
    (file-relative-name buffer-file-name (car (last (project-current))))))
 
 (add-hook 'find-file-hook #'me/proj-relative-buf-name)
-;; (add-hook 'projectile-find-file-hook #'me/proj-relative-buf-name)
-
 (defun mu-magit-kill-buffers ()
    "Restore window configuration and kill all Magit buffers."
     (interactive)
@@ -266,7 +298,8 @@
   (ruby-deep-indent-paren nil)
   (compilation-scroll-output t)
   (scroll-conservatively most-positive-fixnum)
-  (scroll-margin 0)
+  (scroll-margin 20)
+  (scroll-preserve-screen-position t)
   (project-switch-commands 'project-find-file)
   (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
 
@@ -342,12 +375,12 @@
     (ansi-color-apply-on-region (point-min) (point-max))))
 
 (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
-
+(use-package dape :ensure t :defer t)
 ;;; Miscellaneous
-(use-package balanced-windows
-  :ensure t
-  :config
-  (balanced-windows-mode))
+;; (use-package balanced-windows
+;;   :ensure t
+;;   :config
+;;   (balanced-windows-mode))
 
 (use-package ws-butler
   :ensure t
@@ -512,14 +545,6 @@
   (after-init . marginalia-mode))
 
 
-;;; Projectile
-
-(use-package projectile
-  :ensure t
-  :custom
-  (projectile-project-search-path '("~/Development" "~/dotfiles"))
-  (projectile-create-missing-test-files t))
-
 ;;; CONSULT
 ;; Consult provides powerful completion and narrowing commands for Emacs.
 ;; It integrates well with other completion frameworks like Vertico, enabling
@@ -588,39 +613,41 @@
   :init (yas-global-mode 1))
 
 ;;; POPPER
-(use-package popper
-  :ensure t
-  :bind (("C-`"   . popper-toggle)
-         ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
-  :custom
-  (popper-reference-buffers
-        '("\\*Async Shell Command\\*"
-          "*rspec-compilation*"
-          "*mix test*"
-          "*RuboCop"
-          "*cider-repl"
-          "*cider-error*"
-          "*cider-test-report"
-          "*Help*"
-          "*eldoc"
-          "*grep"
-          "*grep*"
-          "*xref*"
-          "*eshell*"
-          "-eshell*"
-          "*rg*"
-          "*compilation*"
-          "\\*Bundler\\*"))
-  (popper-window-height (lambda (win)
-                               (->
-                                window-total-height
-                                (/ 2.5)
-                                (floor))))
-  (popper-display-function 'popper-display-popup-at-bottom)
-  :init
-  (popper-mode +1)
-  (popper-echo-mode +1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (use-package popper                                         ;;
+;;   :ensure t                                                 ;;
+;;   :bind (("C-`"   . popper-toggle)                          ;;
+;;          ("M-`"   . popper-cycle)                           ;;
+;;          ("C-M-`" . popper-toggle-type))                    ;;
+;;   :custom                                                   ;;
+;;   (popper-reference-buffers                                 ;;
+;;         '("\\*Async Shell Command\\*"                       ;;
+;;           "*rspec-compilation*"                             ;;
+;;           "*mix test*"                                      ;;
+;;           "*RuboCop"                                        ;;
+;;           "*cider-repl"                                     ;;
+;;           "*cider-error*"                                   ;;
+;;           "*cider-test-report"                              ;;
+;;           "*Help*"                                          ;;
+;;           "*eldoc"                                          ;;
+;;           "*grep"                                           ;;
+;;           "*grep*"                                          ;;
+;;           "*xref*"                                          ;;
+;;           "*eshell*"                                        ;;
+;;           "-eshell*"                                        ;;
+;;           "*rg*"                                            ;;
+;;           "*compilation*"                                   ;;
+;;           "\\*Bundler\\*"))                                 ;;
+;;   (popper-window-height (lambda (win)                       ;;
+;;                                (->                          ;;
+;;                                 window-total-height         ;;
+;;                                 (/ 2.5)                     ;;
+;;                                 (floor))))                  ;;
+;;   (popper-display-function 'popper-display-popup-at-bottom) ;;
+;;   :init                                                     ;;
+;;   (popper-mode +1)                                          ;;
+;;   (popper-echo-mode +1))                                    ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; COMPANY
 ;; Company Mode provides a text completion framework for Emacs.
@@ -676,8 +703,7 @@
                    ("elixir-ls" "--stdio=true" :initializationOptions (:experimental (:completions (:enable t))))))))
 
 (use-package eglot-booster
-  :vc (:url "https://github.com/blahgeek/emacs-lsp-booster"
-            :branch "master")
+  :vc (:url "https://github.com/blahgeek/emacs-lsp-booster" :branch "master")
   :after eglot
   :ensure t
   :config (eglot-booster-mode))
@@ -764,11 +790,8 @@
   :ensure t
   :defer t
   :after (nerd-icons)
-  :custom
-  (magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
-  (magit-format-file-function #'magit-format-file-nerd-icons)
   :config
-  (add-hook 'git-commit-mode-hook 'evil-insert-state)
+  (add-hook 'git-commit-mode-hook 'meow-insert)
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
@@ -794,7 +817,7 @@
 ;; experience.
 (use-package expand-region :ensure t)
 
-(define-key ruby-mode-map (kbd "C-x M-t t") 'projectile-toggle-between-implementation-and-test)
+(define-key ruby-mode-map (kbd "C-x M-t t") 'rspec-toggle-spec-and-target)
 (define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
 (define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
 (define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
@@ -830,6 +853,9 @@
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet))
   (meow-normal-define-key
+   '("q" . (lambda () (interactive) (popper--bury-all)))
+   '("}" . forward-paragraph)
+   '("{" . backward-paragraph)
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
    '("8" . meow-expand-8)
@@ -873,7 +899,6 @@
    '("o" . meow-block)
    '("O" . meow-to-block)
    '("p" . meow-yank)
-   '("q" . meow-quit)
    '("Q" . meow-indent)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
@@ -930,8 +955,10 @@
 (use-package inf-ruby
   :ensure t
   :defer t
-  :config
-  (inf-ruby-enable-auto-breakpoint))
+;  :config
+;  (inf-ruby-enable-auto-breakpoint)
+  :init
+  (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
 
 (use-package ruby-end
   :defer t
@@ -1090,10 +1117,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
- '(package-vc-selected-packages
-   '((flycheck-overlay :url
-                       "https://github.com/konrad1977/flycheck-overlay")))
+ '(package-selected-packages
+   '(ace-window catppuccin-theme company consult-flycheck
+                consult-vc-modified-files diff-hl doom-modeline
+                eglot-booster expand-region flycheck-eglot
+                flycheck-overlay flymake-margin gleam-ts-mode
+                indent-guide inf-ruby magit marginalia markdown-mode
+                meow nerd-icons-completion nerd-icons-dired orderless
+                pulsar rainbow-delimiters reformatter rspec-mode
+                ruby-end rust-mode slim-mode treesit-auto vertico
+                ws-butler yasnippet))
  '(safe-local-variable-values
    '((eval set (make-local-variable 'rspec-primary-source-dirs)
            (setq rspec-primary-source-dirs '("app" "apps" "lib"))))))
