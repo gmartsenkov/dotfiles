@@ -163,13 +163,20 @@
   (display-buffer-alist
    '(("\\*rspec-compilation\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.35)
+      (window-width . (if (frame-width < 160) 0.5 0.35))
       (side . right)
       (slot . 0))
      ("magit:"
       (display-buffer-in-side-window)
       (body-function . select-window)
-      (window-width . 0.35)
+      (window-preserve-size . t)
+      (window-width . (if (frame-width < 160) 0.5 0.35))
+      (side . right)
+      (slot . 0))
+     ("\\*vc-diff\\*"
+      (display-buffer-in-side-window)
+      (body-function . select-window)
+      (window-width . (if (frame-width < 160) 0.5 0.35))
       (side . right)
       (slot . 0))
      ("\\*Help\\*"
@@ -825,20 +832,17 @@
 (defun meow-setup ()
   (setq meow-expand-hint-counts 0)
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-  (meow-motion-overwrite-define-key
+  (meow-motion-define-key
    '("j" . meow-next)
    '("k" . meow-prev)
    '("<escape>" . ignore))
   (meow-leader-define-key
-   ;; SPC j/k will run the original command in MOTION state.
-   '("j" . "H-j")
+   '("v" . "C-x v")
    '("t" . "C-x M-t")
    '("SPC" . project-find-file)
    '("b" . project-switch-to-buffer)
    '("pp" . project-switch-project)
    '("f" . find-file)
-   '("k" . "H-k")
-   '("xv" . "C-x v")
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -850,12 +854,14 @@
    '("8" . meow-digit-argument)
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
-   '("/" . meow-keypad-describe-key)
+   '("/" . consult-grep)
    '("?" . meow-cheatsheet))
   (meow-normal-define-key
    '("q" . (lambda () (interactive) (popper--bury-all)))
    '("}" . forward-paragraph)
    '("{" . backward-paragraph)
+   '(">" . indent-rigidly-right)
+   '("<" . indent-rigidly-left)
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
    '("8" . meow-expand-8)
@@ -899,7 +905,6 @@
    '("o" . meow-block)
    '("O" . meow-to-block)
    '("p" . meow-yank)
-   '("Q" . meow-indent)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
    '("s" . meow-kill)
