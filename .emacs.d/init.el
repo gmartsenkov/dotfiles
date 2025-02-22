@@ -195,7 +195,7 @@
 ;;(use-package xclip
 ;;  :ensure t
 ;;  :defer t
-;;  :hook  
+;;  :hook
 ;;  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
 
 ;;; Functions
@@ -564,6 +564,7 @@
   (consult-preview-key nil)
   :init
   ;; Enhance register preview with thin lines and no mode line.
+  (setq xref-show-xrefs-function #'consult-xref xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window))
 
   ;; Use Consult for xref locations with a preview feature.
@@ -828,7 +829,7 @@
 (define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
 (define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
 (define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
-
+;(define-key key-translation-map (kbd "ESC") (kbd "C-g")
 (defun meow-setup ()
   (setq meow-expand-hint-counts 0)
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -842,6 +843,7 @@
    '("SPC" . project-find-file)
    '("b" . project-switch-to-buffer)
    '("pp" . project-switch-project)
+   '("mp" . flycheck-compile)
    '("f" . find-file)
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
@@ -879,7 +881,8 @@
    '("[" . meow-beginning-of-thing)
    '("]" . meow-end-of-thing)
    '("a" . meow-append)
-   '("A" . meow-open-below)
+   '("o" . meow-open-below)
+   '("O" . meow-open-above)
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
@@ -893,7 +896,6 @@
    '("h" . meow-left)
    '("H" . meow-left-expand)
    '("i" . meow-insert)
-   '("I" . meow-open-above)
    '("j" . meow-next)
    '("J" . meow-next-expand)
    '("k" . meow-prev)
@@ -902,8 +904,6 @@
    '("L" . meow-right-expand)
    '("m" . meow-join)
    '("n" . meow-search)
-   '("o" . meow-block)
-   '("O" . meow-to-block)
    '("p" . meow-yank)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
@@ -920,8 +920,8 @@
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
    '("'" . repeat)
-   '("=" . er/expand-region)
-   '("<escape>" . ignore)))
+   '("/" . consult-line)
+   '("=" . er/expand-region)))
 
 (use-package ace-window :ensure t :defer t)
 (global-set-key (kbd "M-o") 'ace-window)
