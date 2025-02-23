@@ -131,19 +131,21 @@
 (use-package doom-themes
   :ensure t
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-tokyo-night t)
-  (custom-set-faces
-   `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
-  (custom-set-faces
-   `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-  (custom-set-faces
-   `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
-  (custom-set-faces
-   `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green))))))
-  )
+  (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
+  (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
+  (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
+  (custom-set-faces `(diff-refine-removed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background,(doom-darken (doom-color 'red) 0.6))))))
+  (custom-set-faces `(diff-refine-changed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
+  (custom-set-faces `(diff-removed ((t (:foreground unspecified :background ,(doom-darken (doom-color 'red) 0.8))))))
+  (custom-set-faces `(diff-added ((t (:foreground unspecified :background ,(doom-darken (doom-color 'green) 0.8))))))
+  (custom-set-faces `(minibuffer-prompt ((t (:background unspecified :foreground ,(doom-color 'orange))))))
+  (custom-set-faces `(lazy-highlight ((t (:background ,(doom-color 'base-1))))))
+  (custom-set-faces `(isearch ((t (:background ,(doom-color 'base1))))))
+  (custom-set-faces `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
+  (custom-set-faces `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
+  (custom-set-faces `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
+  (custom-set-faces `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green)))))))
 
 (use-package ace-window
   :ensure t
