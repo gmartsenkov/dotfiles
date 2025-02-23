@@ -1,161 +1,160 @@
-;;; init.el --- Emacs-Kick --- A feature rich Emacs config for (neo)vi(m)mers -*- lexical-binding: t; -*-
-;; Author: Rahul Martim Juliato
-;; Version: 0.1.0
-;; Package-Requires: ((emacs "30.0"))
-;; License: GPL-2.0-or-later
-
-;;; Commentary:
-;; =====================================================================
-;; ==================== READ THIS BEFORE CONTINUING ====================
-;; =====================================================================
-;; ========                                    .-----.          ========
-;; ========         .----------------------.   | === |          ========
-;; ========         |.-""""""""""""""""""-.|   |-----|          ========
-;; ========         ||                    ||   | === |          ========
-;; ========         ||     EMACS-KICK     ||   |-----|          ========
-;; ========         ||                    ||   | === |          ========
-;; ========         ||                    ||   |-----|          ========
-;; ========         ||M-x                 ||   |:::::|          ========
-;; ========         |'-..................-'|   |____o|          ========
-;; ========         `"")----------------(""`   ___________      ========
-;; ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-;; ========       /:::========|  |==hjkl==:::\  \ required \    ========
-;; ========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-;; ========                                                     ========
-;; =====================================================================
-;; =====================================================================
-
-;; What is Emacs-Kick?
-;;
-;; Emacs-Kick is `not' a distribution.
-;;
-;; Emacs-Kick is a starting point for your own configuration.  The goal
-;; is that you can read every line of code, top-to-bottom, understand
-;; what your configuration is doing, and modify it to suit your needs.
-;;
-;; Once you've done that, you can start exploring, configuring, and
-;; tinkering to make Emacs your own! That might mean leaving Emacs
-;; Kick just the way it is for a while or immediately breaking it into
-;; modular pieces.  It's up to you!
-;;
-;; If you don't know anything about Emacs Lisp, I recommend taking
-;; some time to read through a guide.
-;; One possible example which will only take 10-15 minutes:
-;; - https://learnxinyminutes.com/docs/elisp/
-;;
-;; After understanding a bit more about Emacs Lisp, you can use `M-x
-;; info RET` (info) for a reference on how Emacs integrates it.
-;;
-;; Emacs-Kick Guide:
-;;
-;; Well, this config ASSUMES you already knows (neo)vi(m) bindings,
-;; and the bases of how it works.  This is the `Emacs config for
-;; vimmers'.  So, if you're not familiar with it, go for
-;; `kickstart.nvim', get used to it, and than come back.
-;;
-;; On Emacs help can be found multiple ways.
-;; With this config, the leader key as SPC.
-;; - <leader> h i opens the info (Also `M-x info RET')
-;; - <leader> h v explores available variables
-;; - <leader> h f explores avaliable functions
-;; - <leader> h k explores avaliable keybindings
-;;
-;; If, at any time you need to find some functionality, Emacs `M-x'
-;; (Meta is alt on most cases, option or command), works like a
-;; command pallete, you can for example type `M-x quit' and be
-;; presented with various options to quit Emacs.
-;;
-;; Once you've completed that, you can continue working through
-;; `AND READING' the rest of the kickstart configuration.
-;;
-;; I have left several comments throughout the configuration.  These
-;; are hints about where to find more information about the relevant
-;; settings, packages, or Emacs features used in Emacs-Kick.
-;;
-;; Feel free to delete them once you know what you're doing, but they
-;; should serve as a guide for when you are first encountering a few
-;; different constructs in your Emacs config.
-;;
-;; If you encounter any errors while installing Emacs-Kick,
-;; check the *Messages* buffer for more information. You can switch
-;; buffers using `<leader> SPC`, and all option menus can be navigated
-;; with `C-p` and `C-n`.
-;;
-;; I hope you enjoy your Emacs journey,
-;; - Rahul
-;;
-;; P.S.  You can delete this when you're done too.  It's your config
-;; now! :)
-
-
-;;; Code:
-
-;; Performance Hacks
-;; Emacs is an Elisp interpreter, and when running programs or packages,
-;; it can occasionally experience pauses due to garbage collection.
-;; By increasing the garbage collection threshold, we reduce these pauses
-;; during heavy operations, leading to smoother performance.
-(setq gc-cons-threshold #x40000000)
-
-;; Set the maximum output size for reading process output, allowing for larger data transfers.
-(setq read-process-output-max (* 1024 1024 4))
-
-;; Do I really need a speedy startup?
-;; Well, this config launches Emacs in about ~0.3 seconds,
-;; which, in modern terms, is a miracle considering how fast it starts
-;; with external packages.
-;; It wasn’t until the recent introduction of tools for lazy loading
-;; that a startup time of less than 20 seconds was even possible.
-;; Other fast startup methods were introduced over time.
-;; You may have heard of people running Emacs as a server,
-;; where you start it once and open multiple clients instantly connected to that server.
-;; Some even run Emacs as a systemd or sysV service, starting when the machine boots.
-;; While this is a great way of using Emacs, we WON’T be doing that here.
-;; I think 0.3 seconds is fast enough to avoid issues that could arise from
-;; running Emacs as a server, such as 'What version of Node is my LSP using?'.
-;; Again, this setup configures Emacs much like how a Vimmer would configure Neovim.
-
-;; Emacs already comes with its on package manager.
-;; Others are available, but let's stick with the defaults when it makes sense.
-;;
-;; Requires the Emacs default package manager, so we can set it. Kind of an 'import'.
 (require 'package)
-;; Add MELPA (Milkypostman's Emacs Lisp Package Archive) to the list of package archives.
-;; This allows you to install packages from this widely-used repository, similar to how
-;; pip works for Python or npm for Node.js. While Emacs comes with ELPA (Emacs Lisp
-;; Package Archive) configured by default, which contains packages that meet specific
-;; licensing criteria, MELPA offers a broader range of packages and is considered the
-;; standard for Emacs users. You can also add more package archives later as needed.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
-;; Define a global customizable variable `ek-use-nerd-fonts' to control the use of
-;; Nerd Fonts symbols throughout the configuration. This boolean variable allows
-;; users to easily enable or disable the use of symbols from Nerd Fonts, providing
-;; flexibility in appearance settings. By setting it to `t', we enable Nerd Fonts
-;; symbols; setting it to `nil' would disable them.
-(defcustom ek-use-nerd-fonts t
-  "Configuration for using Nerd Fonts Symbols."
-  :type 'boolean
-  :group 'appearance)
+(setq package-selected-packages
+      '(use-package
+         diff-hl
+         doom-themes
+         company
+         yasnippet
+         consult
+         expand-region
+         nerd-icons
+         nerd-icons-completion
+         rspec-mode
+         vertico
+         vertico-directory
+         orderless
+         marginalia
+         flycheck
+         meow
+         ace-window
+         flycheck-eglot
+         ruby-end
+         magit
+         gleam-ts-mode
+         reformatter))
+
+(setq package-vc-selected-packages
+      '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+        (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
 
 
-;; From now on, you'll see configurations using the `use-package' macro, which
-;; allows us to organize our Emacs setup in a modular way. These configurations
-;; look like this:
+(defun code/relative-buffer-name ()
+  (rename-buffer
+   (file-relative-name buffer-file-name (car (last (project-current))))))
+
+(setq-default mode-line-format
+  '(:eval
+    (let ((prefix (cond (buffer-read-only     '("RO" . nano-default-i))
+                        ((buffer-modified-p)  '("**" . nano-critical-i))
+                        (t                    '("RW" . nano-faded-i))))
+          (mode (concat "(" (downcase (cond ((consp mode-name) (car mode-name))
+                                            ((stringp mode-name) mode-name)
+                                            (t "unknow")))
+                        " mode)"))
+          (eglot-server (eglot-current-server))
+          (coords (format-mode-line "%c:%l ")))
+      (list
+       (propertize " " 'face (cdr prefix)  'display '(raise -0.25))
+       (propertize (car prefix) 'face (cdr prefix))
+       (propertize " " 'face (cdr prefix) 'display '(raise +0.25))
+       (propertize (format-mode-line " %b ") 'face 'nano-strong)
+       (if eglot-server (propertize (concat " [eglot:" (eglot-project-nickname eglot-server) "]")))
+       (propertize " " 'display `(space :align-to (- right ,(length coords))))
+       (propertize coords 'face 'nano-faded)))))
+
+(use-package emacs
+  :ensure nil
+  :custom
+  (custom-file (concat user-emacs-directory "custom.el"))
+  (column-number-mode t)
+  (auto-save-default nil)
+  (create-lockfiles nil)
+  (delete-by-moving-to-trash t)
+  (delete-selection-mode 1)
+  (global-auto-revert-non-file-buffers t)
+  (history-length 25)
+  (inhibit-startup-message t)
+  (initial-scratch-message "")
+  (make-backup-files nil)
+  (pixel-scroll-precision-mode t)
+  (pixel-scroll-precision-use-momentum nil)
+  (ring-bell-function 'ignore)
+  (split-width-threshold 300)
+  (switch-to-buffer-obey-display-actions t)
+  (css-indent-offset 2)
+  (js-indent-level 2)
+  (indent-tabs-mode nil)
+  (treesit-font-lock-level 4)
+  (truncate-lines t)
+  (use-dialog-box nil)
+  (use-short-answers t)
+  (global-visual-line-mode t)
+  (electric-pair-mode t)
+  (compilation-scroll-output t)
+  (compilation-always-kill t)
+  (compilation-scroll-output t)
+  (scroll-conservatively most-positive-fixnum)
+  (scroll-margin 20)
+  (project-switch-commands 'project-find-file)
+  (warning-minimum-level :emergency)
+
+  :hook
+  (prog-mode . display-line-numbers-mode)
+  (markdown-mode . display-line-numbers-mode)
+  (before-save . delete-trailing-whitespace)
+  (find-file-hook . code/relative-buffer-name)
+
+  :init
+  (load custom-file :noerror)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (global-hl-line-mode 1)
+  (global-auto-revert-mode 1)
+  (indent-tabs-mode -1)
+  (recentf-mode 1)
+  (savehist-mode 1)
+  (save-place-mode 1)
+  (winner-mode)
+  (xterm-mouse-mode 1)
+  (file-name-shadow-mode 1)
+
+  ;; Add a hook to run code after Emacs has fully initialized.
+  (add-hook 'after-init-hook
+            (lambda ()
+              (message "Emacs has fully loaded. This code runs after startup.")
+
+              ;; Insert a welcome message in the *scratch* buffer displaying loading time and activated packages.
+              (with-current-buffer (get-buffer-create "*scratch*")
+                (insert (format
+                         ";;    Welcome to Emacs!
 ;;
-;; (use-package some-package
-;;   :ensure t  ;; Ensure the package is installed.
-;;   :config    ;; Configuration settings for the package.
-;;   ;; Additional settings can go here.
-;; )
-;;
-;; This approach simplifies package management, enabling us to easily control
-;; both built-in (first-party) and external (third-party) packages. While Emacs
-;; is a vast and powerful editor, using `use-package' helps streamline our
-;; configuration for better organization and customization. As we proceed,
-;; you'll see smaller `use-package' declarations for specific packages, which
-;; will help us enable the desired features and improve our workflow.
+;;    Loading time : %s
+;;    Packages     : %s
+"
+                         (emacs-init-time)
+                         (number-to-string (length package-activated-list))))))))
 
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-tokyo-night t)
+  (custom-set-faces
+   `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
+  (custom-set-faces
+   `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
+  (custom-set-faces
+   `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green))))))
+  )
+
+(use-package ace-window
+  :ensure t
+  :defer t
+  :init
+  (global-set-key (kbd "M-o") 'ace-window))
+
+(use-package expand-region
+  :ensure t
+  :defer t
+  :init
+  (global-set-key (kbd "C-=") 'er/expand-region))
+(use-package eldoc :ensure nil :init (global-eldoc-mode))
 (use-package window
   :ensure nil
   :bind (("C-x C-f" . toggle-frame-fullscreen))
@@ -185,115 +184,9 @@
       (side . right)
       (slot . 0)))))
 
-
-;;; XCLIP
-;; `xclip' is an Emacs package that integrates the X Window System clipboard
-;; with Emacs. It allows seamless copying and pasting between Emacs and other
-;; applications using the clipboard. When `xclip' is enabled, any text copied
-;; in Emacs can be pasted in other applications, and vice versa, providing a
-;; smooth workflow when working across multiple environments.
-;;(use-package xclip
-;;  :ensure t
-;;  :defer t
-;;  :hook
-;;  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
-
-;;; Functions
-(defun me/run-command (cmd)
-  (let ((default-directory (car (last (project-current)))))
-    (compile cmd)))
-
-(defun me/proj-relative-buf-name ()
-  (rename-buffer
-   (file-relative-name buffer-file-name (car (last (project-current))))))
-
-(add-hook 'find-file-hook #'me/proj-relative-buf-name)
-(defun mu-magit-kill-buffers ()
-   "Restore window configuration and kill all Magit buffers."
-    (interactive)
-    (let ((buffers (magit-mode-get-buffers)))
-      (magit-restore-window-configuration)
-      (mapc #'bury-buffer buffers)))
-
-(defun elixir-run-test ()
-  (interactive
-   (let* ((file-path (buffer-file-name))
-          (default-directory (car (last (project-current))))
-          (file (->> file-path (file-name-split) (last) (nth 0)))
-          (extension (file-name-extension file))
-          (target (if (string= extension "ex") (find-spec) file-path)))
-         (compile (concat "mix test " target)))))
-
-(setq gotospec-config
-      '((ex . ((test-folder . "test")
-               (source-strip-folder . "lib")
-               (strip-file-suffix . "")
-               (test-suffix . "_test.exs")))
-        (exs . ((test-folder . "lib")
-                (source-strip-folder . "test")
-                (strip-file-suffix . "_test")
-                (test-suffix . ".ex")))))
-
-(defun gotospec ()
-  (interactive
-   (find-file (find-spec))))
-
-(defun find-spec ()
-  (let* ((project-root (car (last (project-current))))
-         (file-path (buffer-file-name))
-         (relative-file-path (file-relative-name file-path project-root))
-         (file (->> file-path (file-name-split) (last) (nth 0)))
-         (extension (file-name-extension file))
-         (config (alist-get (intern extension) gotospec-config))
-         (test-folder (file-name-as-directory (alist-get 'test-folder config)))
-         (test-suffix (alist-get 'test-suffix config))
-         (strip-file-suffix (alist-get 'strip-file-suffix config))
-         (source-strip-folder (file-name-as-directory (alist-get 'source-strip-folder config)))
-         (target (concat
-                  project-root
-                  test-folder
-                  (string-remove-prefix
-                   (file-name-as-directory source-strip-folder)
-                   (file-name-directory relative-file-path))
-                  (concat
-                   (string-remove-suffix strip-file-suffix (file-name-sans-extension file))
-                   test-suffix))))
-    target))
-
-;;; EMACS
-;;  This is biggest one. Keep going, plugins (oops, I mean packages) will be shorter :)
-(use-package emacs
+(use-package ruby
   :ensure nil
-  :custom                                         ;; Set custom variables to configure Emacs behavior.
-  (column-number-mode t)                          ;; Display the column number in the mode line.
-  (auto-save-default nil)                         ;; Disable automatic saving of buffers.
-  (create-lockfiles nil)                          ;; Prevent the creation of lock files when editing.
-  (delete-by-moving-to-trash t)                   ;; Move deleted files to the trash instead of permanently deleting them.
-  (delete-selection-mode 1)                       ;; Enable replacing selected text with typed text.
-  (display-line-numbers-type t)           ;; Use relative line numbering in programming modes.
-  (global-auto-revert-non-file-buffers t)         ;; Automatically refresh non-file buffers.
-  (history-length 25)                             ;; Set the length of the command history.
-  (inhibit-startup-message t)                     ;; Disable the startup message when Emacs launches.
-  (initial-scratch-message "")                    ;; Clear the initial message in the *scratch* buffer.
-  (ispell-dictionary "en_US")                     ;; Set the default dictionary for spell checking.
-  (make-backup-files nil)                         ;; Disable creation of backup files.
-  (pixel-scroll-precision-mode t)                 ;; Enable precise pixel scrolling.
-  (pixel-scroll-precision-use-momentum nil)       ;; Disable momentum scrolling for pixel precision.
-  (ring-bell-function 'ignore)                    ;; Disable the audible bell.
-  (split-width-threshold 300)                     ;; Prevent automatic window splitting if the window width exceeds 300 pixels.
-  (switch-to-buffer-obey-display-actions t)       ;; Make buffer switching respect display actions.
-  ;; (tab-always-indent 'complete)                   ;; Make the TAB key complete text instead of just indenting.
-  (css-indent-offset 2)                           ;; Use 2 spaces indent for css files
-  (js-indent-level 2)                             ;; Use 2 space indent for js files
-  (indent-tabs-mode nil)                          ;; Never insert tabs
-  (treesit-font-lock-level 4)                     ;; Use advanced font locking for Treesit mode.
-  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
-  (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
-  (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
-  (global-visual-line-mode t)
-  (electric-pair-mode t)
-  (compilation-scroll-output t)
-  (compilation-always-kill t)
+  :custom
   (ruby-indent-level 2)
   (ruby-insert-encoding-magic-comment nil)
   (ruby-method-call-indent nil)
@@ -303,402 +196,24 @@
   (ruby-block-indent nil)
   (ruby-align-chained-calls nil)
   (ruby-deep-indent-paren nil)
-  (compilation-scroll-output t)
-  (scroll-conservatively most-positive-fixnum)
-  (scroll-margin 20)
-  (scroll-preserve-screen-position t)
-  (project-switch-commands 'project-find-file)
-  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
-
-  :hook                                           ;; Add hooks to enable specific features in certain modes.
-  ((prog-mode markdown-mode org-mode) . display-line-numbers-mode)  ;; Enable line numbers in programming modes.
-
-
-  :config
-  ;; By default emacs gives you access to a lot of *special* buffers, while navigating with [b and ]b,
-  ;; this might be confusing for newcomers. This settings make sure ]b and [b will always load a
-  ;; file buffer. To see all buffers use <leader> SPC, <leader> b l, or <leader> b i.
-  (defun skip-these-buffers (_window buffer _bury-or-kill)
-	"Function for `switch-to-prev-buffer-skip'."
-	(string-match "\\*[^*]+\\*" (buffer-name buffer)))
-  (setq switch-to-prev-buffer-skip 'skip-these-buffers)
-
-
-  ;; Configure font settings based on the operating system.
-  ;; Ok, this kickstart is meant to be used on the terminal, not on GUI.
-  ;; But without this, I fear you could start Graphical Emacs and be sad :(
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 130)
-  (when (eq system-type 'darwin)       ;; Check if the system is macOS.
-    (setq mac-command-modifier 'meta)  ;; Set the Command key to act as the Meta key.
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 165 :weight "Medium"))
-
-  ;; Save manual customizations to a separate file instead of cluttering `init.el'.
-  ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
-  ;; The saves you do manually using the Emacs interface would overwrite this file.
-  ;; The following makes sure those customizations are in a separate file.
-  (setq custom-file (locate-user-emacs-file "custom-vars.el")) ;; Specify the custom file path.
-  (load custom-file 'noerror 'nomessage)                       ;; Load the custom file quietly, ignoring errors.
-
-  :init                        ;; Initialization settings that apply before the package is loaded.
-  (tool-bar-mode -1)           ;; Disable the tool bar for a cleaner interface.
-  (menu-bar-mode -1)           ;; Disable the menu bar for a more streamlined look.
-  (when scroll-bar-mode
-    (scroll-bar-mode -1))      ;; Disable the scroll bar if it is active.
-
-  (global-hl-line-mode 1)      ;; Enable highlight of the current line
-  (global-auto-revert-mode 1)  ;; Enable global auto-revert mode to keep buffers up to date with their corresponding files.
-  (indent-tabs-mode -1)        ;; Disable the use of tabs for indentation (use spaces instead).
-  (recentf-mode 1)             ;; Enable tracking of recently opened files.
-  (savehist-mode 1)            ;; Enable saving of command history.
-  (save-place-mode 1)          ;; Enable saving the place in files for easier return.
-  (winner-mode)                ;; Enable winner mode to easily undo window configuration changes.
-  (xterm-mouse-mode 1)         ;; Enable mouse support in terminal mode.
-  (file-name-shadow-mode 1)    ;; Enable shadowing of filenames for clarity.
-
-  ;; Set the default coding system for files to UTF-8.
-  (modify-coding-system-alist 'file "" 'utf-8)
-
-  ;; Add a hook to run code after Emacs has fully initialized.
-  (add-hook 'after-init-hook
-    (lambda ()
-      (message "Emacs has fully loaded. This code runs after startup.")
-
-      ;; Insert a welcome message in the *scratch* buffer displaying loading time and activated packages.
-      (with-current-buffer (get-buffer-create "*scratch*")
-        (insert (format
-                 ";;    Welcome to Emacs!
-;;
-;;    Loading time : %s
-;;    Packages     : %s
-"
-                  (emacs-init-time)
-                  (number-to-string (length package-activated-list))))))))
-
-
-;;; Compilation mode
-(require 'ansi-color)
-(defun my/ansi-colorize-buffer ()
-  (let ((buffer-read-only nil))
-    (ansi-color-apply-on-region (point-min) (point-max))))
-
-(add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
-(use-package dape :ensure t :defer t)
-;;; Miscellaneous
-;; (use-package balanced-windows
-;;   :ensure t
-;;   :config
-;;   (balanced-windows-mode))
-
-(use-package ws-butler
-  :ensure t
-  :hook ((prog-mode slim-mode) . ws-butler-mode))
-
-;;; DIRED
-;; In Emacs, the `dired' package provides a powerful and built-in file manager
-;; that allows you to navigate and manipulate files and directories directly
-;; within the editor. If you're familiar with `oil.nvim', you'll find that
-;; `dired' offers similar functionality natively in Emacs, making file
-;; management seamless without needing external plugins.
-
-;; This configuration customizes `dired' to enhance its usability. The settings
-;; below specify how file listings are displayed, the target for file operations,
-;; and associations for opening various file types with their respective applications.
-;; For example, image files will open with `feh', while audio and video files
-;; will utilize `mpv'.
-(use-package dired
-  :ensure nil                                                ;; This is built-in, no need to fetch it.
-  :custom
-  (dired-listing-switches "-lah --group-directories-first")  ;; Display files in a human-readable format and group directories first.
-  (dired-dwim-target t)                                      ;; Enable "do what I mean" for target directories.
-  (dired-guess-shell-alist-user
-   '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open" "open") ;; Open image files with `feh' or the default viewer.
-     ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open" "open") ;; Open audio and video files with `mpv'.
-     (".*" "open" "xdg-open")))                              ;; Default opening command for other files.
-  (dired-kill-when-opening-new-dired-buffer t)               ;; Close the previous buffer when opening a new `dired' instance.
-  :config
-  (when (eq system-type 'darwin)
-    (let ((gls (executable-find "gls")))                     ;; Use GNU ls on macOS if available.
-      (when gls
-        (setq insert-directory-program gls)))))
-
-
-;;; ELDOC
-;; Eldoc provides helpful inline documentation for functions and variables
-;; in the minibuffer, enhancing the development experience. It can be particularly useful
-;; in programming modes, as it helps you understand the context of functions as you type.
-;; This package is built-in, so there's no need to fetch it separately.
-;; The following line enables Eldoc globally for all buffers.
-(use-package eldoc
-  :ensure nil          ;; This is built-in, no need to fetch it.
   :init
-  (global-eldoc-mode))
+  (add-hook 'ruby-mode-hook (lambda () (setq flycheck-eglot-exclusive nil))))
 
-
-;; Ruby
-(use-package ruby-mode
-  :ensure nil
-  :hook (ruby-mode . (lambda ()
-                       (setq flycheck-eglot-exclusive nil))))
-
-;; FLYCHECK
-(use-package flycheck-overlay
-  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")
-  :ensure t
-  :custom
-  (flycheck-overlay-hide-checker-name t)
-  (flycheck-overlay-show-at-eol nil)
-  (flycheck-overlay-show-virtual-line t)
-  (flycheck-overlay-icon-left-padding 1.2)
-  :init
-  (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
-
-
-(use-package flycheck-eglot
-  :ensure t
-  :after (flycheck eglot)
-  :config
-  (global-flycheck-eglot-mode 1))
-
-(use-package flycheck
-  :ensure t
-  :custom
-  (flycheck-highlighting-mode nil)
-  (flycheck-indication-mode nil)
-  :hook ((ruby-mode-hook emacs-lisp-mode-hook) . flycheck-mode)
-  :init
-  (add-hook 'rust-mode-hook #'flycheck-mode)
-  (add-hook 'gleam-ts-mode-hook #'flycheck-mode) )
-
-
-;;; ORG-MODE
-;; Org-mode is a powerful system for organizing and managing your notes,
-;; tasks, and documents in plain text. It offers features like task management,
-;; outlining, scheduling, and much more, making it a versatile tool for
-;; productivity. The configuration below simply defers loading Org-mode until
-;; it's explicitly needed, which can help speed up Emacs startup time.
-(use-package org
-  :ensure nil     ;; This is built-in, no need to fetch it.
-  :defer t)       ;; Defer loading Org-mode until it's needed.
-
-
-;;; ==================== EXTERNAL PACKAGES ====================
-;;
-;; From this point onward, all configurations will be for third-party packages
-;; that enhance Emacs' functionality and extend its capabilities.
-
-;;; VERTICO
-;; Vertico enhances the completion experience in Emacs by providing a
-;; vertical selection interface for both buffer and minibuffer completions.
-;; Unlike traditional minibuffer completion, which displays candidates
-;; in a horizontal format, Vertico presents candidates in a vertical list,
-;; making it easier to browse and select from multiple options.
-;;
-;; In buffer completion, `switch-to-buffer' allows you to select from open buffers.
-;; Vertico streamlines this process by displaying the buffer list in a way that
-;; improves visibility and accessibility. This is particularly useful when you
-;; have many buffers open, allowing you to quickly find the one you need.
-;;
-;; In minibuffer completion, such as when entering commands or file paths,
-;; Vertico helps by showing a dynamic list of potential completions, making
-;; it easier to choose the correct one without typing out the entire string.
-(use-package vertico
-  :ensure t
-  :hook
-  (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
-  :custom
-  (vertico-count 15)                    ;; Number of candidates to display in the completion list.
-  (vertico-resize nil)                  ;; Disable resizing of the vertico minibuffer.
-  (vertico-cycle nil)                   ;; Do not cycle through candidates when reaching the end of the list.
-  (completion-styles '(basic partial-completion orderless))
-  :bind (:map vertico-map
-			  ("C-j" . vertico-next)
-			  ("C-k" . vertico-previous)
-			  ("C-f" . vertico-exit)
-			  :map minibuffer-local-map
-			  ("M-h" . backward-kill-word)))
-
-(use-package vertico-directory
-  :ensure nil
-  :after vertico
-  :bind (:map vertico-map
-              ("RET" . vertico-directory-enter)
-              ("DEL" . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word))
-  ;; Tidy shadowed file names
-  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
-
-;;; ORDERLESS
-;; Orderless enhances completion in Emacs by allowing flexible pattern matching.
-;; It works seamlessly with Vertico, enabling you to use partial strings and
-;; regular expressions to find files, buffers, and commands more efficiently.
-;; This combination provides a powerful and customizable completion experience.
-(use-package orderless
-  :ensure t
-  :defer t                                    ;; Load Orderless on demand.
-  :after vertico                              ;; Ensure Vertico is loaded before Orderless.
-  :init
-  (setq completion-styles '(orderless basic)  ;; Set the completion styles.
-        completion-category-overrides '((file (styles partial-completion))))) ;; Customize file completion styles.
-
-
-;;; MARGINALIA
-;; Marginalia enhances the completion experience in Emacs by adding
-;; additional context to the completion candidates. This includes
-;; helpful annotations such as documentation and other relevant
-;; information, making it easier to choose the right option.
-(use-package marginalia
-  :ensure t
-  :hook
-  (after-init . marginalia-mode))
-
-
-;;; CONSULT
-;; Consult provides powerful completion and narrowing commands for Emacs.
-;; It integrates well with other completion frameworks like Vertico, enabling
-;; features like previews and enhanced register management. It's useful for
-;; navigating buffers, files, and xrefs with ease.
-(use-package consult
+(use-package rspec-mode
   :ensure t
   :defer t
   :custom
-  (consult-preview-key nil)
-  :init
-  ;; Enhance register preview with thin lines and no mode line.
-  (setq xref-show-xrefs-function #'consult-xref xref-show-definitions-function #'consult-xref)
-  (advice-add #'register-preview :override #'consult-register-window))
+  (rspec-primary-source-dirs '("app" "apps" "lib")))
 
-  ;; Use Consult for xref locations with a preview feature.
-  ;; (setq xref-show-xrefs-function #'consult-xref
-  ;;       xref-show-definitions-function #'consult-xref))
+(use-package ruby-end :defer t :ensure t)
 
-(unless (package-installed-p 'consult-vc-modified-files)
-  (package-vc-install "https://github.com/chmouel/consult-vc-modified-files"))
-(use-package consult-vc-modified-files :ensure t)
-(use-package consult-flycheck :ensure t :defer t :after consult)
+(use-package gleam-ts-mode :mode (rx ".gleam" eos))
 
-;;; TREESITTER-AUTO
-;; Treesit-auto simplifies the use of Tree-sitter grammars in Emacs,
-;; providing automatic installation and mode association for various
-;; programming languages. This enhances syntax highlighting and
-;; code parsing capabilities, making it easier to work with modern
-;; programming languages.
-(use-package treesit-auto
-  :ensure t
-  :after emacs
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  ;; (treesit-auto-add-to-auto-mode-alist 'all)
-;; (global-treesit-auto-mode t)
-  (add-to-list 'auto-mode-alist '("\\.cr$" . crystal-mode))
-  (add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.exs\\'" . elixir-ts-mode))
-  (add-to-list 'auto-mode-alist '("\\.gleam\\'" . gleam-ts-mode)))
-
-
-;;; SLIM-MODE
-(use-package slim-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.emblem$" . slim-mode)))
-
-;;; MARKDOWN-MODE
-;; Markdown Mode provides support for editing Markdown files in Emacs,
-;; enabling features like syntax highlighting, previews, and more.
-;; It’s particularly useful for README files, as it can be set
-;; to use GitHub Flavored Markdown for enhanced compatibility.
-(use-package markdown-mode
-  :defer t
-  :ensure t
-  :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
-  :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
-
-
-;;; SNIPPETS
-(use-package yasnippet
-  :ensure t
-  :defer t
-  :init (yas-global-mode 1))
-
-;;; POPPER
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (use-package popper                                         ;;
-;;   :ensure t                                                 ;;
-;;   :bind (("C-`"   . popper-toggle)                          ;;
-;;          ("M-`"   . popper-cycle)                           ;;
-;;          ("C-M-`" . popper-toggle-type))                    ;;
-;;   :custom                                                   ;;
-;;   (popper-reference-buffers                                 ;;
-;;         '("\\*Async Shell Command\\*"                       ;;
-;;           "*rspec-compilation*"                             ;;
-;;           "*mix test*"                                      ;;
-;;           "*RuboCop"                                        ;;
-;;           "*cider-repl"                                     ;;
-;;           "*cider-error*"                                   ;;
-;;           "*cider-test-report"                              ;;
-;;           "*Help*"                                          ;;
-;;           "*eldoc"                                          ;;
-;;           "*grep"                                           ;;
-;;           "*grep*"                                          ;;
-;;           "*xref*"                                          ;;
-;;           "*eshell*"                                        ;;
-;;           "-eshell*"                                        ;;
-;;           "*rg*"                                            ;;
-;;           "*compilation*"                                   ;;
-;;           "\\*Bundler\\*"))                                 ;;
-;;   (popper-window-height (lambda (win)                       ;;
-;;                                (->                          ;;
-;;                                 window-total-height         ;;
-;;                                 (/ 2.5)                     ;;
-;;                                 (floor))))                  ;;
-;;   (popper-display-function 'popper-display-popup-at-bottom) ;;
-;;   :init                                                     ;;
-;;   (popper-mode +1)                                          ;;
-;;   (popper-echo-mode +1))                                    ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; COMPANY
-;; Company Mode provides a text completion framework for Emacs.
-;; It enhances the editing experience by offering context-aware
-;; suggestions as you type. With support for multiple backends,
-;; Company Mode is highly customizable and can be integrated with
-;; various modes and languages.
-(use-package company
-  :ensure t
-  :custom
-  (company-tooltip-align-annotations t)      ;; Align annotations with completions.
-  (company-minimum-prefix-length 1)          ;; Trigger completion after typing 1 character
-  (company-idle-delay 0.2)                   ;; Delay before showing completion (adjust as needed)
-  (company-tooltip-maximum-width 50)
-  (company-backends '((company-yasnippet :separate company-capf company-dabbrev)))
-  :config
-
-  ;; While using C-p C-n to select a completion candidate
-  ;; C-y quickly shows help docs for the current candidate
-  (define-key company-active-map (kbd "C-y")
-			  (lambda ()
-				(interactive)
-				(company-show-doc-buffer)))
-  (define-key company-active-map [tab] 'company-complete-selection)
-  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
-  (define-key company-active-map [ret] 'company-complete-selection)
-  (define-key company-active-map (kbd "RET") 'company-complete-selection)
-  :hook
-  (prog-mode . company-mode)
-  (markdown-mode . company-mode))
-
-;;; Eglot
 (use-package eglot
   :ensure nil
-  :hook
-  (ruby-ts-mode . eglot-ensure)
-  (ruby-mode . eglot-ensure)
-  (elixir-ts-mode . eglot-ensure)
-  (typescript-ts-mode . eglot-ensure)
-  (gleam-ts-mode . eglot-ensure)
-  (rust-mode . eglot-ensure)
-  (rust-ts-mode . eglot-ensure)
   :init
+  (add-hook 'ruby-mode-hook 'eglot-ensure)
+  (add-hook 'gleam-ts-mode-hook 'eglot-ensure)
   (setq-default eglot-events-buffer-size 0) ;; Disable logging
   (setq-default eglot-stay-out-of '(company flymake))
   (setq-default eglot-ignored-server-capabilities '(:inlayHintProvider))
@@ -711,89 +226,150 @@
                    ("elixir-ls" "--stdio=true" :initializationOptions (:experimental (:completions (:enable t))))))))
 
 (use-package eglot-booster
-  :vc (:url "https://github.com/blahgeek/emacs-lsp-booster" :branch "master")
-  :after eglot
   :ensure t
+  :defer t
+  :vc (:url "https://github.com/jdtsmith/eglot-booster" :branch "main")
+  :after eglot
   :config (eglot-booster-mode))
 
-;;; FORMATTING
-(use-package ws-butler
+(use-package flycheck
   :ensure t
-  :hook prog-mode slim-mode)
+  :defer t
+  :custom
+  (flycheck-highlighting-mode nil)
+  (flycheck-indication-mode nil)
+  :hook ((ruby-mode gleam-ts-mode) . flycheck-mode))
+
+(use-package flycheck-eglot
+  :ensure t
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode 1))
+
+(use-package flycheck-overlay
+  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")
+  :ensure t
+  :defer t
+  :custom
+  (flycheck-overlay-hide-checker-name t)
+  (flycheck-overlay-show-at-eol nil)
+  (flycheck-overlay-show-virtual-line t)
+  (flycheck-overlay-icon-left-padding 1.2)
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
 
 (use-package reformatter
   :ensure t
+  :defer t
   :hook (clojure-mode . cljstyle-format-on-save-mode)
   :hook (gleam-ts-mode . gleam-format-on-save-mode)
   :config
   (reformatter-define cljstyle-format
-                   :program "cljstyle"
-                   :args '("pipe")
-                   :lighter " CLJ")
+    :program "cljstyle"
+    :args '("pipe")
+    :lighter " CLJ")
   (reformatter-define gleam-format
-                   :program "gleam"
-                   :args '("format" "--stdin")
-                   :lighter " GLEAM"))
+    :program "gleam"
+    :args '("format" "--stdin")
+    :lighter " GLEAM"))
 
-;;; LSP Additional Servers
-;; You can extend `lsp-mode' by integrating additional language servers for specific
-;; technologies. For example, `lsp-tailwindcss' provides support for Tailwind CSS
-;; classes within your HTML files. By using various LSP packages, you can connect
-;; multiple LSP servers simultaneously, enhancing your coding experience across
-;; different languages and frameworks.
-;(use-package lsp-tailwindcss
-;  :ensure t
-;  :defer t
-;  :config
-;  (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html")) ;; Associate ERB files with HTML.
-;  :init
-;  (setq lsp-tailwindcss-add-on-mode t))
+(use-package consult
+  :ensure t
+  :defer t
+  :custom
+  (consult-preview-key nil)
+  :init
+  ;; Enhance register preview with thin lines and no mode line.
+  (setq xref-show-xrefs-function #'consult-xref xref-show-definitions-function #'consult-xref)
+  (advice-add #'register-preview :override #'consult-register-window))
 
+(use-package vertico
+  :ensure t
+  :defer t
+  :hook
+  (after-init . vertico-mode)
+  :custom
+  (vertico-count 15)
+  (vertico-resize nil)
+  (vertico-cycle nil)
+  (completion-styles '(basic partial-completion orderless))
+  :bind (:map vertico-map
+	      ("C-j" . vertico-next)
+	      ("C-k" . vertico-previous)
+	      ("C-f" . vertico-exit)
+	      :map minibuffer-local-map
+	      ("M-h" . backward-kill-word)))
 
-;;; Diff-HL
-;; The `diff-hl' package provides visual indicators for version control changes
-;; directly in the margin of the buffer, showing lines added, deleted, or changed.
-;; This is useful for tracking modifications while you edit files. When enabled,
-;; it automatically activates in every buffer that has a corresponding version
-;; control backend, offering a seamless experience.
-;;
-;; In comparison, Neovim users often rely on plugins like `gitsigns.nvim' or
-;; `vim-signify', which provide similar functionalities by displaying Git
-;; changes in the gutter and offer additional features like highlighting
-;; changed lines and displaying blame information. `diff-hl' aims to provide
-;; a comparable experience in Emacs with its own set of customizations.
+(use-package vertico-directory
+  :ensure nil
+  :defer t
+  :after vertico
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+(use-package orderless
+  :ensure t
+  :defer t
+  :after vertico
+  :init
+  (setq completion-styles '(orderless basic)
+        completion-category-overrides '((file (styles partial-completion)))))
+
+(use-package marginalia
+  :ensure t
+  :hook
+  (after-init . marginalia-mode))
+
+(use-package nerd-icons :ensure t :defer t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package company
+  :ensure t
+  :custom
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 2)
+  (company-idle-delay 0.2)
+  (company-tooltip-maximum-width 50)
+  (company-backends '((company-yasnippet :separate company-capf company-dabbrev)))
+  :config
+  (define-key company-active-map (kbd "C-d") (lambda () (interactive) (company-show-doc-buffer)))
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+  (define-key company-active-map [tab] 'company-complete-selection)
+  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  (define-key company-active-map [ret] 'company-complete-selection)
+  (define-key company-active-map (kbd "RET") 'company-complete-selection)
+  :hook
+  (prog-mode . company-mode)
+  (markdown-mode . company-mode))
+
+(use-package yasnippet :ensure t :defer t :init (yas-global-mode 1))
+
 (use-package diff-hl
   :defer t
   :ensure t
   :hook
   (find-file . (lambda ()
-                 (global-diff-hl-mode)           ;; Enable Diff-HL mode for all files.
-                 (diff-hl-flydiff-mode)          ;; Automatically refresh diffs.
-                 (diff-hl-margin-mode)))         ;; Show diff indicators in the margin.
+                 (global-diff-hl-mode)
+                 (diff-hl-flydiff-mode)
+                 (diff-hl-margin-mode)))
   :custom
-  (diff-hl-side 'left)                           ;; Set the side for diff indicators.
-  (diff-hl-margin-symbols-alist '((insert . "│") ;; Customize symbols for each change type.
-                                   (delete . "-")
-                                   (change . "│")
-                                   (unknown . "?")
-                                   (ignored . "i"))))
+  (diff-hl-side 'left)
+  (diff-hl-margin-symbols-alist '((insert . "│")
+                                  (delete . "-")
+                                  (change . "│")
+                                  (unknown . "?")
+                                  (ignored . "i"))))
 
-
-;;; Magit
-;; `magit' is a powerful Git interface for Emacs that provides a complete
-;; set of features to manage Git repositories. With its intuitive interface,
-;; you can easily stage, commit, branch, merge, and perform other Git
-;; operations directly from Emacs. Magit’s powerful UI allows for a seamless
-;; workflow, enabling you to visualize your repository's history and manage
-;; changes efficiently.
-;;
-;; In the Neovim ecosystem, similar functionality is provided by plugins such as
-;; `fugitive.vim', which offers a robust Git integration with commands that
-;; allow you to perform Git operations directly within Neovim. Another popular
-;; option is `neogit', which provides a more modern and user-friendly interface
-;; for Git commands in Neovim, leveraging features like diff views and staging
-;; changes in a visual format. Both of these plugins aim to replicate and
-;; extend the powerful capabilities that Magit offers in Emacs.
 (use-package magit
   :ensure t
   :defer t
@@ -803,35 +379,8 @@
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
-
-;;; INDENT-GUIDE
-;; The `indent-guide' package provides visual indicators for indentation levels
-;; in programming modes, making it easier to see code structure at a glance.
-;; It draws vertical lines (by default, a character of your choice) at each
-;; level of indentation, helping to improve readability and navigation within
-;; the code.
-(use-package indent-guide
-  :defer t
-  :ensure t
-  :hook
-  (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
-  :config
-  (setq indent-guide-char "│"))    ;; Set the character used for the indent guide.
-
-;; EVIL
-;; The `evil' package provides Vim emulation within Emacs, allowing
-;; users to edit text in a modal way, similar to how Vim
-;; operates. This setup configures `evil-mode' to enhance the editing
-;; experience.
-(use-package expand-region :ensure t)
-
-(define-key ruby-mode-map (kbd "C-x M-t t") 'rspec-toggle-spec-and-target)
-(define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
-(define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
-(define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
-;(define-key key-translation-map (kbd "ESC") (kbd "C-g")
 (defun meow-setup ()
-  (setq meow-expand-hint-counts 0)
+  (setq meow-expand-hint-counts '())
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-define-key
    '("j" . meow-next)
@@ -923,223 +472,10 @@
    '("/" . consult-line)
    '("=" . er/expand-region)))
 
-(use-package ace-window :ensure t :defer t)
-(global-set-key (kbd "M-o") 'ace-window)
-
 (use-package meow
   :ensure t
+  :custom
+  (meow-use-clipboard t)
   :config
-  (modify-syntax-entry ?_ "w" (standard-syntax-table))
   (meow-setup)
   (meow-global-mode 1))
-;;; RAINBOW DELIMITERS
-;; The `rainbow-delimiters' package provides colorful parentheses, brackets, and braces
-;; to enhance readability in programming modes. Each level of nested delimiter is assigned
-;; a different color, making it easier to match pairs visually.
-(use-package rainbow-delimiters
-  :defer t
-  :ensure t
-  :hook
-  (prog-mode . rainbow-delimiters-mode))
-
-
-;;; Crystal
-;; (use-package crystal-mode
-;;   :ensure t
-;;   :defer t
-;;   :config
-;;   (setenv "CRYSTAL_OPTS" "--link-flags=-Wl,-ld_classic"))
-
-;;; GLEAM
-(use-package gleam-ts-mode :mode (rx ".gleam" eos))
-
-;;; RUST
-(use-package rust-mode :ensure t :defer t)
-
-;;; RUBY
-(use-package inf-ruby
-  :ensure t
-  :defer t
-;  :config
-;  (inf-ruby-enable-auto-breakpoint)
-  :init
-  (add-hook 'compilation-filter-hook 'inf-ruby-auto-enter))
-
-(use-package ruby-end
-  :defer t
-  :ensure t)
-
-(use-package rspec-mode
-  :ensure t
-  :defer t
-  :commands (rspec-toggle-spec-and-target rspec-verify rspec-rerun rspec-run-last-failed rspec-verify-single rspec-verify-all)
-  :custom
-  (rspec-primary-source-dirs '("app" "apps" "lib")))
-
-;;; PULSAR
-;; The `pulsar' package enhances the user experience in Emacs by providing
-;; visual feedback through pulsating highlights. This feature is especially
-;; useful in programming modes, where it can help users easily track
-;; actions such as scrolling, error navigation, yanking, deleting, and
-;; jumping to definitions.
-(use-package pulsar
-  :defer t
-  :ensure t
-  :hook
-  (after-init . pulsar-global-mode)
-  :config
-  (setq pulsar-pulse t)
-  (setq pulsar-delay 0.025)
-  (setq pulsar-iterations 10)
-  (setq pulsar-face 'lazy-highlight)
-
-  (add-to-list 'pulsar-pulse-functions 'meow-search)
-  (add-to-list 'pulsar-pulse-functions 'flycheck-next-error)
-  (add-to-list 'pulsar-pulse-functions 'flycheck-previous-error)
-  (add-to-list 'pulsar-pulse-functions 'flymake-goto-next-error)
-  (add-to-list 'pulsar-pulse-functions 'flymake-goto-prev-error)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
-  (add-to-list 'pulsar-pulse-functions 'diff-hl-next-hunk)
-  (add-to-list 'pulsar-pulse-functions 'diff-hl-previous-hunk))
-
-
-;;; DOOM MODELINE
-;; The `doom-modeline' package provides a sleek, modern mode-line that is visually appealing
-;; and functional. It integrates well with various Emacs features, enhancing the overall user
-;; experience by displaying relevant information in a compact format.
-
-(use-package doom-modeline
-  :ensure t
-  :defer t
-  :custom
-  (doom-modeline-buffer-file-name-style 'buffer-name)  ;; Set the buffer file name style to just the buffer name (without path).
-  (doom-modeline-project-detection 'project)           ;; Enable project detection for displaying the project name.
-  (doom-modeline-buffer-name t)                        ;; Show the buffer name in the mode line.
-  (doom-modeline-vcs-max-length 25)                    ;; Limit the version control system (VCS) branch name length to 25 characters.
-  (doom-modeline-buffer-encoding nil)
-  :config
-  (if ek-use-nerd-fonts                                ;; Check if nerd fonts are being used.
-      (setq doom-modeline-icon t)                      ;; Enable icons in the mode line if nerd fonts are used.
-    (setq doom-modeline-icon nil))                     ;; Disable icons if nerd fonts are not being used.
-  :hook
-  (after-init . doom-modeline-mode))
-
-
-;;; NERD ICONS
-;; The `nerd-icons' package provides a set of icons for use in Emacs. These icons can
-;; enhance the visual appearance of various modes and packages, making it easier to
-;; distinguish between different file types and functionalities.
-(use-package nerd-icons
-  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
-  :ensure t                               ;; Ensure the package is installed.
-  :defer t)                               ;; Load the package only when needed to improve startup time.
-
-
-;;; NERD ICONS Dired
-;; The `nerd-icons-dired' package integrates nerd icons into the Dired mode,
-;; providing visual icons for files and directories. This enhances the Dired
-;; interface by making it easier to identify file types at a glance.
-(use-package nerd-icons-dired
-  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
-  :ensure t                               ;; Ensure the package is installed.
-  :defer t                                ;; Load the package only when needed to improve startup time.
-  :hook
-  (dired-mode . nerd-icons-dired-mode))
-
-
-;;; NERD ICONS COMPLETION
-;; The `nerd-icons-completion' package enhances the completion interfaces in
-;; Emacs by integrating nerd icons with completion frameworks such as
-;; `marginalia'. This provides visual cues for the completion candidates,
-;; making it easier to distinguish between different types of items.
-(use-package nerd-icons-completion
-  :if ek-use-nerd-fonts                   ;; Load the package only if the user has configured to use nerd fonts.
-  :ensure t                               ;; Ensure the package is installed.
-  :after (:all nerd-icons marginalia)     ;; Load after `nerd-icons' and `marginalia' to ensure proper integration.
-  :config
-  (nerd-icons-completion-mode)            ;; Activate nerd icons for completion interfaces.
-  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)) ;; Setup icons in the marginalia mode for enhanced completion display.
-
-
-;;; CATPPUCCIN THEME
-;; The `catppuccin-theme' package provides a visually pleasing color theme
-;; for Emacs that is inspired by the popular Catppuccin color palette.
-;; This theme aims to create a comfortable and aesthetic coding environment
-;; with soft colors that are easy on the eyes.
-(use-package catppuccin-theme
-  :ensure t
-  :config
-  (custom-set-faces
-   ;; Set the color for changes in the diff highlighting to blue.
-   `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue))))))
-
-  (custom-set-faces
-   ;; Set the color for deletions in the diff highlighting to red.
-   `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red))))))
-
-  (custom-set-faces
-   ;; Set the color for insertions in the diff highlighting to green.
-   `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green))))))
-
-  ;; Load the Catppuccin theme without prompting for confirmation.
-  (load-theme 'catppuccin :no-confirm))
-
-
-;;; UTILITARY FUNCTION TO INSTALL EMACS-KICK
-(defun ek/first-install ()
-  "Install tree-sitter grammars and compile packages on first run..."
-  (interactive)                                      ;; Allow this function to be called interactively.
-  (switch-to-buffer "*Messages*")                    ;; Switch to the *Messages* buffer to display installation messages.
-  (message ">>> All required packages installed.")
-  (message ">>> Configuring Emacs-Kick...")
-  (message ">>> Configuring Tree Sitter parsers...")
-  (require 'treesit-auto)
-  (treesit-auto-install-all)                         ;; Install all available Tree Sitter grammars.
-  (message ">>> Configuring Nerd Fonts...")
-  (require 'nerd-icons)
-  (nerd-icons-install-fonts)                         ;; Install all available nerd-fonts
-  (message ">>> Native compile 3rd-party packages...\n")
-  (require 'comp)
-  (native-compile-prune-cache)                       ;; Prune the native compilation cache to free up resources.
-  ;; Iterate through all directories in the user's package directory.
-  (dolist (dir (directory-files package-user-dir t "^[^.]" t))
-    (when (file-directory-p dir)                     ;; Check if the current entry is a directory.
-      (byte-recompile-directory dir 0 t)             ;; Byte compile all files in the directory.
-      (native-compile-async dir 'recursively)))      ;; Asynchronously compile the directory and its subdirectories.
-
-  (message ">>> Emacs-Kick installed!!! Press any key to close the installer and open Emacs normally.") ;; Notify the user that the installation is complete.
-  (read-key)                                         ;; Wait for the user to press any key.
-  (kill-emacs))                                      ;; Close Emacs after installation is complete.
-
-(provide 'init)
-;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ace-window catppuccin-theme company consult-flycheck
-                consult-vc-modified-files diff-hl doom-modeline
-                eglot-booster expand-region flycheck-eglot
-                flycheck-overlay flymake-margin gleam-ts-mode
-                indent-guide inf-ruby magit marginalia markdown-mode
-                meow nerd-icons-completion nerd-icons-dired orderless
-                pulsar rainbow-delimiters reformatter rspec-mode
-                ruby-end rust-mode slim-mode treesit-auto vertico
-                ws-butler yasnippet))
- '(safe-local-variable-values
-   '((eval set (make-local-variable 'rspec-primary-source-dirs)
-           (setq rspec-primary-source-dirs '("app" "apps" "lib"))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(diff-hl-change ((t (:background unspecified :foreground "#89b4fa"))))
- '(diff-hl-delete ((t (:background unspecified :foreground "#f38ba8"))))
- '(diff-hl-insert ((t (:background unspecified :foreground "#a6e3a1")))))
