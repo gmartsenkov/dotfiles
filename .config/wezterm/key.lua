@@ -92,7 +92,16 @@ return {
 			end),
 		}),
 	},
-
+        {
+          mods = "CTRL",
+          key = "=",
+          action = wezterm.action.DisableDefaultAssignment,
+        },
+        {
+          mods = "CTRL",
+          key = "-",
+          action = wezterm.action.DisableDefaultAssignment,
+        },
 	-- Toggle zoom for neovim
 	{
 		key = ";",
