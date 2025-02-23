@@ -97,7 +97,7 @@
   (find-file-hook . code/relative-buffer-name)
 
   :init
-  (load custom-file :noerror)
+  (load (concat user-emacs-directory "custom.el") :noerror)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -135,6 +135,8 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-tokyo-night t)
+  (custom-set-faces
+   `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
   (custom-set-faces
    `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
   (custom-set-faces
@@ -184,7 +186,7 @@
       (side . right)
       (slot . 0)))))
 
-(use-package ruby
+(use-package ruby-mode
   :ensure nil
   :custom
   (ruby-indent-level 2)
@@ -203,6 +205,7 @@
   :ensure t
   :defer t
   :custom
+  (rspec-key-command-prefix (kbd "C-c C-t"))
   (rspec-primary-source-dirs '("app" "apps" "lib")))
 
 (use-package ruby-end :defer t :ensure t)
@@ -379,6 +382,11 @@
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
+;; (define-key ruby-mode-map (kbd "C-x M-t t") 'rspec-toggle-spec-and-target)
+;; (define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
+;; (define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
+;; (define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
+
 (defun meow-setup ()
   (setq meow-expand-hint-counts '())
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -388,12 +396,12 @@
    '("<escape>" . ignore))
   (meow-leader-define-key
    '("v" . "C-x v")
-   '("t" . "C-x M-t")
    '("SPC" . project-find-file)
    '("b" . project-switch-to-buffer)
    '("pp" . project-switch-project)
    '("mp" . flycheck-compile)
    '("f" . find-file)
+   '("t" . "C-c C-t")
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
