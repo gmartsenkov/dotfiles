@@ -5,6 +5,7 @@
       '(use-package
          diff-hl
          doom-themes
+         doom-modeline
          company
          yasnippet
          consult
@@ -33,26 +34,6 @@
 (defun code/relative-buffer-name ()
   (rename-buffer
    (file-relative-name buffer-file-name (car (last (project-current))))))
-
-(setq-default mode-line-format
-  '(:eval
-    (let ((prefix (cond (buffer-read-only     '("RO" . nano-default-i))
-                        ((buffer-modified-p)  '("**" . nano-critical-i))
-                        (t                    '("RW" . nano-faded-i))))
-          (mode (concat "(" (downcase (cond ((consp mode-name) (car mode-name))
-                                            ((stringp mode-name) mode-name)
-                                            (t "unknow")))
-                        " mode)"))
-          (eglot-server (eglot-current-server))
-          (coords (format-mode-line "%c:%l ")))
-      (list
-       (propertize " " 'face (cdr prefix)  'display '(raise -0.25))
-       (propertize (car prefix) 'face (cdr prefix))
-       (propertize " " 'face (cdr prefix) 'display '(raise +0.25))
-       (propertize (format-mode-line " %b ") 'face 'nano-strong)
-       (if eglot-server (propertize (concat " [eglot:" (eglot-project-nickname eglot-server) "]")))
-       (propertize " " 'display `(space :align-to (- right ,(length coords))))
-       (propertize coords 'face 'nano-faded)))))
 
 (use-package emacs
   :ensure nil
@@ -128,10 +109,24 @@
                          (emacs-init-time)
                          (number-to-string (length package-activated-list))))))))
 
+(use-package doom-modeline
+  :ensure t
+  :defer t
+  :custom
+  (doom-modeline-buffer-file-name-style 'buffer-name)
+  (doom-modeline-project-detection 'project)
+  (doom-modeline-buffer-name t)
+  (doom-modeline-vcs-max-length 25)
+  (doom-modeline-icon t)
+  (doom-modeline-buffer-encoding nil)
+  :hook
+  (after-init . doom-modeline-mode))
+
 (use-package doom-themes
   :ensure t
   :config
   (load-theme 'doom-tokyo-night t)
+  (custom-set-faces `(vertical-border ((t (:background ,(doom-color 'bg))))))
   (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
   (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
   (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
@@ -418,7 +413,6 @@
    '("/" . consult-grep)
    '("?" . meow-cheatsheet))
   (meow-normal-define-key
-   '("q" . (lambda () (interactive) (popper--bury-all)))
    '("}" . forward-paragraph)
    '("{" . backward-paragraph)
    '(">" . indent-rigidly-right)
