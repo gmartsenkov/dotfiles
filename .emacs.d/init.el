@@ -30,6 +30,7 @@
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
         (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
 
+(global-set-key (kbd "C-x v p") 'vc-pull)
 
 (defun code/relative-buffer-name ()
   (rename-buffer
@@ -161,20 +162,25 @@
   (display-buffer-alist
    '(("\\*rspec-compilation\\*"
       (display-buffer-in-side-window)
-      (window-width . (if (frame-width < 160) 0.5 0.35))
+      (window-width . 0.35)
       (side . right)
       (slot . 0))
      ("magit:"
       (display-buffer-in-side-window)
       (body-function . select-window)
       (window-preserve-size . t)
-      (window-width . (if (frame-width < 160) 0.5 0.35))
+      (window-width . 0.35)
       (side . right)
       (slot . 0))
+     ("\\*vc-git"
+      (display-buffer-in-side-window)
+      (side . bottom)
+      (window-height . 10)
+      (slot . 1))
      ("\\*vc-diff\\*"
       (display-buffer-in-side-window)
       (body-function . select-window)
-      (window-width . (if (frame-width < 160) 0.5 0.35))
+      (window-width . 0.35)
       (side . right)
       (slot . 0))
      ("\\*Help\\*"
@@ -254,6 +260,7 @@
   (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-show-at-eol nil)
   (flycheck-overlay-show-virtual-line t)
+  (flycheck-overlay-virtual-line-icon nil)
   (flycheck-overlay-icon-left-padding 1.2)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
