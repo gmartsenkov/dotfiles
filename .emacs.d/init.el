@@ -123,25 +123,42 @@
   :hook
   (after-init . doom-modeline-mode))
 
-(use-package doom-themes
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   (load-theme 'doom-ayu-dark t)
+;;   (custom-set-faces `(vertical-border ((t (:background ,(doom-color 'bg))))))
+;;   (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
+;;   (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
+;;   (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
+;;   (custom-set-faces `(diff-refine-removed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background,(doom-darken (doom-color 'red) 0.6))))))
+;;   (custom-set-faces `(diff-refine-changed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
+;;   (custom-set-faces `(diff-removed ((t (:foreground unspecified :background ,(doom-darken (doom-color 'red) 0.8))))))
+;;   (custom-set-faces `(diff-added ((t (:foreground unspecified :background ,(doom-darken (doom-color 'green) 0.8))))))
+;;   (custom-set-faces `(minibuffer-prompt ((t (:background unspecified :foreground ,(doom-color 'orange))))))
+;;   (custom-set-faces `(lazy-highlight ((t (:background ,(doom-color 'base1))))))
+;;   (custom-set-faces `(isearch ((t (:background ,(doom-color 'base2))))))
+;;   (custom-set-faces `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
+;;   (custom-set-faces `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
+;;   (custom-set-faces `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
+;;   (custom-set-faces `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green)))))))
+
+(use-package catppuccin-theme
   :ensure t
   :config
-  (load-theme 'doom-tokyo-night t)
-  (custom-set-faces `(vertical-border ((t (:background ,(doom-color 'bg))))))
-  (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
-  (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
-  (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-  (custom-set-faces `(diff-refine-removed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background,(doom-darken (doom-color 'red) 0.6))))))
-  (custom-set-faces `(diff-refine-changed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-  (custom-set-faces `(diff-removed ((t (:foreground unspecified :background ,(doom-darken (doom-color 'red) 0.8))))))
-  (custom-set-faces `(diff-added ((t (:foreground unspecified :background ,(doom-darken (doom-color 'green) 0.8))))))
-  (custom-set-faces `(minibuffer-prompt ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-  (custom-set-faces `(lazy-highlight ((t (:background ,(doom-color 'base1))))))
-  (custom-set-faces `(isearch ((t (:background ,(doom-color 'base2))))))
-  (custom-set-faces `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
-  (custom-set-faces `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-  (custom-set-faces `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
-  (custom-set-faces `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green)))))))
+  (load-theme 'catppuccin :no-confirm)
+  (custom-set-faces `(vertical-border ((t (:background ,(catppuccin-get-color 'base))))))
+  (custom-set-faces
+   ;; Set the color for changes in the diff highlighting to blue.
+   `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue))))))
+
+  (custom-set-faces
+   ;; Set the color for deletions in the diff highlighting to red.
+   `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red))))))
+
+  (custom-set-faces
+   ;; Set the color for insertions in the diff highlighting to green.
+   `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green)))))))
 
 (use-package ace-window
   :ensure t
@@ -183,11 +200,22 @@
       (window-width . 0.35)
       (side . right)
       (slot . 0))
+     ("\\*eldoc\\*"
+      (display-buffer-reuse-mode-window
+       display-buffer-below-selected)
+      (window-height . 0.3)
+      (slot . 2))
      ("\\*Help\\*"
       (display-buffer-in-side-window)
       (window-width . 0.35)
       (side . right)
       (slot . 0)))))
+
+(use-package inf-ruby
+  :ensure t
+  :defer t
+  :config
+  (inf-ruby-enable-auto-breakpoint))
 
 (use-package ruby-mode
   :ensure nil
@@ -244,6 +272,7 @@
   :custom
   (flycheck-highlighting-mode nil)
   (flycheck-indication-mode nil)
+  (flycheck-keymap-prefix (kbd "C-c C-f"))
   :hook ((ruby-mode gleam-ts-mode) . flycheck-mode))
 
 (use-package flycheck-eglot
@@ -260,7 +289,7 @@
   (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-show-at-eol nil)
   (flycheck-overlay-show-virtual-line t)
-  (flycheck-overlay-virtual-line-icon nil)
+  (flycheck-overlay-virtual-line-type 'line-no-arrow)
   (flycheck-overlay-icon-left-padding 1.2)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
