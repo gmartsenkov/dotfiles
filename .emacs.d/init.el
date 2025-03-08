@@ -1,10 +1,11 @@
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 (setq package-selected-packages
       '(use-package
          diff-hl
-         doom-themes
+         catppuccin-theme
          doom-modeline
          company
          yasnippet
@@ -29,8 +30,6 @@
 (setq package-vc-selected-packages
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
         (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
-
-(global-set-key (kbd "C-x v p") 'vc-pull)
 
 (defun code/relative-buffer-name ()
   (rename-buffer
@@ -177,7 +176,7 @@
   :bind (("C-x C-f" . toggle-frame-fullscreen))
   :custom
   (display-buffer-alist
-   '(("\\*rspec-compilation\\*"
+   '(((derived-mode . compilation-mode)
       (display-buffer-in-side-window)
       (window-width . 0.35)
       (side . right)
@@ -200,12 +199,12 @@
       (window-width . 0.35)
       (side . right)
       (slot . 0))
-     ("\\*eldoc\\*"
+     ((derived-mode . eldoc-mode)
       (display-buffer-reuse-mode-window
        display-buffer-below-selected)
       (window-height . 0.3)
       (slot . 2))
-     ("\\*Help\\*"
+     ((derived-mode . help-mode)
       (display-buffer-in-side-window)
       (window-width . 0.35)
       (side . right)
@@ -241,7 +240,12 @@
 
 (use-package ruby-end :defer t :ensure t)
 
-(use-package gleam-ts-mode :mode (rx ".gleam" eos))
+(use-package gleam-ts-mode
+  :ensure t
+  :commands gleam-ts-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.gleam$" . gleam-ts-mode))
+  :bind (("C-c C-t a" . (lambda () (interactive) (compile "gleam test")))))
 
 (use-package eglot
   :ensure nil
@@ -406,6 +410,10 @@
                                   (unknown . "?")
                                   (ignored . "i"))))
 
+(use-package vc
+  :ensure nil
+  :bind (("C-x v p" . vc-pull)))
+
 (use-package magit
   :ensure t
   :defer t
@@ -414,11 +422,6 @@
   (add-hook 'git-commit-mode-hook 'meow-insert)
   :init
   (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-
-;; (define-key ruby-mode-map (kbd "C-x M-t t") 'rspec-toggle-spec-and-target)
-;; (define-key ruby-mode-map (kbd "C-x M-t v") 'rspec-verify)
-;; (define-key ruby-mode-map (kbd "C-x M-t c") 'rspec-verify-single)
-;; (define-key ruby-mode-map (kbd "C-x M-t l") 'rspec-rerun)
 
 (defun meow-setup ()
   (setq meow-expand-hint-counts '())
@@ -470,6 +473,7 @@
    '("[" . meow-beginning-of-thing)
    '("]" . meow-end-of-thing)
    '("a" . meow-append)
+   '("A" . (lambda () (interactive) (end-of-line) (meow-append)))
    '("o" . meow-open-below)
    '("O" . meow-open-above)
    '("b" . meow-back-word)
@@ -485,6 +489,7 @@
    '("h" . meow-left)
    '("H" . meow-left-expand)
    '("i" . meow-insert)
+   '("I" . (lambda () (interactive) (beginning-of-line-text) (meow-insert)))
    '("j" . meow-next)
    '("J" . meow-next-expand)
    '("k" . meow-prev)
