@@ -20,14 +20,6 @@ vim.o.updatetime = 250
 vim.wo.number = true
 vim.opt.signcolumn = "yes"
 
-vim.diagnostic.config({
-	virtual_text = false,
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-})
-
--- vim.api.nvim_exec([[ let @/ = ""]], false)
 if vim.g.neovide then
 	vim.g.neovide_cursor_animation_length = 0
 	vim.g.neovide_cursor_trail_size = 0

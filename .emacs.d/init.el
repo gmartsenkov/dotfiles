@@ -30,6 +30,10 @@
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
         (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
 
+(defun my/run-command (cmd)
+  (let ((default-directory (car (last (project-current)))))
+    (compile cmd)))
+
 (defun code/relative-buffer-name ()
   (rename-buffer
    (file-relative-name buffer-file-name (car (last (project-current))))))
@@ -251,7 +255,7 @@
   :commands gleam-ts-mode
   :init
   (add-to-list 'auto-mode-alist '("\\.gleam$" . gleam-ts-mode))
-  :bind (("C-c C-t a" . (lambda () (interactive) (compile "gleam test")))))
+  :bind (("C-c C-t a" . (lambda () (interactive) (my/run-command "gleam test")))))
 
 (use-package eglot
   :ensure nil
