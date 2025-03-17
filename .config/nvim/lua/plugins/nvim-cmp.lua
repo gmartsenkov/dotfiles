@@ -70,24 +70,6 @@ local config = function()
 			["<C-j>"] = cmp.mapping.select_next_item(),
 			["<C-k>"] = cmp.mapping.select_prev_item(),
 			["<Up>"] = cmp.mapping.select_prev_item(),
-			-- ["<S-CR>"] = cmp.mapping.abort(),
-			["<Tab>"] = cmp.mapping(function(callback)
-				if require("luasnip").expand_or_jumpable() then
-					vim.fn.feedkeys(
-						vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true),
-						""
-					)
-				else
-					callback()
-				end
-			end),
-			["<S-Tab>"] = cmp.mapping(function(callback)
-				if require("luasnip").expand_or_jumpable() then
-					vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-				else
-					callback()
-				end
-			end),
 			["<C-p>"] = cmp.mapping.select_prev_item(),
 			["<C-n>"] = cmp.mapping.select_next_item(),
 			["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -95,6 +77,10 @@ local config = function()
 			["<C-Space>"] = cmp.mapping.complete(),
 			["<C-e>"] = cmp.mapping.close(),
 			["<CR>"] = cmp.mapping.confirm({
+				behavior = cmp.ConfirmBehavior.Insert,
+				select = true,
+			}),
+			["<Tab>"] = cmp.mapping.confirm({
 				behavior = cmp.ConfirmBehavior.Insert,
 				select = true,
 			}),

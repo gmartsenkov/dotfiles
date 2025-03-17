@@ -88,6 +88,8 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export ASDF_CONFIG_FILE=~/.asdfrc
 # . "$(brew --prefix asdf)/bin/asdf"
 
+# Java
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 PATH=$PATH:~/.local/bin
 
 # FZF Theme
