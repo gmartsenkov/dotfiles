@@ -50,10 +50,11 @@
 (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer)
 
 (defun my/capture-last-compilation-status (buf msg)
-  (if (string-match "^finished" msg)
-      (setq compilation-last-status "success")))
+  (if (string-match "^exited abnormally with code 1" msg)
+      (setq compilation-last-failed 1)
+    (setq compilation-last-failed nil)))
 
-(setq compilation-last-status nil)
+(setq compilation-last-failed nil)
 (setq compilation-finish-functions '(my/capture-last-compilation-status))
 
 (use-package emacs
@@ -157,8 +158,10 @@
   (after-init . doom-modeline-mode)
   :config
   (doom-modeline-def-segment custom-compile
-    (and (bound-and-true-p compilation-in-progress)
-         (propertize "[Compiling Gogo] " 'face (doom-modeline-face 'doom-modeline-compilation))))
+    (if (bound-and-true-p compilation-in-progress)
+        (propertize "[Compiling] " 'face (doom-modeline-face 'doom-modeline-compilation))
+      (when (bound-and-true-p compilation-last-failed)
+        (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error)))))
 
   (doom-modeline-def-modeline 'my-simple-line
     '(bar matches buffer-info remote-host parrot)
