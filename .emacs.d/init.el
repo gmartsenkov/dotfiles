@@ -307,6 +307,7 @@
   (setq-default eglot-stay-out-of '(company flymake))
   (setq-default eglot-ignored-server-capabilities '(:inlayHintProvider))
   (setq-default eglot-inlay-hints-mode nil)
+  (setq-default eglot-code-action-indicator nil)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(gleam-ts-mode . ("gleam" "lsp")))
