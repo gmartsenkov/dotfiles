@@ -9,7 +9,6 @@
          company
          yasnippet
          consult
-         expand-region
          nerd-icons
          nerd-icons-completion
          rspec-mode
@@ -160,8 +159,9 @@
   (doom-modeline-def-segment custom-compile
     (if (bound-and-true-p compilation-in-progress)
         (propertize "[Compiling] " 'face (doom-modeline-face 'doom-modeline-compilation))
-      (when (bound-and-true-p compilation-last-failed)
-        (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error)))))
+      (if (bound-and-true-p compilation-last-failed)
+          (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error))
+        (propertize "[Success] " 'face (doom-modeline-face 'doom-modeline-lsp-success)))))
 
   (doom-modeline-def-modeline 'my-simple-line
     '(bar matches buffer-info remote-host parrot)
@@ -215,11 +215,6 @@
   :init
   (global-set-key (kbd "M-o") 'ace-window))
 
-(use-package expand-region
-  :ensure t
-  :defer t
-  :init
-  (global-set-key (kbd "C-=") 'er/expand-region))
 (use-package eldoc :ensure nil :init (global-eldoc-mode))
 (use-package window
   :ensure nil
@@ -227,10 +222,7 @@
   :custom
   (display-buffer-alist
    '(((derived-mode . compilation-mode)
-      (display-buffer-in-side-window)
-      (window-width . 0.35)
-      (side . right)
-      (slot . 0))
+      (display-buffer-no-window))
      ("magit:"
       (display-buffer-in-side-window)
       (body-function . select-window)
@@ -486,11 +478,10 @@
   :hook
   (after-init . evil-mode)
   :init
-  (setq evil-want-integration t)      ;; Integrate `evil' with other Emacs features (optional as it's true by default).
   (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
   :config
   (setq-default evil-symbol-word-search t)
-  (defalias #'forward-evil-word #'forward-evil-symbol)
+  ;; (defalias #'forward-evil-word #'forward-evil-symbol)
   ;; Set the leader key to space for easier access to custom commands. (setq evil-want-leader t)
   (setq evil-leader/in-all-states t)  ;; Make the leader key available in all states.
   (setq evil-want-fine-undo t)        ;; Evil uses finer grain undoing steps
@@ -518,7 +509,7 @@
   (evil-define-key 'normal 'global (kbd "[h") 'diff-hl-previous-hunk)
   (evil-define-key 'insert 'global (kbd "C-e") 'end-of-line)
   (evil-define-key 'insert 'global (kbd "C-a") 'beginning-of-line)
-  (evil-define-key 'normal 'global (kbd "<leader>/") 'counsel-ripgrep)
+  (evil-define-key 'normal 'global (kbd "<leader>/") 'consult-ripgrep)
   (evil-define-key 'normal 'global (kbd "<leader>hv") 'describe-variable)
   (evil-define-key 'normal 'global (kbd "<leader>hf") 'describe-function)
   (evil-define-key 'normal 'global (kbd "<leader>hk") 'describe-key)
