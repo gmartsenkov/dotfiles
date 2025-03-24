@@ -8,14 +8,11 @@
          doom-modeline
          surround
          expand-region
-         corfu
-         corfu-terminal
-         cape
+         company
          yasnippet
          yasnippet-capf
          consult
          nerd-icons
-         nerd-icons-corfu
          nerd-icons-completion
          rspec-mode
          vertico
@@ -437,52 +434,22 @@
   :ensure t
   :bind ("C-=" . er/expand-region))
 
-(use-package corfu-terminal
-  :ensure t
-  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
-  :config
-  (unless (display-graphic-p) (corfu-terminal-mode +1)))
-
-(use-package corfu
+(use-package company
   :ensure t
   :custom
-  (corfu-auto t)
-  (corfu-max-width 50)
-  (corfu-quit-no-match 'separator)
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.2)
+  (company-tooltip-maximum-width 50)
+  (company-backends '((company-yasnippet :separate company-capf company-dabbrev)))
   :config
-  (setq completion-cycle-threshold 3)
-  (setq tab-always-indent 'complete)
-  (global-corfu-mode)
-  (corfu-popupinfo-mode))
-
-(use-package yasnippet-capf
-  :after cape yasnippet
-  :config
-  (progn
-    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
-  (progn
-    (defun my/eglot-capf-with-yasnippet ()
-      (setq-local completion-at-point-functions
-                  (list
-		   (cape-capf-super
-                    #'yasnippet-capf
-		    #'eglot-completion-at-point
-                    #'cape-dabbrev))))
-    (with-eval-after-load 'eglot
-      (add-hook 'eglot-managed-mode-hook #'my/eglot-capf-with-yasnippet))))
-
-(use-package cape
-  :ensure t
-  :init
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block))
-
-(use-package nerd-icons-corfu
-  :ensure t
-  :after corfu
-  :config
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+  (define-key company-active-map [tab] 'company-complete-selection)
+  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  (define-key company-active-map [ret] 'company-complete-selection)
+  (define-key company-active-map (kbd "RET") 'company-complete-selection)
+  :hook
+  (prog-mode . company-mode)
+  (markdown-mode . company-mode))
 
 (use-package yasnippet :ensure t :defer t :init (yas-global-mode 1))
 
