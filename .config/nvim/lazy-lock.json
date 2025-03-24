@@ -10,7 +10,7 @@
   "cmp_luasnip": { "branch": "master", "commit": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90" },
   "colorizer": { "branch": "master", "commit": "a065833f35a3a7cc3ef137ac88b5381da2ba302e" },
   "conform.nvim": { "branch": "master", "commit": "db8a4a9edb217067b1d7a2e0362c74bfe9cc944d" },
-  "conjure": { "branch": "master", "commit": "8aed42faf4cb44663d06883d9733c89180260daa" },
+  "conjure": { "branch": "main", "commit": "8aed42faf4cb44663d06883d9733c89180260daa" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "fzf-lua": { "branch": "main", "commit": "03eed634a3b1f4a4dc53f928868566b0b697dabe" },
   "git_browse.nvim": { "branch": "main", "commit": "047d11f3d8a6643e6758475cf167f48be9dd8043" },
