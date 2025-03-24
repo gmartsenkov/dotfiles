@@ -3,6 +3,7 @@
 .config/pgcli
 .local/
 .config
+!.config/alacritty
 !.config/borders
 !.config/hypr
 !.config/nvim
