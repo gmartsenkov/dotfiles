@@ -12,7 +12,7 @@ config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 config.enable_wayland = false
 config.color_scheme = "Catppuccin Mocha"
-config.font_size = 16.5
+config.font_size = 16
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" })
 -- config.font = wezterm.font("Victor Mono", { weight = "DemiBold" })
 -- config.font = wezterm.font("Sarasa Fixed CL Nerd Font", { weight = "Medium" })
