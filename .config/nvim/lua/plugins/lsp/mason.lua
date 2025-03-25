@@ -2,7 +2,7 @@ return {
 	"williamboman/mason.nvim",
 	cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
 	opts = {
-		ensure_installed = { "lua-language-server" },
+		ensure_installed = { "lua-language-server", "stylua", "rust-analyzer" },
 		PATH = "prepend",
 
 		ui = {

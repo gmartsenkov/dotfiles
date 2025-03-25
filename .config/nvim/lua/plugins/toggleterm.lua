@@ -21,6 +21,8 @@ return {
 		direction = "horizontal",
 		shade_terminals = false,
 		open_mapping = [[<C-t>]],
+    shell = "/bin/zsh",
+    direction = "vertical",
 		size = function(term)
 			if term.direction == "horizontal" then
 				return vim.o.lines * 0.4

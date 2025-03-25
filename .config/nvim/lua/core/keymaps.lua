@@ -1,7 +1,4 @@
 local map = vim.keymap.set
-local refresh_lualine = function()
-	require("lualine").refresh()
-end
 
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 
@@ -21,12 +18,12 @@ map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 map("n", "<leader><leader>", function()
 	require("fzf-lua").files()
 end)
-
+map("n", "<leader>ff", "<cmd> Telescope file_browser <CR>")
 map("n", "<leader>mf", function()
 	require("conform").format()
 end)
 
-map("n", "<C-n>", "<cmd> NvimTreeToggle <CR>", { desc = "Switch Window left" })
+map("n", "<C-n>", "<cmd> NvimTreeFindFile <CR>")
 map("n", "<leader>bb", function()
 	require("fzf-lua").buffers()
 end)

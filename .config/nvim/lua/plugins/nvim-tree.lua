@@ -1,1 +1,1 @@
-return { "nvim-tree/nvim-tree.lua", cmd = { "NvimTreeToggle" }, config = true }
+return { "nvim-tree/nvim-tree.lua", cmd = { "NvimTreeToggle", "NvimTreeFindFile" }, config = true }
