@@ -5,6 +5,7 @@
 .config
 !.config/alacritty
 !.config/borders
+!.config/waybar
 !.config/hypr
 !.config/nvim
 !.config/rofi
