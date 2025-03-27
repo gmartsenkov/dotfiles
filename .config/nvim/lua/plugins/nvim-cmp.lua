@@ -15,7 +15,7 @@ return {
 			["<C-k>"] = { "select_prev", "fallback" },
 			["<CR>"] = {
 				function(cmp)
-					cmp.accept()
+					return cmp.select_and_accept()
 				end,
 				"fallback",
 			},
