@@ -1,124 +1,73 @@
-local function border(hl_name)
-	return {
-		{ "╭", hl_name },
-		{ "─", hl_name },
-		{ "╮", hl_name },
-		{ "│", hl_name },
-		{ "╯", hl_name },
-		{ "─", hl_name },
-		{ "╰", hl_name },
-		{ "│", hl_name },
-	}
-end
-
-local config = function()
-	local cmp = require("cmp")
-	local lspkind = require("lspkind")
-	local item_highlights = {
-		"CmpItemKindModule",
-		"CmpItemKindClass",
-		"CmpItemKindFunction",
-		"CmpItemKindSnippet",
-		"CmpItemKindVariable",
-		"CmpItemKindText",
-		"CmpItemKindStruct",
-		"CmpItemKindInterface",
-		"CmpItemKindMethod",
-		"CmpItemKindConstant",
-		"CmpItemKindConstant",
-	}
-
-	for _, name in pairs(item_highlights) do
-		vim.api.nvim_set_hl(0, name, { ctermbg = 0, bg = LightGrey })
-	end
-
-	return {
-		completion = {
-			completeopt = "menu,menuone,noinsert",
-			keyword_length = 3,
-		},
-		formatting = {
-			format = lspkind.cmp_format({
-				mode = "symbol_text", -- show only symbol annotations
-				maxwidth = 30, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-				ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-
-				-- The function below will be called before any actual modifications from lspkind
-				-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-				before = function(entry, vim_item)
-					vim_item.abr = string.sub(vim_item.abr or "", 1, 10)
-					vim_item.menu = string.sub(vim_item.menu or "", 1, 50)
-
-					return vim_item
+return {
+	"saghen/blink.cmp",
+	dependencies = {
+		"L3MON4D3/LuaSnip",
+		version = "v2.*",
+		config = function()
+			require("luasnip.loaders.from_snipmate").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })
+		end,
+	},
+	version = "1.*",
+	opts = {
+		keymap = {
+			preset = "default",
+			["<C-j>"] = { "select_next", "fallback" },
+			["<C-k>"] = { "select_prev", "fallback" },
+			["<CR>"] = {
+				function(cmp)
+					cmp.accept()
 				end,
-			}),
-		},
-		window = {
-			documentation = {
-				border = border("CmpDocBorder"),
-				winhighlight = "Normal:CmpDoc",
+			},
+			["<Tab>"] = {
+				function(cmp)
+					if cmp.snippet_active() then
+						return cmp.accept()
+					else
+						return cmp.select_and_accept()
+					end
+				end,
+				"snippet_forward",
+				"fallback",
 			},
 		},
-		snippet = {
-			expand = function(args)
-				require("luasnip").lsp_expand(args.body)
-			end,
+
+		appearance = {
+			nerd_font_variant = "mono",
 		},
 
-		mapping = {
-			["<Down>"] = cmp.mapping.select_next_item(),
-			["<C-j>"] = cmp.mapping.select_next_item(),
-			["<C-k>"] = cmp.mapping.select_prev_item(),
-			["<Up>"] = cmp.mapping.select_prev_item(),
-			["<C-p>"] = cmp.mapping.select_prev_item(),
-			["<C-n>"] = cmp.mapping.select_next_item(),
-			["<C-d>"] = cmp.mapping.scroll_docs(-4),
-			["<C-f>"] = cmp.mapping.scroll_docs(4),
-			["<C-Space>"] = cmp.mapping.complete(),
-			["<C-e>"] = cmp.mapping.close(),
-			["<CR>"] = cmp.mapping.confirm({
-				behavior = cmp.ConfirmBehavior.Insert,
-				select = true,
-			}),
-			["<Tab>"] = cmp.mapping.confirm({
-				behavior = cmp.ConfirmBehavior.Insert,
-				select = true,
-			}),
+		snippets = { preset = "luasnip" },
+		signature = { enabled = true },
+		completion = {
+			documentation = { auto_show = true },
+			ghost_text = { enabled = true },
+			trigger = {
+				show_in_snippet = false,
+			},
 		},
+
 		sources = {
-			{ name = "luasnip", keyword_length = 2 },
-			{ name = "conjure", keyword_length = 2 },
-			{ name = "nvim_lsp" },
-			{ name = "crates" },
-			{ name = "nvim_lua" },
-			{ name = "path" },
-			{ name = "buffer" },
+			default = { "snippets", "lsp", "path", "buffer" },
+			providers = {
+				snippets = {
+					min_keyword_length = 2,
+					score_offset = 10,
+				},
+				lsp = {
+					min_keyword_length = 2,
+					score_offset = 3,
+				},
+				path = {
+					min_keyword_length = 3,
+					score_offset = 2,
+				},
+				buffer = {
+					min_keyword_length = 2,
+					score_offset = 1,
+				},
+			},
 		},
-	}
-end
 
-return {
-	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
-	dependencies = {
-		{ "onsails/lspkind.nvim", lazy = false },
-		{
-			-- snippet plugin
-			"L3MON4D3/LuaSnip",
-			opts = { history = true, updateevents = "TextChanged,TextChangedI" },
-			config = function()
-				require("luasnip.loaders.from_snipmate").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })
-			end,
-		},
-		"saadparwaiz1/cmp_luasnip",
-		"hrsh7th/cmp-nvim-lua",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"PaterJason/cmp-conjure",
+		fuzzy = { implementation = "prefer_rust_with_warning" },
 	},
-	opts = config,
-	config = function(_, opts)
-		require("cmp").setup(opts)
-	end,
+	opts_extend = { "sources.default" },
 }
