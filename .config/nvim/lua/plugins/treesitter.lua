@@ -34,7 +34,7 @@ return {
 		},
 		indent = {
 			enable = true,
-			disable = { "ruby" },
+			disable = {},
 		},
 	},
 	config = function(_, opts)
