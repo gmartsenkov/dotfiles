@@ -17,6 +17,7 @@ return {
 				function(cmp)
 					cmp.accept()
 				end,
+				"fallback",
 			},
 			["<Tab>"] = {
 				function(cmp)
