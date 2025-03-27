@@ -16,7 +16,7 @@ return {
 			["<Tab>"] = {
 				function(cmp)
 					if cmp.snippet_active() then
-						return cmp.accept()
+						return nil
 					else
 						return cmp.select_and_accept()
 					end
@@ -35,7 +35,7 @@ return {
 			documentation = { auto_show = true },
 			ghost_text = { enabled = true },
 			trigger = {
-				show_in_snippet = false,
+				show_in_snippet = true,
 			},
 		},
 		sources = {

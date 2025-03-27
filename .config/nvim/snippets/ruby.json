@@ -1,0 +1,80 @@
+{
+  "frozen": {
+    "prefix": "frozen",
+    "body": [
+      "# frozen_string_literal: true"
+    ]
+  },
+  "def": {
+    "prefix": "def",
+    "body": [
+      "def ${1:method}",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "exp": {
+    "prefix": "exp",
+    "body": [
+      "expect(${1:subject}).to eq(${0:})"
+    ]
+  },
+  "bef": {
+    "prefix": "bef",
+    "body": [
+      "before do",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "let": {
+    "prefix": "let",
+    "body": [
+      "let(:${1:var}) { ${0} }"
+    ]
+  },
+  "sub": {
+    "prefix": "sub",
+    "body": [
+      "subject { ${0} }"
+    ]
+  },
+  "it": {
+    "prefix": "it",
+    "body": [
+      "it \"${1:description}\" do",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "desc": {
+    "prefix": "desc",
+    "body": [
+      "desc \"${1:description}\" do",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "cont": {
+    "prefix": "cont",
+    "body": [
+      "context \"${1:description}\" do",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "rdesc": {
+    "prefix": "rdesc",
+    "body": [
+      "RSpec.describe ${1:class}",
+      "  ${0:}",
+      "end"
+    ]
+  },
+  "fix": {
+    "prefix": "fix",
+    "body": [
+      "Fixtures::Factory.build_as :${1:record}"
+    ]
+  }
+}
