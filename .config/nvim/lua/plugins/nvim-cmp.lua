@@ -1,13 +1,7 @@
 return {
 	"saghen/blink.cmp",
-	dependencies = {
-		"L3MON4D3/LuaSnip",
-		version = "v2.*",
-		config = function()
-			require("luasnip.loaders.from_snipmate").lazy_load({ paths = vim.fn.stdpath("config") .. "/snippets" })
-		end,
-	},
 	version = "1.*",
+	lazy = false,
 	opts = {
 		keymap = {
 			preset = "default",
@@ -36,7 +30,6 @@ return {
 			nerd_font_variant = "mono",
 		},
 
-		snippets = { preset = "luasnip" },
 		signature = { enabled = true },
 		completion = {
 			documentation = { auto_show = true },
@@ -45,21 +38,17 @@ return {
 				show_in_snippet = false,
 			},
 		},
-
 		sources = {
-			default = { "snippets", "lsp", "path", "buffer" },
+			default = { "snippets", "lsp", "buffer" },
 			providers = {
 				snippets = {
 					min_keyword_length = 2,
 					score_offset = 10,
 				},
 				lsp = {
+					async = true,
 					min_keyword_length = 2,
 					score_offset = 3,
-				},
-				path = {
-					min_keyword_length = 3,
-					score_offset = 2,
 				},
 				buffer = {
 					min_keyword_length = 2,
@@ -68,7 +57,13 @@ return {
 			},
 		},
 
-		fuzzy = { implementation = "prefer_rust_with_warning" },
+		fuzzy = {
+			implementation = "prefer_rust_with_warning",
+			use_frecency = false,
+			use_proximity = true,
+			max_typos = function()
+				return 0
+			end,
+		},
 	},
-	opts_extend = { "sources.default" },
 }
