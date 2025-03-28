@@ -50,7 +50,7 @@
   "desc": {
     "prefix": "desc",
     "body": [
-      "desc \"${1:description}\" do",
+      "describe \"${1:description}\" do",
       "  ${0:}",
       "end"
     ]
