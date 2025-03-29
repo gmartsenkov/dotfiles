@@ -86,6 +86,8 @@ eval "$(zoxide init --cmd cd zsh)"
 # ASDF
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export ASDF_CONFIG_FILE=~/.asdfrc
+export ASDF_NODEJS_VERSION=20.19.0
+export ASDF_RUBY_VERSION=3.3.4
 # . "$(brew --prefix asdf)/bin/asdf"
 
 # Java
