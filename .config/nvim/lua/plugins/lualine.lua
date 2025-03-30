@@ -41,7 +41,14 @@ return {
 	"nvim-lualine/lualine.nvim",
 	lazy = false,
 	config = true,
-	dependencies = { "nvim-tree/nvim-web-devicons" },
+	dependencies = {
+		"nvim-tree/nvim-web-devicons",
+		{
+			"linrongbin16/lsp-progress.nvim",
+			config = true,
+			opts = { max_size = 50 },
+		},
+	},
 	opts = {
 		extensions = { "toggleterm", "lazy", "nvim-tree", "mason" },
 		options = {
