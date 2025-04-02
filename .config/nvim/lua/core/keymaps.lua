@@ -32,7 +32,7 @@ map("n", "<leader>bd", function()
 end)
 map("n", "<leader>bn", "<cmd> enew <CR>")
 map("n", "<leader>/", function()
-	require("fzf-lua").grep()
+	require("fzf-lua").live_grep()
 end)
 
 -- Testing
