@@ -29,6 +29,7 @@ return {
 			"surface",
 			"vim",
 			"vimdoc",
+			"glimmer",
 		},
 		endwise = {
 			enable = true,
