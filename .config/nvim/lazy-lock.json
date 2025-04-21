@@ -6,7 +6,7 @@
   "conjure": { "branch": "main", "commit": "1e656c64494f0b0c51baa40ea3c61f2b608e15b2" },
   "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "git_browse.nvim": { "branch": "main", "commit": "047d11f3d8a6643e6758475cf167f48be9dd8043" },
-  "gitsigns.nvim": { "branch": "main", "commit": "d9d94e055a19415767bb073e8dd86028105c4319" },
+  "gitsigns.nvim": { "branch": "main", "commit": "2149fc2009d1117d58e86e56836f70c969f60a82" },
   "gotospec.nvim": { "branch": "master", "commit": "558dc160e2bcf30a4cfbbcb801c6cea36c54cd59" },
   "lsp-progress.nvim": { "branch": "main", "commit": "f3df1df8f5ea33d082db047b5d2d2b83cc01cd8a" },
   "lualine.nvim": { "branch": "master", "commit": "86fe39534b7da729a1ac56c0466e76f2c663dc42" },
