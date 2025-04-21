@@ -9,8 +9,5 @@ return {
 	opts = {
 		kind = "tab",
 		remember_settings = false,
-		integrations = {
-			fzf_lua = true,
-		},
 	},
 }

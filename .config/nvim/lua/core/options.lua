@@ -1,5 +1,4 @@
 local autocmd = vim.api.nvim_create_autocmd
--- vim.api.nvim_exec([[ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""']], false)
 -- vim.api.nvim_exec(
 --   'autocmd BufEnter *.cljs let g:conjure#client#clojure#nrepl#connection#port_files = [".shadow-cljs/nrepl.port", ".nrepl-port"]',
 --   false
