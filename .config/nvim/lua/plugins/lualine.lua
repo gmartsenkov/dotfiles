@@ -1,9 +1,8 @@
-local lsp_progress = function()
-	return require("lsp-progress").progress()
-end
-
 local sections = {
-	lualine_a = {},
+	lualine_a = {
+		"mode",
+		"searchcount",
+	},
 	lualine_b = {},
 	lualine_c = {
 		{ "filename", path = 1 },
@@ -13,7 +12,7 @@ local sections = {
 	},
 	lualine_x = {
 		{ "overseer", unique = true },
-		lsp_progress,
+		"lsp_status",
 		"filetype",
 	},
 	lualine_y = {},
@@ -24,14 +23,7 @@ return {
 	"nvim-lualine/lualine.nvim",
 	lazy = false,
 	config = true,
-	dependencies = {
-		"nvim-tree/nvim-web-devicons",
-		{
-			"linrongbin16/lsp-progress.nvim",
-			config = true,
-			opts = { max_size = 50 },
-		},
-	},
+	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		extensions = { "toggleterm", "lazy", "nvim-tree", "mason", "overseer" },
 		options = {
