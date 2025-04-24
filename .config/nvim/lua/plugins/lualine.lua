@@ -1,22 +1,21 @@
 local sections = {
 	lualine_a = {
 		"mode",
-		"searchcount",
 	},
-	lualine_b = {},
-	lualine_c = {
+	lualine_b = {
 		{ "filename", path = 1 },
-		"diff",
+	},
+	lualine_c = {
 		"diagnostics",
-		"%=",
+		"diff",
 	},
-	lualine_x = {
-		{ "overseer", unique = true },
+	lualine_x = {},
+	lualine_y = {
 		"lsp_status",
-		"filetype",
 	},
-	lualine_y = {},
-	lualine_z = {},
+	lualine_z = {
+		"location",
+	},
 }
 
 return {
@@ -25,6 +24,7 @@ return {
 	config = true,
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
+		theme = "catppuccin",
 		extensions = { "toggleterm", "lazy", "nvim-tree", "mason", "overseer" },
 		options = {
 			always_divide_middle = false,
