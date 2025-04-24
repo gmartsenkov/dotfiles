@@ -2,8 +2,8 @@ vim.cmd("set termguicolors")
 require("core")
 require("lazy_init")
 
--- vim.opt.background = "dark"
-vim.cmd.colorscheme("catppuccin")
+-- vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme("kanagawa")
 
 vim.api.nvim_set_hl(0, "TermCursorNC", {})
 

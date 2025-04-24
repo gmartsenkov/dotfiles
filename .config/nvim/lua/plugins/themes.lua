@@ -1,5 +1,15 @@
 return {
 	{
+		"rebelot/kanagawa.nvim",
+		config = true,
+		opts = {
+			functionStyle = { italic = true, bold = true },
+			commentStyle = { italic = true },
+			keywordStyle = { italic = true },
+			statementStyle = { bold = true },
+		},
+	},
+	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
