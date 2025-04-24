@@ -5,6 +5,9 @@ return {
 		priority = 1000,
 		config = true,
 		opts = {
+			integrations = {
+				blink_cmp = true,
+			},
 			styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
 				comments = { "italic" }, -- Change the style of comments
 				conditionals = { "italic" },
