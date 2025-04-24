@@ -36,6 +36,9 @@ return {
 					truncate = 160,
 				},
 			},
+			matcher = {
+				frecency = true,
+			},
 			sources = {
 				files = {
 					prompt = "󰍉 ",
