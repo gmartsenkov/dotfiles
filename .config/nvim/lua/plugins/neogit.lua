@@ -7,7 +7,7 @@ return {
 	cmd = "Neogit",
 	config = true,
 	opts = {
-		kind = "tab",
+		kind = "auto",
 		remember_settings = false,
 	},
 }

@@ -30,71 +30,13 @@ return {
 					},
 				},
 			},
-			ui_select = true,
-			layout = {
-				layout = {
-					backdrop = false,
-					row = 2,
-					width = 0.4,
-					min_width = 80,
-					height = 0.8,
-					border = "none",
-					box = "vertical",
-				},
-			},
 			formatters = {
 				file = {
 					-- filename_first = true,
-					-- truncate = 80,
+					truncate = 160,
 				},
 			},
 			sources = {
-				select = {
-					layout = {
-						layout = {
-							backdrop = false,
-							row = 2,
-							width = 120,
-							min_width = 80,
-							height = 0.8,
-							border = "none",
-							box = "vertical",
-							{
-								win = "input",
-								height = 1,
-								row = 1,
-								border = "single",
-								title = "{title} {live} {flags}",
-								title_pos = "left",
-							},
-							{ win = "list", border = "single", height = 5 },
-						},
-					},
-				},
-				colorschemes = {
-					prompt = "󱥚 ",
-					layout = {
-						preview = true,
-						layout = {
-							backdrop = false,
-							row = 1,
-							width = 0.4,
-							min_width = 80,
-							height = 0.8,
-							border = "none",
-							box = "vertical",
-							{
-								win = "input",
-								height = 1,
-								border = "single",
-								title = "{title} {live} {flags}",
-								title_pos = "center",
-							},
-							{ win = "list", border = "single" },
-							{ win = "preview", title = "{preview}", border = "single" },
-						},
-					},
-				},
 				files = {
 					prompt = "󰍉 ",
 					layout = {
