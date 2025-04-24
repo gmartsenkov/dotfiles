@@ -2,8 +2,7 @@ vim.cmd("set termguicolors")
 require("core")
 require("lazy_init")
 
--- vim.cmd.colorscheme("catppuccin")
-vim.cmd.colorscheme("kanagawa")
+vim.cmd.colorscheme("catppuccin")
 
 vim.api.nvim_set_hl(0, "TermCursorNC", {})
 

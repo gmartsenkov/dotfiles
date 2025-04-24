@@ -1,15 +1,5 @@
 return {
 	{
-		"rebelot/kanagawa.nvim",
-		config = true,
-		opts = {
-			functionStyle = { italic = true, bold = true },
-			commentStyle = { italic = true },
-			keywordStyle = { italic = true },
-			statementStyle = { bold = true },
-		},
-	},
-	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
@@ -17,9 +7,9 @@ return {
 		opts = {
 			styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
 				comments = { "italic" }, -- Change the style of comments
-				conditionals = {},
+				conditionals = { "italic" },
 				loops = {},
-				functions = {},
+				functions = { "italic", "bold" },
 				keywords = { "italic" },
 				strings = {},
 				variables = {},
