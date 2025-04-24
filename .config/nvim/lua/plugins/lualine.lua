@@ -29,8 +29,6 @@ return {
 		options = {
 			always_divide_middle = false,
 			disabled_filetypes = { "dashboard" },
-			section_separators = { left = "", right = "" },
-			component_separators = { left = "", right = "" },
 			refresh = {
 				statusline = 300,
 			},
