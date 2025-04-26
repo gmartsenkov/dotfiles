@@ -77,7 +77,7 @@ end)
 
 -- LSP
 map("n", "gd", function()
-	require("snacks").picker.lsp_declarations()
+	require("snacks").picker.lsp_definitions()
 end, { silent = true })
 map("n", "gr", function()
 	require("snacks").picker.lsp_references()
