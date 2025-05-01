@@ -10,6 +10,7 @@ return {
 	opts = {
 		dashboard = { enabled = true },
 		words = { enabled = false },
+		scope = { enabled = false },
 		indent = {
 			hl = "SnacksIndent",
 			enabled = true,

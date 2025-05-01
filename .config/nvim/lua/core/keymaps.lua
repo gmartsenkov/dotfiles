@@ -76,6 +76,9 @@ map("n", "<leader>mp", function()
 end)
 
 -- LSP
+map("n", "gs", function()
+	require("snacks").picker.lsp_symbols()
+end, { silent = true })
 map("n", "gd", function()
 	require("snacks").picker.lsp_definitions()
 end, { silent = true })
