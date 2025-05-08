@@ -54,7 +54,7 @@
 (defun my/capture-last-compilation-status (buf msg)
   (if (string-match "^exited abnormally with code 1" msg)
       (setq compilation-last-failed 1)
-    (setq compilation-last-failed nil)))
+    (setq compilation-last-failed 0)))
 
 (setq compilation-last-failed nil)
 (setq compilation-finish-functions '(my/capture-last-compilation-status))
@@ -167,9 +167,8 @@
   (doom-modeline-def-segment custom-compile
     (if (bound-and-true-p compilation-in-progress)
         (propertize "[Compiling] " 'face (doom-modeline-face 'doom-modeline-compilation))
-      (if (bound-and-true-p compilation-last-failed)
-          (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error))
-        (propertize "[Success] " 'face (doom-modeline-face 'doom-modeline-lsp-success)))))
+      (cond ((eq compilation-last-failed 1) (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error)))
+            ((eq compilation-last-failed 0) (propertize "[Success] " 'face (doom-modeline-face 'doom-modeline-lsp-success))))))
 
   (doom-modeline-def-modeline 'my-simple-line
     '(bar matches buffer-info remote-host parrot)
