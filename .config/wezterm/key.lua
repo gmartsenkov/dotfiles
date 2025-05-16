@@ -4,7 +4,7 @@ local function is_vim(pane)
 	local process_info = pane:get_foreground_process_info()
 	local process_name = process_info and process_info.name
 
-	return process_name == "nvim" or process_name == "vim" or process_name == "Emacs" or process_name == "emacs"
+	return process_name == "nvim" or process_name == "vim" or process_name == "Emacs" or process_name == "emacs" or process_name == "tmux"
 end
 
 local function find_vim_pane(tab)
