@@ -6,14 +6,15 @@ WINIT_X11_SCALE_FACTOR = "1"
 shell = "/bin/zsh"
 
 [window]
+option_as_alt = "Both"
 decorations = "full"
 title = "Alacritty@CachyOS"
 opacity = 1
 decorations_theme_variant = "Dark"
 
 [window.padding]
-x = 20
-y = 20
+x = 5
+y = 0
 
 [window.dimensions]
 columns = 100
@@ -64,6 +65,22 @@ mouse = "Middle"
 action = "PasteSelection"
 
 [keyboard]
+[[keyboard.bindings]]
+mods = "Control"
+key = "="
+chars = "\u001b[27;5;61~"
+[[keyboard.bindings]]
+mods = "Control|Alt"
+key = "/"
+chars = "\u001b[27;7;47~"
+[[keyboard.bindings]]
+mods = "Control|Alt"
+key = ","
+chars = "\u001b[27;7;44~"
+[[keyboard.bindings]]
+mods = "Control|Alt"
+key = "."
+chars = "\u001b[27;7;46~"
 [[keyboard.bindings]]
 key = "Paste"
 action = "Paste"
