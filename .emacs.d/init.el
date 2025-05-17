@@ -1,15 +1,18 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
+; (seq-do
+;  (lambda (buffer) (message (buffer-name buffer))
+;    (buffer-list))
+;
+; (buffer-name (current-buffer))
 (setq package-selected-packages
       '(use-package
          diff-hl
          catppuccin-theme
          doom-modeline
-         evil
-         evil-collection
-         evil-surround
          surround
+         multiple-cursors
          expand-region
          company
          yasnippet
@@ -175,9 +178,8 @@
     '(misc-info minor-modes input-method buffer-encoding custom-compile major-mode process vcs check))
 
   ;; Set default mode-line
-  (add-hook 'doom-modeline-mode-hook
-            (lambda ()
-              (doom-modeline-set-modeline 'my-simple-line 'default))))
+  ;; (add-hook 'doom-modeline-mode-hook  (lambda () (doom-modeline-set-modeline 'my-simple-line 'default)))
+  )
 
 ;; (use-package doom-themes
 ;;   :ensure t
@@ -494,104 +496,8 @@
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
-(use-package evil
+(use-package multiple-cursors
   :ensure t
-  :defer t
-  :hook
-  (after-init . evil-mode)
-  :init
-  (setq evil-want-integration t)      ;; Integrate `evil' with other Emacs features (optional as it's true by default).
-  (setq evil-want-keybinding nil)     ;; Disable default keybinding to set custom ones.
-  :config
-  (setq-default evil-symbol-word-search t)
-  (defalias #'forward-evil-word #'forward-evil-symbol)
-  ;; Set the leader key to space for easier access to custom commands. (setq evil-want-leader t)
-  (setq evil-leader/in-all-states t)  ;; Make the leader key available in all states.
-  (setq evil-want-fine-undo t)        ;; Evil uses finer grain undoing steps
-
-  ;; Define the leader key as Space
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-set-leader 'visual (kbd "SPC"))
-
-  (global-set-key (kbd "C-h") 'evil-window-left)
-  (global-set-key (kbd "C-l") 'evil-window-right)
-  (global-set-key (kbd "C-j") 'evil-window-down)
-  (global-set-key (kbd "C-k") 'evil-window-up)
-  (evil-define-key 'normal 'global (kbd "`") 'project-eshell)
-  (evil-define-key 'insert eshell-mode-map (kbd "<escape>") (lambda () (interactive) (popper--bury-all)))
-  (evil-define-key 'normal git-rebase-mode-map (kbd "C-j") 'git-rebase-move-line-down)
-  (evil-define-key 'normal git-rebase-mode-map (kbd "C-k") 'git-rebase-move-line-up)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-j") 'compilation-next-error)
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") 'compilation-previous-error)
-  (evil-define-key 'normal compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
-  (evil-define-key 'normal rspec-compilation-mode-map (kbd "C-k") (lambda () (interactive) (select-window (previous-window))))
-  (evil-define-key 'normal 'global (kbd "<leader>x") 'consult-flycheck)
-  (evil-define-key 'normal 'global (kbd "]d") 'flycheck-next-error)
-  (evil-define-key 'normal 'global (kbd "[d") 'flycheck-previous-error)
-  (evil-define-key 'normal 'global (kbd "]h") 'diff-hl-next-hunk)
-  (evil-define-key 'normal 'global (kbd "[h") 'diff-hl-previous-hunk)
-  (evil-define-key 'insert 'global (kbd "C-e") 'end-of-line)
-  (evil-define-key 'insert 'global (kbd "C-a") 'beginning-of-line)
-  (evil-define-key 'normal 'global (kbd "<leader>/") 'counsel-ripgrep)
-  (evil-define-key 'normal 'global (kbd "<leader>hv") 'describe-variable)
-  (evil-define-key 'normal 'global (kbd "<leader>hf") 'describe-function)
-  (evil-define-key 'normal 'global (kbd "<leader>hk") 'describe-key)
-  (evil-define-key 'normal 'global (kbd "<leader>bd") (lambda () (interactive) (kill-buffer (current-buffer))))
-  (evil-define-key 'normal 'global (kbd "<leader>wv") 'split-window-right)
-  (evil-define-key 'normal 'global (kbd "<leader>wh") 'split-window-below)
-  (evil-define-key 'normal 'global (kbd "<leader>bb") 'consult-project-buffer)
-  (evil-define-key 'normal 'global (kbd "<leader>pp") 'project-switch-project)
-  (evil-define-key 'normal 'global (kbd "<leader>SPC") 'project-find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>ca") 'eglot-code-actions)
-  (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-  (evil-define-key 'normal 'global (kbd "<leader>gb") 'magit-blame)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tt") 'rspec-toggle-spec-and-target)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tv") 'rspec-verify)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tl") 'rspec-rerun)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tf") 'rspec-run-last-failed)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>tc") 'rspec-verify-single)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>ta") 'rspec-verify-all)
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mp") (lambda () (interactive) (my/run-command "bundle exec rubocop")))
-  (evil-define-key 'normal ruby-mode-map (kbd "<leader>mbi") (lambda () (interactive) (my/run-command "bundle install")))
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>ta") 'rust-test)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mr") 'rust-run)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mb") 'rust-compile)
-  (evil-define-key 'normal rust-ts-mode-map (kbd "<leader>mf") 'rust-format-buffer)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>ta") '(lambda () (interactive) (my/run-command "mix test")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tv") 'elixir-run-test)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tc") 'mix-test-current-test)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>tt") 'gotospec)
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>mp") (lambda () (interactive) (my/run-command "mix credo")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>mf") (lambda () (interactive) (my/run-command "mix format")))
-  (evil-define-key 'normal elixir-ts-mode-map (kbd "<leader>md") (lambda () (interactive) (my/run-command "mix deps.get")))
-  (evil-define-key 'normal gleam-ts-mode-map (kbd "<leader>ta") (lambda () (interactive) (my/run-command "gleam test")))
-
-  ;; Commenting functionality for single and multiple lines
-  (evil-define-key 'normal 'global (kbd "gcc")
-    (lambda ()
-      (interactive)
-      (if (not (use-region-p))
-          (comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
-
-  (evil-define-key 'visual 'global (kbd "gc")
-    (lambda ()
-      (interactive)
-      (if (use-region-p)
-          (comment-or-uncomment-region (region-beginning) (region-end)))))
-  (evil-mode 1))
-
-(use-package evil-surround
-  :ensure t
-  :defer t
-  :config
-  (global-evil-surround-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :defer t
-  :ensure t
-  :hook
-  (evil-mode . evil-collection-init)
-  :config
-  (evil-collection-init))
+  :bind (("C-M-." . mc/mark-next-like-this)
+         ("C-M-," . mc/mark-previous-like-this)
+         ("C-M-/" . mc/mark-all-like-this)))
