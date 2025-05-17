@@ -375,7 +375,8 @@
   :defer t
   :custom
   (consult-preview-key nil)
-  :bind ("C-c i" . consult-imenu)
+  :bind (("C-c i" . consult-imenu)
+         ("C-c l" . consult-line))
   :init
   ;; Enhance register preview with thin lines and no mode line.
   (setq xref-show-xrefs-function #'consult-xref xref-show-definitions-function #'consult-xref)
