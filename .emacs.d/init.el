@@ -502,3 +502,26 @@
   :bind (("C-M-." . mc/mark-next-like-this)
          ("C-M-," . mc/mark-previous-like-this)
          ("C-M-/" . mc/mark-all-like-this)))
+
+(use-package tab-bar
+  :ensure nil
+  :custom-face
+  (tab-bar ((t (:inherit mode-line))))
+  (tab-bar-tab ((t (:inherit mode-line :foreground "white"))))
+  (tab-bar-tab-inactive ((t (:inherit mode-line-inactive :foreground "black"))))
+  :custom
+  (tab-bar-show 1)
+  (tab-bar-close-button-show nil)
+  (tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+  :bind (("C-c w n" . tab-bar-new-tab)
+         ("C-c w s" . tab-bar-switch-to-tab)
+         ("C-c w x" . tab-bar-close-tab)
+         ("C-c w ]" . tab-next)
+         ("C-c w [" . tab-previous))
+  :config
+  (tab-bar-mode 1))
+
+(use-package eat
+  :ensure t
+  :config
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
