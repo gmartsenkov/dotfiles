@@ -93,9 +93,3 @@ export ASDF_RUBY_VERSION=3.3.4
 # Java
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 PATH=$PATH:~/.local/bin
-
-# FZF Theme
-export FZF_DEFAULT_OPTS=" \
---color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
---color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
---color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
