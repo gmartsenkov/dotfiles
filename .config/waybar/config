@@ -29,7 +29,6 @@
     "modules-right": [
         //"hyprland/window"
         //"custom/gammastep"
-        "clock#date",
         "custom/weather",
         "backlight",
         "custom/storage",
@@ -41,6 +40,7 @@
         //"custom/pacman",
         //"custom/screenshot_t",
         "tray",
+        "clock",
         "custom/power"
     ],
 
@@ -216,8 +216,7 @@
     },
 
     "clock": {
-        "format": "  {:%H:%M   %e %b}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": " {:%H:%M    %e %b}",
         "today-format": "<b>{}</b>"
     },
 
@@ -356,7 +355,7 @@
         //on-click: "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
         //on-scroll-down: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
         //on-scroll-up: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
-        "format": " <span foreground='#fab387'>{icon}</span>  {volume}%  ",
+        "format": " <span foreground='#fab387'>{icon}</span>  {volume}%",
         "format-muted": " ",
         "format-source": "",
         "format-source-muted": "",
