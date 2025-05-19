@@ -8,7 +8,7 @@ shell = "/bin/zsh"
 [window]
 option_as_alt = "Both"
 decorations = "full"
-title = "Alacritty@CachyOS"
+title = "gogo@arch"
 opacity = 0.9
 
 [window.padding]
