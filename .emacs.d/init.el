@@ -104,6 +104,7 @@
   (warning-minimum-level :emergency)
 
   :hook
+  (conf-unix-mode . display-line-numbers-mode)
   (prog-mode . display-line-numbers-mode)
   (markdown-mode . display-line-numbers-mode)
   (before-save . delete-trailing-whitespace)
@@ -181,42 +182,14 @@
   ;; (add-hook 'doom-modeline-mode-hook  (lambda () (doom-modeline-set-modeline 'my-simple-line 'default)))
   )
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'doom-ayu-dark t)
-;;   (custom-set-faces `(vertical-border ((t (:background ,(doom-color 'bg))))))
-;;   (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
-;;   (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
-;;   (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-;;   (custom-set-faces `(diff-refine-removed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background,(doom-darken (doom-color 'red) 0.6))))))
-;;   (custom-set-faces `(diff-refine-changed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-;;   (custom-set-faces `(diff-removed ((t (:foreground unspecified :background ,(doom-darken (doom-color 'red) 0.8))))))
-;;   (custom-set-faces `(diff-added ((t (:foreground unspecified :background ,(doom-darken (doom-color 'green) 0.8))))))
-;;   (custom-set-faces `(minibuffer-prompt ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-;;   (custom-set-faces `(lazy-highlight ((t (:background ,(doom-color 'base1))))))
-;;   (custom-set-faces `(isearch ((t (:background ,(doom-color 'base2))))))
-;;   (custom-set-faces `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
-;;   (custom-set-faces `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-;;   (custom-set-faces `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
-;;   (custom-set-faces `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green)))))))
-
-(use-package catppuccin-theme
+(use-package doom-themes
   :ensure t
   :config
-  (load-theme 'catppuccin :no-confirm)
-  (custom-set-faces `(vertical-border ((t (:background ,(catppuccin-get-color 'base))))))
-  (custom-set-faces
-   ;; Set the color for changes in the diff highlighting to blue.
-   `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue))))))
-
-  (custom-set-faces
-   ;; Set the color for deletions in the diff highlighting to red.
-   `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red))))))
-
-  (custom-set-faces
-   ;; Set the color for insertions in the diff highlighting to green.
-   `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green)))))))
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-ir-black t)
+  (custom-set-faces '(default ((t (:background "nil"))))))
 
 (use-package ace-window
   :ensure t
@@ -529,8 +502,9 @@
 (use-package indent-bars
   :ensure t
   :custom
-  (indent-bars-color '(highlight :face-bg t :blend 0.15))
-  (indent-bars-highlight-current-depth '(:blend 0.5)) ; pump up the BG blend on current
+  (indent-bars-color-by-depth nil)
+  (indent-bars-color '(shadow))
+  (indent-bars-highlight-current-depth '(:blend 1)) ; pump up the BG blend on current
   (indent-bars-treesit-support t)
   (indent-bars-treesit-ignore-blank-lines-types '("comment")) ; Ignore comments
   (indent-bars-width-frac 0.1)
