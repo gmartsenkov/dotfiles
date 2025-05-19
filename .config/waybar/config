@@ -39,7 +39,7 @@
         "wireplumber",
         //"custom/pacman",
         //"custom/screenshot_t",
-        "tray",
+        // "tray",
         "clock",
         "custom/power"
     ],
