@@ -305,7 +305,7 @@
 (use-package eglot
   :ensure nil
   :init
-  (add-hook 'ruby-mode-hook 'eglot-ensure)
+;  (add-hook 'ruby-mode-hook 'eglot-ensure)
   (add-hook 'typescript-ts-mode-hook 'eglot-ensure)
   (add-hook 'gleam-ts-mode-hook 'eglot-ensure)
   (setq-default eglot-events-buffer-size 0) ;; Disable logging
@@ -525,3 +525,14 @@
   :ensure t
   :config
   (add-hook 'eshell-load-hook #'eat-eshell-mode))
+
+(use-package indent-bars
+  :ensure t
+  :custom
+  (indent-bars-color '(highlight :face-bg t :blend 0.15))
+  (indent-bars-highlight-current-depth '(:blend 0.5)) ; pump up the BG blend on current
+  (indent-bars-treesit-support t)
+  (indent-bars-treesit-ignore-blank-lines-types '("comment")) ; Ignore comments
+  (indent-bars-width-frac 0.1)
+  (indent-bars-prefer-character t)
+  :hook (prog-mode . indent-bars-mode))
