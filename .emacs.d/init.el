@@ -504,9 +504,5 @@
   :custom
   (indent-bars-color-by-depth nil)
   (indent-bars-color '(shadow))
-  (indent-bars-highlight-current-depth '(:blend 1)) ; pump up the BG blend on current
-  (indent-bars-treesit-support t)
-  (indent-bars-treesit-ignore-blank-lines-types '("comment")) ; Ignore comments
-  (indent-bars-width-frac 0.1)
-  (indent-bars-prefer-character t)
-  :hook (prog-mode . indent-bars-mode))
+  :config
+  (add-hook 'prog-mode-hook 'indent-bars-mode))
