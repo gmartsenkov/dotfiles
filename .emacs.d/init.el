@@ -102,7 +102,7 @@
   (scroll-margin 20)
   (project-switch-commands 'project-find-file)
   (warning-minimum-level :emergency)
-
+  (completion-auto-help nil)
   :hook
   (conf-unix-mode . display-line-numbers-mode)
   (prog-mode . display-line-numbers-mode)
@@ -414,6 +414,8 @@
 
 (use-package company
   :ensure t
+  :custom-face
+  (company-tooltip-selection ((t (:background "black"))))
   :custom
   (company-tooltip-align-annotations t)
   (company-minimum-prefix-length 1)
