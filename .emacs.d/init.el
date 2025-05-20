@@ -107,7 +107,6 @@
   (conf-unix-mode . display-line-numbers-mode)
   (prog-mode . display-line-numbers-mode)
   (markdown-mode . display-line-numbers-mode)
-  (before-save . delete-trailing-whitespace)
   (find-file-hook . code/relative-buffer-name)
 
   :init
@@ -304,6 +303,7 @@
   :ensure t
   :defer t
   :custom
+  (flycheck-display-errors-function nil)
   (flycheck-highlighting-mode nil)
   (flycheck-indication-mode nil)
   (flycheck-keymap-prefix (kbd "C-c C-f"))
@@ -508,3 +508,7 @@
   (indent-bars-color '(shadow))
   :config
   (add-hook 'prog-mode-hook 'indent-bars-mode))
+
+(use-package ws-butler
+  :ensure t
+  :hook (prog-mode . ws-butler-mode))
