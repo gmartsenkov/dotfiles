@@ -235,6 +235,10 @@
       (side . right)
       (slot . 0)))))
 
+(use-package robe-mode
+  :ensure t
+  :hook (ruby-mode . robe-mode))
+
 (use-package inf-ruby
   :ensure t
   :defer t
