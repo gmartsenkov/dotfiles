@@ -108,6 +108,7 @@
   (prog-mode . display-line-numbers-mode)
   (markdown-mode . display-line-numbers-mode)
   (find-file-hook . code/relative-buffer-name)
+  (before-save . delete-trailing-whitespace)
 
   :init
   (load (concat user-emacs-directory "custom.el") :noerror)
@@ -235,7 +236,7 @@
       (side . right)
       (slot . 0)))))
 
-(use-package robe-mode
+(use-package robe
   :ensure t
   :hook (ruby-mode . robe-mode))
 
@@ -512,7 +513,3 @@
   (indent-bars-color '(shadow))
   :config
   (add-hook 'prog-mode-hook 'indent-bars-mode))
-
-(use-package ws-butler
-  :ensure t
-  :hook (prog-mode . ws-butler-mode))
