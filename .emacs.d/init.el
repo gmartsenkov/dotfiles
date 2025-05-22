@@ -39,6 +39,21 @@
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
         (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
 
+(defun my/gleam-toggle-test ()
+  (interactive)
+  (if (string-match "test" (buffer-file-name))
+      (-> (buffer-file-name)
+          (file-name-sans-extension)
+          (->> (replace-regexp-in-string "_test" ""))
+          (->> (replace-regexp-in-string "/test" "/src"))
+          (concat ".gleam")
+          (find-file))
+    (-> (buffer-file-name)
+        (file-name-sans-extension)
+        (->> (replace-regexp-in-string "src/" "test/"))
+        (concat "_test.gleam")
+        (find-file))))
+
 (defun my/run-gleam-command (cmd)
   (let ((default-directory (locate-dominating-file (buffer-file-name) "gleam.toml")))
     (compile cmd)))
@@ -278,7 +293,8 @@
   :ensure t
   :commands gleam-ts-mode
   :bind
-  (("C-c , a" . (lambda () (interactive) (my/run-gleam-command "gleam test"))))
+  (("C-c , a" . (lambda () (interactive) (my/run-gleam-command "gleam test")))
+   ("C-c , t" . my/gleam-toggle-test))
   :init
   (add-to-list 'auto-mode-alist '("\\.gleam$" . gleam-ts-mode)))
 
