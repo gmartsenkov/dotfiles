@@ -426,7 +426,7 @@
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.2)
   (company-tooltip-maximum-width 50)
-  (company-backends '((company-yasnippet :separate company-capf company-dabbrev)))
+  (company-backends '((company-yasnippet :separate company-robe company-capf company-dabbrev)))
   :config
   (define-key company-active-map [tab] 'company-complete-selection)
   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
