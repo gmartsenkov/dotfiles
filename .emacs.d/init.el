@@ -207,8 +207,7 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-ir-black t)
-  (custom-set-faces '(default ((t (:background "nil"))))))
+  (load-theme 'doom-one t))
 
 (use-package ace-window
   :ensure t
@@ -445,7 +444,7 @@
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.2)
   (company-tooltip-maximum-width 50)
-  (company-backends '((company-yasnippet :separate company-robe company-capf company-dabbrev)))
+  (company-backends '((company-yasnippet :separate company-capf company-dabbrev)))
   :config
   (define-key company-active-map [tab] 'company-complete-selection)
   (define-key company-active-map (kbd "TAB") 'company-complete-selection)
