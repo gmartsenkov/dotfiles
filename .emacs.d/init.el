@@ -37,7 +37,7 @@
 
 (setq package-vc-selected-packages
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
-        (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
+        (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay")))
 
 (defun my/gleam-toggle-test ()
   (interactive)
@@ -338,16 +338,26 @@
   :config
   (global-flycheck-eglot-mode 1))
 
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
+
 (use-package flycheck-overlay
-  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")
+  :vc (:url "https://github.com/konrad1977/flycheck-overlay")
   :ensure t
   :defer t
   :custom
-  (flycheck-overlay-hide-checker-name t)
-  (flycheck-overlay-show-at-eol nil)
-  (flycheck-overlay-show-virtual-line t)
-  (flycheck-overlay-virtual-line-type 'line-no-arrow)
+  ;; (flycheck-overlay-hide-checker-name t)
+  (flycheck-overlay-show-at-eol t)
+  ;; (flycheck-overlay-use-theme-colors nil)
+  ;; (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-icon-left-padding 1.2)
+  (flycheck-overlay-show-virtual-line nil)
+  (flycheck-overlay-virtual-line-type 'line-no-arrow)
+  (flycheck-overlay-wrap-messages t)
+  (flycheck-overlay-background-lightness 20)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
 
