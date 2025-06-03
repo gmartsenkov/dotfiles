@@ -300,7 +300,7 @@
 (use-package eglot
   :ensure nil
   :init
-;  (add-hook 'ruby-mode-hook 'eglot-ensure)
+  (add-hook 'ruby-mode-hook 'eglot-ensure)
   (add-hook 'typescript-ts-mode-hook 'eglot-ensure)
   (add-hook 'gleam-ts-mode-hook 'eglot-ensure)
   (setq-default eglot-events-buffer-size 0) ;; Disable logging
@@ -331,6 +331,8 @@
   (flycheck-indication-mode nil)
   (flycheck-keymap-prefix (kbd "C-c C-f"))
   :hook ((ruby-mode typescript-ts-mode gleam-ts-mode) . flycheck-mode))
+
+(use-package consult-flycheck :ensure t :defer t)
 
 (use-package flycheck-eglot
   :ensure t
