@@ -352,11 +352,11 @@
   :defer t
   :custom
   ;; (flycheck-overlay-hide-checker-name t)
-  (flycheck-overlay-show-at-eol t)
+  (flycheck-overlay-show-at-eol nil)
   ;; (flycheck-overlay-use-theme-colors nil)
   ;; (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-icon-left-padding 1.2)
-  (flycheck-overlay-show-virtual-line nil)
+  (flycheck-overlay-show-virtual-line t)
   (flycheck-overlay-virtual-line-type 'line-no-arrow)
   (flycheck-overlay-wrap-messages t)
   (flycheck-overlay-background-lightness 20)
