@@ -125,6 +125,7 @@
   :hook
   (conf-unix-mode . display-line-numbers-mode)
   (prog-mode . display-line-numbers-mode)
+  (markdown-ts-mode . display-line-numbers-mode)
   (markdown-mode . display-line-numbers-mode)
   (find-file-hook . code/relative-buffer-name)
   (before-save . delete-trailing-whitespace)
@@ -173,6 +174,14 @@
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
   (add-to-list 'auto-mode-alist '("\\.gleam\\'" . gleam-ts-mode))
   (global-treesit-auto-mode))
+
+(use-package markdown-ts-mode
+  :mode ("\\.md\\'" . markdown-ts-mode)
+  :ensure t
+  :defer 't
+  :config
+  (add-to-list 'treesit-language-source-alist '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
+  (add-to-list 'treesit-language-source-alist '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")))
 
 (use-package doom-modeline
   :ensure t
