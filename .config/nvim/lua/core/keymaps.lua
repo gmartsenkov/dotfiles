@@ -37,7 +37,7 @@ end)
 
 -- Testing
 map("n", "<leader>tt", function()
-	require("gotospec").jump()
+	require("gotospec").jump(require("root").find())
 end)
 map("n", "<leader>tv", "<cmd> TestFile <CR>")
 map("n", "<leader>tf", "<cmd> TestLast --only-failures<CR>")
