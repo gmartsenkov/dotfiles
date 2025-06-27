@@ -12,6 +12,9 @@ return {
 				vim.cmd("TermExec cmd='" .. cmd .. "'")
 			end,
 		}
+		vim.g["test#project_root"] = function()
+			return require("root").find()
+		end
 		vim.g["test#strategy"] = "term"
 		vim.g["test#preserve_screen"] = 1
 		vim.g["ruby#use_binstubs"] = 0
