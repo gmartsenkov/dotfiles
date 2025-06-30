@@ -5,6 +5,7 @@ return {
 		priority = 1000,
 		config = true,
 		opts = {
+			transparent_background = true,
 			integrations = {
 				blink_cmp = true,
 			},
