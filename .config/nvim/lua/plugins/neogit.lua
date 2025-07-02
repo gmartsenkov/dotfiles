@@ -9,5 +9,6 @@ return {
 	opts = {
 		kind = "floating",
 		remember_settings = false,
+		integrations = { telescope = false, snacks = true },
 	},
 }
