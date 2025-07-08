@@ -76,5 +76,19 @@
     "body": [
       "Fixtures::Factory.build_as :${1:record}"
     ]
+  },
+  "pry": {
+    "prefix": "pry",
+    "body": [
+      "require \"pry\"; binding.pry"
+    ]
+  },
+  "do": {
+    "prefix": "do",
+    "body": [
+      "do",
+      "  ${0:}",
+      "end"
+    ]
   }
 }

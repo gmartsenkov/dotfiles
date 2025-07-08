@@ -33,26 +33,31 @@ return {
 		signature = { enabled = true },
 		completion = {
 			documentation = { auto_show = true },
-			ghost_text = { enabled = true },
+			ghost_text = { enabled = false },
 			trigger = {
 				show_in_snippet = true,
 			},
 		},
 		sources = {
-			default = { "snippets", "lsp", "buffer" },
+			default = { "snippets", "lsp", "buffer", "path" },
 			providers = {
 				snippets = {
-					min_keyword_length = 2,
-					score_offset = 10,
+					min_keyword_length = 0,
+					async = false,
+					score_offset = 1000,
 				},
 				lsp = {
 					async = true,
+					fallbacks = {},
 					min_keyword_length = 2,
 					score_offset = 3,
 				},
 				buffer = {
 					min_keyword_length = 2,
 					score_offset = 1,
+				},
+				path = {
+					fallbacks = {},
 				},
 			},
 		},
@@ -61,8 +66,13 @@ return {
 			implementation = "prefer_rust_with_warning",
 			use_frecency = false,
 			use_proximity = true,
+			sorts = {
+				"exact",
+				"score",
+				"sort_text",
+			},
 			max_typos = function()
-				return 0
+				return 1
 			end,
 		},
 	},

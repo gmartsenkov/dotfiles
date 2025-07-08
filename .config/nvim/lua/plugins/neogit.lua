@@ -7,7 +7,7 @@ return {
 	cmd = "Neogit",
 	config = true,
 	opts = {
-		kind = "floating",
+		kind = "vsplit",
 		remember_settings = false,
 		integrations = { telescope = false, snacks = true },
 	},
