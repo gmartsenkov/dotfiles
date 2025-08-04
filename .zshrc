@@ -84,6 +84,7 @@ eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 # ASDF
+export PATH=$PATH:$HOME"/go/bin"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export ASDF_CONFIG_FILE=~/.asdfrc
 export ASDF_NODEJS_VERSION=20.19.0
