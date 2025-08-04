@@ -9,10 +9,10 @@ vim.api.nvim_set_hl(0, "TermCursorNC", {})
 local opt = vim.opt
 local o = vim.o
 o.expandtab = true
-o.shiftwidth = 2
+-- o.shiftwidth = 2
+-- o.tabstop = 2
+-- o.softtabstop = 2
 o.smartindent = true
-o.tabstop = 2
-o.softtabstop = 2
 
 opt.whichwrap:append("<>[]hl")
 opt.fillchars = { eob = " " }
