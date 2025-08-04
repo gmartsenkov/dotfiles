@@ -1,12 +1,18 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
+; (seq-do
+;  (lambda (buffer) (message (buffer-name buffer))
+;    (buffer-list))
+;
+; (buffer-name (current-buffer))
 (setq package-selected-packages
       '(use-package
          diff-hl
          catppuccin-theme
          doom-modeline
          surround
+         multiple-cursors
          expand-region
          company
          yasnippet
@@ -31,7 +37,26 @@
 
 (setq package-vc-selected-packages
       '((eglot-booster :url "https://github.com/jdtsmith/eglot-booster" :branch "main")
-        (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")))
+        (flycheck-overlay :url "https://github.com/konrad1977/flycheck-overlay")))
+
+(defun my/gleam-toggle-test ()
+  (interactive)
+  (if (string-match "test" (buffer-file-name))
+      (-> (buffer-file-name)
+          (file-name-sans-extension)
+          (->> (replace-regexp-in-string "_test" ""))
+          (->> (replace-regexp-in-string "/test" "/src"))
+          (concat ".gleam")
+          (find-file))
+    (-> (buffer-file-name)
+        (file-name-sans-extension)
+        (->> (replace-regexp-in-string "src/" "test/"))
+        (concat "_test.gleam")
+        (find-file))))
+
+(defun my/run-gleam-command (cmd)
+  (let ((default-directory (locate-dominating-file (buffer-file-name) "gleam.toml")))
+    (compile cmd)))
 
 (defun my/run-command (cmd)
   (let ((default-directory (car (last (project-current)))))
@@ -51,7 +76,7 @@
 (defun my/capture-last-compilation-status (buf msg)
   (if (string-match "^exited abnormally with code 1" msg)
       (setq compilation-last-failed 1)
-    (setq compilation-last-failed nil)))
+    (setq compilation-last-failed 0)))
 
 (setq compilation-last-failed nil)
 (setq compilation-finish-functions '(my/capture-last-compilation-status))
@@ -96,12 +121,14 @@
   (scroll-margin 20)
   (project-switch-commands 'project-find-file)
   (warning-minimum-level :emergency)
-
+  (completion-auto-help nil)
   :hook
+  (conf-unix-mode . display-line-numbers-mode)
   (prog-mode . display-line-numbers-mode)
+  (markdown-ts-mode . display-line-numbers-mode)
   (markdown-mode . display-line-numbers-mode)
-  (before-save . delete-trailing-whitespace)
   (find-file-hook . code/relative-buffer-name)
+  (before-save . delete-trailing-whitespace)
 
   :init
   (load (concat user-emacs-directory "custom.el") :noerror)
@@ -148,6 +175,14 @@
   (add-to-list 'auto-mode-alist '("\\.gleam\\'" . gleam-ts-mode))
   (global-treesit-auto-mode))
 
+(use-package markdown-ts-mode
+  :mode ("\\.md\\'" . markdown-ts-mode)
+  :ensure t
+  :defer 't
+  :config
+  (add-to-list 'treesit-language-source-alist '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
+  (add-to-list 'treesit-language-source-alist '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")))
+
 (use-package doom-modeline
   :ensure t
   :defer t
@@ -164,55 +199,24 @@
   (doom-modeline-def-segment custom-compile
     (if (bound-and-true-p compilation-in-progress)
         (propertize "[Compiling] " 'face (doom-modeline-face 'doom-modeline-compilation))
-      (if (bound-and-true-p compilation-last-failed)
-          (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error))
-        (propertize "[Success] " 'face (doom-modeline-face 'doom-modeline-lsp-success)))))
+      (cond ((eq compilation-last-failed 1) (propertize "[Failed] " 'face (doom-modeline-face 'doom-modeline-lsp-error)))
+            ((eq compilation-last-failed 0) (propertize "[Success] " 'face (doom-modeline-face 'doom-modeline-lsp-success))))))
 
   (doom-modeline-def-modeline 'my-simple-line
     '(bar matches buffer-info remote-host parrot)
     '(misc-info minor-modes input-method buffer-encoding custom-compile major-mode process vcs check))
 
   ;; Set default mode-line
-  (add-hook 'doom-modeline-mode-hook
-            (lambda ()
-              (doom-modeline-set-modeline 'my-simple-line 'default))))
+  ;; (add-hook 'doom-modeline-mode-hook  (lambda () (doom-modeline-set-modeline 'my-simple-line 'default)))
+  )
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   (load-theme 'doom-ayu-dark t)
-;;   (custom-set-faces `(vertical-border ((t (:background ,(doom-color 'bg))))))
-;;   (custom-set-faces `(diff-indicator-removed ((t (:background unspecified :foreground ,(doom-darken (doom-color 'red) 0.3))))))
-;;   (custom-set-faces `(diff-indicator-added ((t (:background unspecified :foreground ,(doom-darken (doom-color 'green) 0.3))))))
-;;   (custom-set-faces `(diff-refine-added ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-;;   (custom-set-faces `(diff-refine-removed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background,(doom-darken (doom-color 'red) 0.6))))))
-;;   (custom-set-faces `(diff-refine-changed ((t (:inverse-video unspecified :foreground ,(doom-color 'fg) :background ,(doom-darken (doom-color 'green) 0.6))))))
-;;   (custom-set-faces `(diff-removed ((t (:foreground unspecified :background ,(doom-darken (doom-color 'red) 0.8))))))
-;;   (custom-set-faces `(diff-added ((t (:foreground unspecified :background ,(doom-darken (doom-color 'green) 0.8))))))
-;;   (custom-set-faces `(minibuffer-prompt ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-;;   (custom-set-faces `(lazy-highlight ((t (:background ,(doom-color 'base1))))))
-;;   (custom-set-faces `(isearch ((t (:background ,(doom-color 'base2))))))
-;;   (custom-set-faces `(yas-field-highlight-face ((t (:background unspecified :foreground ,(doom-color 'red))))))
-;;   (custom-set-faces `(diff-hl-change ((t (:background unspecified :foreground ,(doom-color 'orange))))))
-;;   (custom-set-faces `(diff-hl-delete ((t (:background unspecified :foreground ,(doom-color 'red))))))
-;;   (custom-set-faces `(diff-hl-insert ((t (:background unspecified :foreground ,(doom-color 'green)))))))
-
-(use-package catppuccin-theme
+(use-package doom-themes
   :ensure t
   :config
-  (load-theme 'catppuccin :no-confirm)
-  (custom-set-faces `(vertical-border ((t (:background ,(catppuccin-get-color 'base))))))
-  (custom-set-faces
-   ;; Set the color for changes in the diff highlighting to blue.
-   `(diff-hl-change ((t (:background unspecified :foreground ,(catppuccin-get-color 'blue))))))
-
-  (custom-set-faces
-   ;; Set the color for deletions in the diff highlighting to red.
-   `(diff-hl-delete ((t (:background unspecified :foreground ,(catppuccin-get-color 'red))))))
-
-  (custom-set-faces
-   ;; Set the color for insertions in the diff highlighting to green.
-   `(diff-hl-insert ((t (:background unspecified :foreground ,(catppuccin-get-color 'green)))))))
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t))
 
 (use-package ace-window
   :ensure t
@@ -259,6 +263,10 @@
       (side . right)
       (slot . 0)))))
 
+(use-package robe
+  :ensure t
+  :hook (ruby-mode . robe-mode))
+
 (use-package inf-ruby
   :ensure t
   :defer t
@@ -293,10 +301,10 @@
   :ensure t
   :commands gleam-ts-mode
   :bind
-  (("C-c , a" . (lambda () (interactive) (my/run-command "gleam test"))))
+  (("C-c , a" . (lambda () (interactive) (my/run-gleam-command "gleam test")))
+   ("C-c , t" . my/gleam-toggle-test))
   :init
-  (add-to-list 'auto-mode-alist '("\\.gleam$" . gleam-ts-mode))
-  :bind (("C-c C-t a" . (lambda () (interactive) (my/run-command "gleam test")))))
+  (add-to-list 'auto-mode-alist '("\\.gleam$" . gleam-ts-mode)))
 
 (use-package eglot
   :ensure nil
@@ -327,10 +335,13 @@
   :ensure t
   :defer t
   :custom
+  (flycheck-display-errors-function nil)
   (flycheck-highlighting-mode nil)
   (flycheck-indication-mode nil)
   (flycheck-keymap-prefix (kbd "C-c C-f"))
   :hook ((ruby-mode typescript-ts-mode gleam-ts-mode) . flycheck-mode))
+
+(use-package consult-flycheck :ensure t :defer t)
 
 (use-package flycheck-eglot
   :ensure t
@@ -338,16 +349,26 @@
   :config
   (global-flycheck-eglot-mode 1))
 
+(defvar after-load-theme-hook nil
+  "Hook run after a color theme is loaded using `load-theme'.")
+(defadvice load-theme (after run-after-load-theme-hook activate)
+  "Run `after-load-theme-hook'."
+  (run-hooks 'after-load-theme-hook))
+
 (use-package flycheck-overlay
-  :vc (:url "https://github.com/konrad1977/flycheck-overlay" :rev "acf6cc9b8b80041a2a1665775566cefcdfd306ee")
+  :vc (:url "https://github.com/konrad1977/flycheck-overlay")
   :ensure t
   :defer t
   :custom
-  (flycheck-overlay-hide-checker-name t)
+  ;; (flycheck-overlay-hide-checker-name t)
   (flycheck-overlay-show-at-eol nil)
+  ;; (flycheck-overlay-use-theme-colors nil)
+  ;; (flycheck-overlay-hide-checker-name t)
+  (flycheck-overlay-icon-left-padding 1.2)
   (flycheck-overlay-show-virtual-line t)
   (flycheck-overlay-virtual-line-type 'line-no-arrow)
-  (flycheck-overlay-icon-left-padding 1.2)
+  (flycheck-overlay-wrap-messages t)
+  (flycheck-overlay-background-lightness 20)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-overlay-mode))
 
@@ -371,7 +392,8 @@
   :defer t
   :custom
   (consult-preview-key nil)
-  :bind ("C-c i" . consult-imenu)
+  :bind (("C-c i" . consult-imenu)
+         ("C-c l" . consult-line))
   :init
   ;; Enhance register preview with thin lines and no mode line.
   (setq xref-show-xrefs-function #'consult-xref xref-show-definitions-function #'consult-xref)
@@ -436,6 +458,8 @@
 
 (use-package company
   :ensure t
+  :custom-face
+  (company-tooltip-selection ((t (:background "black"))))
   :custom
   (company-tooltip-align-annotations t)
   (company-minimum-prefix-length 1)
@@ -491,3 +515,40 @@
   :ensure t
   :hook
   (prog-mode . rainbow-delimiters-mode))
+
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-M-." . mc/mark-next-like-this)
+         ("C-M-," . mc/mark-previous-like-this)
+         ("C-M-/" . mc/mark-all-like-this)))
+
+(use-package tab-bar
+  :ensure nil
+  :custom-face
+  (tab-bar ((t (:inherit mode-line))))
+  (tab-bar-tab ((t (:inherit mode-line :foreground "white"))))
+  (tab-bar-tab-inactive ((t (:inherit mode-line-inactive :foreground "black"))))
+  :custom
+  (tab-bar-show 1)
+  (tab-bar-close-button-show nil)
+  (tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+  :bind (("C-c w n" . tab-bar-new-tab)
+         ("C-c w s" . tab-bar-switch-to-tab)
+         ("C-c w x" . tab-bar-close-tab)
+         ("C-c w ]" . tab-next)
+         ("C-c w [" . tab-previous))
+  :config
+  (tab-bar-mode 1))
+
+(use-package eat
+  :ensure t
+  :config
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
+
+(use-package indent-bars
+  :ensure t
+  :custom
+  (indent-bars-color-by-depth nil)
+  (indent-bars-color '(shadow))
+  :config
+  (add-hook 'prog-mode-hook 'indent-bars-mode))

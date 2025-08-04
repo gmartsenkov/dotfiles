@@ -7,10 +7,8 @@ return {
 	cmd = "Neogit",
 	config = true,
 	opts = {
-		kind = "tab",
+		kind = "vsplit",
 		remember_settings = false,
-		integrations = {
-			fzf_lua = true,
-		},
+		integrations = { telescope = false, snacks = true },
 	},
 }

@@ -21,7 +21,7 @@ sketchybar --bar position=top height=40 blur_radius=30 color=0x40000000
 bar=(
   height=40
   blur_radius=30
-  color=0xE725273A
+  color=0xff000000
   shadow=off
   position=top
   sticky=on
@@ -65,7 +65,7 @@ sketchybar --default "${default[@]}"
 #     icon="${SPACE_ICONS[i]}"
 #     icon.padding_left=7
 #     icon.padding_right=7
-#     background.color=0x40ffffff
+#     background.color=0xff4e90de
 #     background.corner_radius=5
 #     background.height=25
 #     label.drawing=off
@@ -97,7 +97,7 @@ for sid in $(aerospace list-workspaces --monitor focused); do
 done
 
 sketchybar --add item front_app left \
-           --set front_app icon.drawing=off label.color=0xFFF4DBD6 script="$PLUGIN_DIR/front_app.sh" \
+           --set front_app icon.drawing=off label.color=0xff4e90de script="$PLUGIN_DIR/front_app.sh" \
            --subscribe front_app front_app_switched
 
 ##### Adding Right Items #####

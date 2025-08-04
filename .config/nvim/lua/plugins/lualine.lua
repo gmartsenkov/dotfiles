@@ -1,40 +1,21 @@
-local filetype = function()
-	local type = vim.bo.filetype
-	if type ~= "" then
-		return "[" .. vim.bo.filetype .. "]"
-	end
-end
-
-local lsp_progress = function()
-	-- invoke `progress` here.
-	return require("lsp-progress").progress()
-end
-
 local sections = {
-	lualine_a = {},
-	lualine_b = {},
+	lualine_a = {
+		"mode",
+	},
+	lualine_b = {
+		{ "filename", path = 1 },
+	},
 	lualine_c = {
-		{
-			"filename",
-			path = 4,
-			fmt = function(value)
-				local extension = vim.bo.filetype
-				local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(extension, { default = true })
-
-				return icon .. " " .. value
-			end,
-		},
-		"diff",
 		"diagnostics",
-		"%=",
+		"diff",
 	},
-	lualine_x = {
-		lsp_progress,
-		filetype,
-		-- { "branch", fmt = function(str) return str:sub(1,10) end },
+	lualine_x = {},
+	lualine_y = {
+		"lsp_status",
 	},
-	lualine_y = {},
-	lualine_z = {},
+	lualine_z = {
+		"location",
+	},
 }
 
 return {
@@ -43,12 +24,11 @@ return {
 	config = true,
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
-		extensions = { "toggleterm", "lazy", "nvim-tree", "mason" },
+		theme = "catppuccin",
+		extensions = { "toggleterm", "lazy", "nvim-tree", "mason", "overseer" },
 		options = {
 			always_divide_middle = false,
 			disabled_filetypes = { "dashboard" },
-			section_separators = { left = "", right = "" },
-			component_separators = { left = "", right = "" },
 			refresh = {
 				statusline = 300,
 			},

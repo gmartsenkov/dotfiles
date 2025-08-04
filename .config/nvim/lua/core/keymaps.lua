@@ -16,7 +16,7 @@ map("n", "<C-k>", "<C-w>k", { desc = "Switch Window up" })
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 
 map("n", "<leader><leader>", function()
-	require("fzf-lua").files()
+	require("snacks").picker.files()
 end)
 map("n", "<leader>ff", "<cmd> Telescope file_browser path=%:p:h select_buffer=true <CR>")
 map("n", "<leader>mf", function()
@@ -25,19 +25,19 @@ end)
 
 map("n", "<C-n>", "<cmd> NvimTreeFindFile <CR>")
 map("n", "<leader>bb", function()
-	require("fzf-lua").buffers()
+	require("snacks").picker.buffers()
 end)
 map("n", "<leader>bd", function()
 	vim.api.nvim_buf_delete(0, { force = true })
 end)
 map("n", "<leader>bn", "<cmd> enew <CR>")
 map("n", "<leader>/", function()
-	require("fzf-lua").grep()
+	require("snacks").picker.grep()
 end)
 
 -- Testing
 map("n", "<leader>tt", function()
-	require("gotospec").jump()
+	require("gotospec").jump(require("root").find())
 end)
 map("n", "<leader>tv", "<cmd> TestFile <CR>")
 map("n", "<leader>tf", "<cmd> TestLast --only-failures<CR>")
@@ -55,6 +55,7 @@ map("n", "<leader>ee", "<cmd> ConjureEvalCurrentFor <CR>")
 
 map("n", "<Esc>", function()
 	vim.cmd("noh")
+	require("overseer.window").close()
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
 		if vim.api.nvim_win_is_valid(term.window) then
@@ -63,6 +64,8 @@ map("n", "<Esc>", function()
 	end
 end)
 map("n", "<leader>mp", function()
+	-- vim.cmd("OverseerRunCmd bundle exec rubocop")
+	-- vim.cmd("OverseerOpen!")
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
 		if vim.api.nvim_win_is_valid(term.window) then
@@ -73,13 +76,18 @@ map("n", "<leader>mp", function()
 end)
 
 -- LSP
+map("n", "gs", function()
+	require("snacks").picker.lsp_symbols()
+end, { silent = true })
 map("n", "gd", function()
-	require("fzf-lua").lsp_definitions({ jump1 = true })
+	require("snacks").picker.lsp_definitions()
 end, { silent = true })
 map("n", "gr", function()
-	require("fzf-lua").lsp_references({ ignore_current_line = true })
+	require("snacks").picker.lsp_references()
 end, { silent = true })
-map("n", "<leader>cc", "<cmd> LspRestart <CR>")
+map("n", "<leader>cc", function()
+	require("snacks").picker.files({ cwd = vim.fn.expand("~/dotfiles/.config/nvim") })
+end)
 map("n", "<leader>ca", function()
 	vim.lsp.buf.code_action()
 end)
@@ -114,7 +122,7 @@ map("n", "<C-]>", "<cmd> bnext <CR>")
 map("n", "[h", "<cmd> Gitsigns prev_hunk <CR>")
 map("n", "]h", "<cmd> Gitsigns next_hunk <CR>")
 map("n", "<leader>d", function()
-	require("fzf-lua").diagnostics_workspace()
+	require("snacks").picker.diagnostics()
 end)
 map("n", "]d", function()
 	vim.diagnostic.goto_next({ float = false })
@@ -123,7 +131,9 @@ map("n", "[d", function()
 	vim.diagnostic.goto_prev({ float = false })
 end)
 
-map("n", "<leader>r", "<cmd> FzfLua resume <CR>")
+map("n", "<leader>r", function()
+	require("snacks").picker.resume()
+end)
 -- Tabs
 map("n", "<leader><tab>1", "<cmd> tabnext 1 <CR>")
 map("n", "<leader><tab>2", "<cmd> tabnext 2 <CR>")
@@ -132,3 +142,31 @@ map("n", "<leader><tab>4", "<cmd> tabnext 4 <CR>")
 map("n", "<leader><tab>5", "<cmd> tabnext 5 <CR>")
 map("n", "<leader><tab>n", "<cmd> tabnew <CR>")
 map("n", "<leader><tab>d", "<cmd> tabclose <CR>")
+
+local function InsertModeWithIndent(key)
+	local current_line = vim.api.nvim_get_current_line()
+	-- %g represents all printable characters except whitespace
+	if string.len(current_line) == 0 or string.match(current_line, "%g") == nil then
+		return [["_cc]]
+	else
+		return key
+	end
+end
+-- Auto indent on empty line with 'a' or 'A'
+map("n", "i", function()
+	return InsertModeWithIndent("i")
+end, { noremap = true, expr = true })
+map("n", "a", function()
+	return InsertModeWithIndent("a")
+end, { noremap = true, expr = true })
+map("n", "A", function()
+	return InsertModeWithIndent("A")
+end, { noremap = true, expr = true })
+
+-- Fix weird indentation issues in ruby with treesitter enabled
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "ruby" },
+	callback = function()
+		vim.opt_local.indentkeys:remove(".")
+	end,
+})

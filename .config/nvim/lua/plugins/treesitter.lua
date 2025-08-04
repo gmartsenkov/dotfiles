@@ -8,6 +8,7 @@ return {
 		highlight = {
 			enable = true,
 			use_languagetree = true,
+			additional_vim_regex_highlighting = false,
 		},
 		ensure_installed = {
 			"c",
@@ -16,25 +17,27 @@ return {
 			"elixir",
 			"erlang",
 			"gleam",
+			"glimmer",
+			"go",
 			"heex",
 			"html",
 			"javascript",
-			"typescript",
 			"lua",
 			"markdown",
 			"ruby",
 			"rust",
-			"yaml",
 			"surface",
+			"typescript",
 			"vim",
 			"vimdoc",
+			"yaml",
 		},
 		endwise = {
 			enable = true,
 		},
 		indent = {
 			enable = true,
-			disable = { "ruby" },
+			disable = {},
 		},
 	},
 	config = function(_, opts)

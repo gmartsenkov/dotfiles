@@ -17,20 +17,19 @@
 
     "modules-left": [
         //"custom/rofi",
-        "hyprland/workspaces",
+        "hyprland/workspaces"
         //"hyprland/submap",
-        "temperature",
+        //"temperature",
         //"idle_inhibitor",
         //"mpd"
-        "custom/spotify"
+        //"custom/spotify"
     ],
     "modules-center": [
-        //"hyprland/window"
-        "clock#date",
-        "custom/weather"
-        //"custom/gammastep"
     ],
     "modules-right": [
+        //"hyprland/window"
+        //"custom/gammastep"
+        "custom/weather",
         "backlight",
         "custom/storage",
         "memory",
@@ -38,9 +37,10 @@
         "battery",
         //"pulseaudio",
         "wireplumber",
-        "custom/pacman",
-        "custom/screenshot_t",
-        "tray",
+        //"custom/pacman",
+        //"custom/screenshot_t",
+        // "tray",
+        "clock",
         "custom/power"
     ],
 
@@ -216,8 +216,7 @@
     },
 
     "clock": {
-        "format": "  {:%H:%M   %e %b}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format": " {:%H:%M    %e %b}",
         "today-format": "<b>{}</b>"
     },
 
@@ -254,10 +253,10 @@
 
     "cpu": {
         "interval": 1,
-        //"format": " {}%", // Icon: microchip
-        "format": "{max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>",
+        "format": " {}%", // Icon: microchip
+        //"format": "{max_frequency}GHz <span color=\"darkgray\">| {usage}%</span>",
         "max-length": 13,
-        "min-length": 13
+        "min-length": 6
     },
 
     "mpd": {
@@ -356,7 +355,7 @@
         //on-click: "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
         //on-scroll-down: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
         //on-scroll-up: "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
-        "format": "<span foreground='#fab387'>{icon}</span>  {volume}%",
+        "format": " <span foreground='#fab387'>{icon}</span>  {volume}%",
         "format-muted": " ",
         "format-source": "",
         "format-source-muted": "",

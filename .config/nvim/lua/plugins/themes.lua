@@ -5,11 +5,15 @@ return {
 		priority = 1000,
 		config = true,
 		opts = {
+			transparent_background = true,
+			integrations = {
+				blink_cmp = true,
+			},
 			styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
 				comments = { "italic" }, -- Change the style of comments
-				conditionals = {},
+				conditionals = { "italic" },
 				loops = {},
-				functions = {},
+				functions = { "italic", "bold" },
 				keywords = { "italic" },
 				strings = {},
 				variables = {},
