@@ -13,7 +13,7 @@ return {
 			end,
 		}
 		vim.g["test#project_root"] = function()
-			return require("root").find()
+                        require('nvim-rooter').get_root()
 		end
 		vim.g["test#strategy"] = "term"
 		vim.g["test#preserve_screen"] = 1
