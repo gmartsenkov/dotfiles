@@ -17,6 +17,19 @@ vim.lsp.config["tailwindcss"] = {
 	},
 }
 
+vim.lsp.config["ts_ls"] = {
+	cmd = { "typescript-language-server", "--stdio" },
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"javascript.jsx",
+		"typescript",
+		"typescriptreact",
+		"typescript.tsx",
+	},
+	root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+}
+
 vim.lsp.config["gleam"] = {
 	cmd = { "gleam", "lsp" },
 	filetypes = { "gleam" },
@@ -62,5 +75,6 @@ vim.lsp.enable("luals")
 vim.lsp.enable("solargraph")
 vim.lsp.enable("gleam")
 vim.lsp.enable("gopls")
+vim.lsp.enable("ts_ls")
 
 return {}
