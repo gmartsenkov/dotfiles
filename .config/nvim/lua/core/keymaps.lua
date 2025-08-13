@@ -55,7 +55,6 @@ map("n", "<leader>ee", "<cmd> ConjureEvalCurrentFor <CR>")
 
 map("n", "<Esc>", function()
 	vim.cmd("noh")
-	require("overseer.window").close()
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
 		if vim.api.nvim_win_is_valid(term.window) then
@@ -64,8 +63,6 @@ map("n", "<Esc>", function()
 	end
 end)
 map("n", "<leader>mp", function()
-	-- vim.cmd("OverseerRunCmd bundle exec rubocop")
-	-- vim.cmd("OverseerOpen!")
 	local terminals = require("toggleterm.terminal").get_all()
 	for _, term in ipairs(terminals) do
 		if vim.api.nvim_win_is_valid(term.window) then
