@@ -3,13 +3,18 @@ return {
 	lazy = false,
 	opts = {
 		current_line_blame = true,
+		signcolumn = true,
+		attach_to_untracked = false,
+		preview_config = {
+			border = "solid",
+			row = 1,
+			col = 1,
+		},
 		signs = {
-			add = { text = "│" },
-			change = { text = "│" },
-			delete = { text = "󰍵" },
-			topdelete = { text = "‾" },
-			changedelete = { text = "~" },
-			untracked = { text = "│" },
+			change = { text = "┋" },
+		},
+		signs_staged = {
+			change = { text = "┋" },
 		},
 	},
 	config = true,

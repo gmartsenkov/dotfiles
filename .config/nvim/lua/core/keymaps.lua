@@ -150,15 +150,15 @@ local function InsertModeWithIndent(key)
 	end
 end
 -- Auto indent on empty line with 'a' or 'A'
-map("n", "i", function()
-	return InsertModeWithIndent("i")
-end, { noremap = true, expr = true })
-map("n", "a", function()
-	return InsertModeWithIndent("a")
-end, { noremap = true, expr = true })
-map("n", "A", function()
-	return InsertModeWithIndent("A")
-end, { noremap = true, expr = true })
+-- map("n", "i", function()
+-- 	return InsertModeWithIndent("i")
+-- end, { noremap = true, expr = true })
+-- map("n", "a", function()
+-- 	return InsertModeWithIndent("a")
+-- end, { noremap = true, expr = true })
+-- map("n", "A", function()
+-- 	return InsertModeWithIndent("A")
+-- end, { noremap = true, expr = true })
 
 -- Fix weird indentation issues in ruby with treesitter enabled
 vim.api.nvim_create_autocmd("FileType", {
