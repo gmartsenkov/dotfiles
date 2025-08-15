@@ -35,10 +35,15 @@ config.tab_max_width = 50
 
 config.keys = keys
 config.window_padding = {
-	left = 10,
-	right = 0,
-	top = 10,
-	bottom = 0,
+	left = 20,
+	right = 20,
+	top = 30,
+	bottom = 10,
+}
+config.window_background_opacity = 0.8
+config.macos_window_background_blur = 30
+config.colors = {
+	background = "#000000",
 }
 
 return config
