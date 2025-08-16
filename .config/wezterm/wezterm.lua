@@ -24,13 +24,13 @@ config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Medium" }
 config.cell_width = 0.95
 config.line_height = 1.0
 
-config.window_decorations = "RESIZE"
+config.window_decorations = "TITLE | RESIZE"
 config.initial_rows = 40
 config.initial_cols = 150
 
+config.show_tabs_in_tab_bar = true
 config.use_fancy_tab_bar = false
-config.show_new_tab_button_in_tab_bar = false
-config.tab_bar_at_bottom = false
+config.show_new_tab_button_in_tab_bar = true
 config.tab_max_width = 50
 
 config.keys = keys
