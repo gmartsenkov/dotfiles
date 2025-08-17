@@ -8,6 +8,18 @@ return {
 
 		local set = vim.keymap.set
 
+		-- Split visual selections by regex.
+		set("x", "S", mc.splitCursors)
+
+		-- match new cursors within visual selections by regex.
+		set("x", "M", mc.matchCursors)
+
+		-- bring back cursors if you accidentally clear them
+		set("n", "<leader>gv", mc.restoreCursors)
+
+		-- Add a cursor for all matches of cursor word/selection in the document.
+		set({ "n", "x" }, "<leader>A", mc.matchAllAddCursors)
+
 		-- Add or skip cursor above/below the main cursor.
 		set({ "n", "x" }, "<up>", function()
 			mc.lineAddCursor(-1)
