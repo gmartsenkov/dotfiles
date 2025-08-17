@@ -15,6 +15,7 @@ return {
 			clojure = { "cljstyle" },
 			elixir = { "mix" },
 			gleam = { "gleam" },
+			templ = { "templ" },
 			go = { "gofmt" },
 			javascript = { { "prettierd", "prettier" } },
 		},
@@ -22,7 +23,7 @@ return {
 	config = function(_, opts)
 		require("conform").setup(opts)
 		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = { "*.lua", "*.rs", "*.clj", "*.cljs", "*.edn", "*.gleam", "*.go", "*.rb" },
+			pattern = { "*.lua", "*.rs", "*.clj", "*.cljs", "*.edn", "*.gleam", "*.go", "*.rb", "*.templ" },
 			callback = function(args)
 				require("conform").format({ bufnr = args.buf, quiet = true })
 			end,

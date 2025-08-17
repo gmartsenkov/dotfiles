@@ -42,6 +42,12 @@ vim.lsp.config["gopls"] = {
 	root_markers = { "go.mod" },
 }
 
+vim.lsp.config["templ"] = {
+	cmd = { "templ", "lsp" },
+	filetypes = { "templ" },
+	root_markers = { "go.mod" },
+}
+
 vim.lsp.config["solargraph"] = {
 	cmd = { "solargraph", "stdio" },
 	filetypes = { "ruby" },
@@ -75,6 +81,7 @@ vim.lsp.enable("luals")
 vim.lsp.enable("solargraph")
 vim.lsp.enable("gleam")
 vim.lsp.enable("gopls")
+vim.lsp.enable("templ")
 vim.lsp.enable("ts_ls")
 
 return {}

@@ -31,6 +31,7 @@ return {
 				"ruby",
 				"rust",
 				"surface",
+				"templ",
 				"typescript",
 				"vim",
 				"vimdoc",
