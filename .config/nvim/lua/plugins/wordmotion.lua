@@ -1,7 +1,19 @@
 return {
-	"chaoren/vim-wordmotion",
-	lazy = false,
-	init = function()
-		-- vim.g.wordmotion_mappings = { e = "k", ge = "gk" }
-	end,
+	{
+		"chrisgrieser/nvim-spider",
+		keys = {
+			{ "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" } },
+			{ "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" } },
+			{ "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" } },
+		},
+	},
+	{
+		"chrisgrieser/nvim-various-textobjs",
+		event = "VeryLazy",
+		opts = {
+			keymaps = {
+				useDefaults = true,
+			},
+		},
+	},
 }
