@@ -32,6 +32,7 @@ return {
 
 		signature = { enabled = true },
 		completion = {
+			menu = { border = "none" },
 			documentation = { auto_show = true },
 			ghost_text = { enabled = false },
 			trigger = {

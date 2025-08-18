@@ -44,6 +44,7 @@ return {
 				files = {
 					prompt = "󰍉 ",
 					layout = {
+						preview = true,
 						layout = {
 							backdrop = false,
 							row = 2,
@@ -60,7 +61,19 @@ return {
 								title = "{title} {live} {flags}",
 								title_pos = "left",
 							},
-							{ win = "list", border = "single" },
+							{
+								win = "list",
+								border = "single",
+							},
+							{
+								box = "vertical",
+								{
+									win = "preview",
+									title = "{preview}",
+									border = "single",
+									minimal = true,
+								},
+							},
 						},
 					},
 				},

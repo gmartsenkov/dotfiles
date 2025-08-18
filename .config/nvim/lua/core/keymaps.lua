@@ -94,6 +94,9 @@ end)
 map("n", "<leader>ch", function()
 	vim.lsp.buf.hover()
 end)
+map("n", "<c-i>", function()
+	vim.lsp.buf.hover()
+end)
 map("n", "<C-d>", "<cmd> TroubleToggle <CR>")
 
 -- Git
@@ -122,10 +125,10 @@ map("n", "<leader>d", function()
 	require("snacks").picker.diagnostics()
 end)
 map("n", "]d", function()
-	vim.diagnostic.goto_next({ float = false })
+	vim.diagnostic.jump({ count = 1, float = false })
 end)
 map("n", "[d", function()
-	vim.diagnostic.goto_prev({ float = false })
+	vim.diagnostic.jump({ count = -1, float = false })
 end)
 
 map("n", "<leader>r", function()
@@ -139,26 +142,6 @@ map("n", "<leader><tab>4", "<cmd> tabnext 4 <CR>")
 map("n", "<leader><tab>5", "<cmd> tabnext 5 <CR>")
 map("n", "<leader><tab>n", "<cmd> tabnew <CR>")
 map("n", "<leader><tab>d", "<cmd> tabclose <CR>")
-
-local function InsertModeWithIndent(key)
-	local current_line = vim.api.nvim_get_current_line()
-	-- %g represents all printable characters except whitespace
-	if string.len(current_line) == 0 or string.match(current_line, "%g") == nil then
-		return [["_cc]]
-	else
-		return key
-	end
-end
--- Auto indent on empty line with 'a' or 'A'
--- map("n", "i", function()
--- 	return InsertModeWithIndent("i")
--- end, { noremap = true, expr = true })
--- map("n", "a", function()
--- 	return InsertModeWithIndent("a")
--- end, { noremap = true, expr = true })
--- map("n", "A", function()
--- 	return InsertModeWithIndent("A")
--- end, { noremap = true, expr = true })
 
 -- Fix weird indentation issues in ruby with treesitter enabled
 vim.api.nvim_create_autocmd("FileType", {
