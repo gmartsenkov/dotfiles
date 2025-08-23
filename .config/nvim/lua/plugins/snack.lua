@@ -28,6 +28,19 @@ return {
 				input = {
 					keys = {
 						["<Esc>"] = { "close", mode = { "n", "i" } },
+						["<c-a>"] = {
+							function()
+								vim.cmd("normal ^")
+							end,
+							mode = { "i" },
+						},
+						["<c-e>"] = {
+							function()
+								local cursor = vim.api.nvim_win_get_cursor(0)
+								vim.api.nvim_win_set_cursor(0, { cursor[1], vim.v.maxcol })
+							end,
+							mode = { "i" },
+						},
 					},
 				},
 			},
