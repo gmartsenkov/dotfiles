@@ -91,12 +91,6 @@ end)
 map("n", "<leader>cR", function()
 	vim.lsp.buf.rename()
 end)
-map("n", "<leader>ch", function()
-	vim.lsp.buf.hover()
-end)
-map("n", "<c-i>", function()
-	vim.lsp.buf.hover()
-end)
 map("n", "<C-d>", "<cmd> TroubleToggle <CR>")
 
 -- Git
