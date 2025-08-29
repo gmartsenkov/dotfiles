@@ -2,7 +2,14 @@ return {
 	"williamboman/mason.nvim",
 	cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUpdate" },
 	opts = {
-		ensure_installed = { "lua-language-server", "stylua", "rust-analyzer", "tailwindcss-language-server", "tombi" },
+		ensure_installed = {
+			"lua-language-server",
+			"stylua",
+			"rust-analyzer",
+			"tailwindcss-language-server",
+			"tombi",
+			"golangci-lint",
+		},
 		PATH = "prepend",
 
 		ui = {
