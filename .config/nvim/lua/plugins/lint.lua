@@ -1,9 +1,10 @@
 return {
 	"mfussenegger/nvim-lint",
-	ft = { "ruby" },
+	ft = { "ruby", "go" },
 	config = function()
 		require("lint").linters_by_ft = {
 			ruby = { "rubocop" },
+			go = { "golangcilint" },
 		}
 		require("lint").linters.rubocop.cmd = "bundle"
 		require("lint").linters.rubocop.args = {
