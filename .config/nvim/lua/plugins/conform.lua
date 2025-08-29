@@ -16,13 +16,14 @@ return {
 			gleam = { "gleam" },
 			templ = { "templ" },
 			go = { "gofmt" },
+			toml = { "tombi" },
 			javascript = { { "prettierd", "prettier" } },
 		},
 	},
 	config = function(_, opts)
 		require("conform").setup(opts)
 		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = { "*.lua", "*.rs", "*.clj", "*.cljs", "*.edn", "*.gleam", "*.go", "*.templ" },
+			pattern = { "*.lua", "*.rs", "*.clj", "*.cljs", "*.edn", "*.gleam", "*.go", "*.templ", "*.toml" },
 			callback = function(args)
 				require("conform").format({ bufnr = args.buf, quiet = true })
 			end,
