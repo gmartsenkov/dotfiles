@@ -52,7 +52,6 @@ return {
 			},
 			matcher = {
 				frecency = true,
-				sort_empty = true,
 			},
 		},
 	},
