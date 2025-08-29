@@ -8,6 +8,11 @@ return {
 		},
 	},
 	{
+		"johmsalas/text-case.nvim",
+		lazy = false,
+		config = true,
+	},
+	{
 		"chrisgrieser/nvim-various-textobjs",
 		event = "VeryLazy",
 		opts = {
