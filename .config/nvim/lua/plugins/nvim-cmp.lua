@@ -35,9 +35,7 @@ return {
 			menu = { border = "none" },
 			documentation = { auto_show = true },
 			ghost_text = { enabled = false },
-			trigger = {
-				show_in_snippet = true,
-			},
+			trigger = { show_in_snippet = true },
 		},
 		sources = {
 			default = { "snippets", "lsp", "buffer", "path" },
@@ -46,20 +44,16 @@ return {
 					min_keyword_length = 0,
 					async = false,
 					score_offset = 1000,
+					should_show_items = function(ctx)
+						if ctx.line:find("^%s*def ") then
+							return false
+						end
+						return ctx.trigger.initial_kind ~= "trigger_character"
+					end,
 				},
-				lsp = {
-					async = true,
-					fallbacks = {},
-					min_keyword_length = 2,
-					score_offset = 3,
-				},
-				buffer = {
-					min_keyword_length = 2,
-					score_offset = 1,
-				},
-				path = {
-					fallbacks = {},
-				},
+				lsp = { async = true, fallbacks = {}, score_offset = 3 },
+				buffer = { score_offset = 1 },
+				path = { fallbacks = {} },
 			},
 		},
 
