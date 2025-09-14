@@ -1,3 +1,24 @@
+local spec_snippets = {
+	"it",
+	"desc",
+	"rdesc",
+	"fix",
+	"let",
+	"sub",
+	"exp",
+	"rdesc",
+	"bef",
+	"cont",
+}
+local function array_has(tbl, value)
+	for _, v in ipairs(tbl) do
+		if v == value then
+			return true
+		end
+	end
+	return false
+end
+
 return {
 	"saghen/blink.cmp",
 	version = "1.*",
@@ -49,6 +70,19 @@ return {
 							return false
 						end
 						return ctx.trigger.initial_kind ~= "trigger_character"
+					end,
+					transform_items = function(_, items)
+						return vim.tbl_filter(function(item)
+							local bufname = vim.api.nvim_buf_get_name(0)
+
+							if not bufname:match("_spec") then
+								if array_has(spec_snippets, item.label) then
+									return false
+								end
+							end
+
+							return true
+						end, items)
 					end,
 				},
 				lsp = { async = true, fallbacks = {}, score_offset = 3 },
