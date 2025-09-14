@@ -54,6 +54,12 @@ vim.lsp.config["solargraph"] = {
 	root_markers = { "Gemfile" },
 }
 
+vim.lsp.config["elixirls"] = {
+	cmd = { "elixir-ls" },
+	filetypes = { "elixir", "eelixir", "heex" },
+	root_markers = { "mix.exs" },
+}
+
 vim.lsp.config["luals"] = {
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
@@ -83,5 +89,6 @@ vim.lsp.enable("gleam")
 vim.lsp.enable("gopls")
 vim.lsp.enable("templ")
 vim.lsp.enable("ts_ls")
+vim.lsp.enable("elixirls")
 
 return {}
