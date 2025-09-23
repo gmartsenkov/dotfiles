@@ -53,7 +53,8 @@
     "custom/playing": {
             "format": "{}",
             "exec": "playerctl metadata --format '{{status}}: {{album}} - {{title}}' -p 'Feishin'",
-            "interval": 1
+            "interval": 1,
+            "on-click": "feishin"
     },
     "custom/sp1": {
         "format": " | ",
