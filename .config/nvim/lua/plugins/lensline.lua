@@ -1,8 +1,18 @@
 return {
 	"oribarilan/lensline.nvim",
-	tag = "1.1.2", -- or: branch = 'release/1.x' for latest non-breaking updates
+	tag = "2.0.0",
 	event = "LspAttach",
 	opts = {
+		profiles = {
+			{
+				name = "minimal",
+				style = {
+					placement = "inline",
+					prefix = "",
+					-- render = "focused", optionally render lenses only for focused function
+				},
+			},
+		},
 		providers = { -- Array format: order determines display sequence
 			{
 				name = "last_author",

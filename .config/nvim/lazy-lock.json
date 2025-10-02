@@ -8,7 +8,7 @@
   "git_browse.nvim": { "branch": "main", "commit": "047d11f3d8a6643e6758475cf167f48be9dd8043" },
   "gitsigns.nvim": { "branch": "main", "commit": "0c6826374f47fcbb2b53053986ccc59c115044ff" },
   "gotospec.nvim": { "branch": "master", "commit": "558dc160e2bcf30a4cfbbcb801c6cea36c54cd59" },
-  "lensline.nvim": { "branch": "main", "commit": "a5a4d9daf556318ec7211222352c00a8a148afa1" },
+  "lensline.nvim": { "branch": "main", "commit": "6d0beaa5548ff54b8f3d9b3195aea1369ccf62a4" },
   "lualine.nvim": { "branch": "master", "commit": "b8c23159c0161f4b89196f74ee3a6d02cdc3a955" },
   "mason.nvim": { "branch": "main", "commit": "a83eabdc8c49c0c93bf5bb162fa3b57404a9d095" },
   "mini.ai": { "branch": "main", "commit": "e139eb1101beb0250fea322f8c07a42f0f175688" },
