@@ -9,7 +9,7 @@ shell = "/bin/zsh"
 option_as_alt = "Both"
 decorations = "full"
 title = "gogo@arch"
-opacity = 0.9
+opacity = 0.8
 
 [window.padding]
 x = 10
@@ -158,5 +158,6 @@ action = "ResetFontSize"
 live_config_reload = true
 working_directory = "None"
 import = [
-    "~/.config/alacritty/github_dark_high_contrast.toml"
+    # "~/.config/alacritty/github_dark_high_contrast.toml"
+    "~/.cache/wal/colors-alacritty.toml.toml"
 ]
